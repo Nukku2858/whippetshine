@@ -30,27 +30,13 @@ const packages: Package[] = [
     features: [
       "Everything in Signature",
       "Clay bar decontamination",
-      "Single-stage paint polish",
+      "Hand-applied spray wax & sealant",
       "Leather cleaning & conditioning",
       "Deep carpet & upholstery shampoo",
       "Engine bay detail & dressing",
       "Tire & trim UV protection",
     ],
     popular: true,
-  },
-  {
-    name: "Master Correction",
-    price: 500,
-    description: "Full paint correction & ceramic protection — perfection you can feel.",
-    features: [
-      "Everything in Elite",
-      "Multi-stage paint correction",
-      "Professional ceramic sealant (1-year)",
-      "Headlight restoration & UV seal",
-      "Plastic & trim restoration",
-      "Interior odor elimination",
-      "12-month protection guarantee",
-    ],
   },
 ];
 
