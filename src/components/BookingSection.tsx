@@ -89,7 +89,6 @@ const BookingSection = () => {
               <SelectContent>
                 <SelectItem value="signature">Signature Wash — $150</SelectItem>
                 <SelectItem value="elite">Elite Detail — $275</SelectItem>
-                <SelectItem value="master">Master Correction — $500</SelectItem>
               </SelectContent>
             </Select>
           </div>
