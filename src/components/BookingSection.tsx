@@ -87,9 +87,9 @@ const BookingSection = () => {
                 <SelectValue placeholder="Select a package" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="essential">Essential Wash — $75</SelectItem>
-                <SelectItem value="premium">Premium Detail — $175</SelectItem>
-                <SelectItem value="ultimate">Ultimate Correction — $350</SelectItem>
+                <SelectItem value="signature">Signature Wash — $150</SelectItem>
+                <SelectItem value="elite">Elite Detail — $275</SelectItem>
+                <SelectItem value="master">Master Correction — $500</SelectItem>
               </SelectContent>
             </Select>
           </div>
