@@ -20,8 +20,8 @@ const HeroSection = () => {
           Shelby, Ohio's Premier Detail Shop
         </p>
         <h1 className="text-6xl md:text-8xl font-display leading-none mb-6 opacity-0 animate-fade-up" style={{ animationDelay: "0.15s" }}>
-          Pristine Auto
-          <span className="block text-primary">Detailing</span>
+          Whippet
+          <span className="block text-primary">Shine</span>
         </h1>
         <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 opacity-0 animate-fade-up" style={{ animationDelay: "0.3s" }}>
           Professional car detailing services that bring out the best in your vehicle. From basic washes to full paint correction.

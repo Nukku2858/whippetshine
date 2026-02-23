@@ -5,7 +5,7 @@ const FooterSection = () => {
     <footer className="py-16 px-6 border-t border-border">
       <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
         <div>
-          <h3 className="text-3xl font-display text-primary mb-4">Pristine Auto Detailing</h3>
+          <h3 className="text-3xl font-display text-primary mb-4">Whippet Shine</h3>
           <p className="text-muted-foreground text-sm leading-relaxed">
             Shelby, Ohio's trusted car detailing professionals. We treat every vehicle like it's our own.
           </p>
@@ -23,7 +23,7 @@ const FooterSection = () => {
           </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <Mail size={16} className="text-primary shrink-0" />
-            <span>info@pristineautodetail.com</span>
+            <span>info@whippetshine.com</span>
           </div>
         </div>
 
@@ -41,7 +41,7 @@ const FooterSection = () => {
       </div>
 
       <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-border text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Pristine Auto Detailing — Shelby, Ohio
+        © {new Date().getFullYear()} Whippet Shine — Shelby, Ohio
       </div>
     </footer>
   );
