@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/contexts/CartContext";
-import { ShoppingCart, X, Loader2, Calendar, Clock } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { ShoppingCart, X, Loader2, Calendar, Clock, Star } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -27,8 +28,16 @@ const CartButton = () => {
 
 const CartDrawer = () => {
   const { items, removeItem, clearCart, isOpen, setIsOpen, total } = useCart();
+  const { user, profile, refreshProfile } = useAuth();
   const [step, setStep] = useState<"cart" | "details">("cart");
   const [loading, setLoading] = useState(false);
+  const [redeemPoints, setRedeemPoints] = useState(false);
+  const pointsAvailable = profile?.points_balance || 0;
+  // 100 points = $5 discount
+  const maxDiscount = Math.floor(pointsAvailable / 100) * 5;
+  const discount = redeemPoints ? Math.min(maxDiscount, total) : 0;
+  const pointsToRedeem = discount * 20; // $5 = 100 points, so $1 = 20 points
+  const finalTotal = total - discount;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,6 +74,8 @@ const CartDrawer = () => {
           time: formData.time,
           vehicle: hasPropertyService ? formData.address : formData.address,
           notes: formData.notes,
+          redeemPoints: redeemPoints ? pointsToRedeem : 0,
+          discountAmount: discount,
         },
       });
       if (error) throw error;
@@ -135,9 +146,47 @@ const CartDrawer = () => {
                     </div>
                   ))}
 
-                  <div className="border-t border-border pt-4 flex items-center justify-between">
-                    <span className="text-lg font-display">Total</span>
-                    <span className="text-2xl font-display text-primary">${total}</span>
+                  {/* Points Redemption */}
+                  {user && pointsAvailable >= 100 && (
+                    <div className="border border-border rounded-lg p-4 space-y-2">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={redeemPoints}
+                          onChange={(e) => setRedeemPoints(e.target.checked)}
+                          className="accent-primary w-4 h-4"
+                        />
+                        <Star size={14} className="text-primary" />
+                        <span className="text-sm font-medium">
+                          Redeem {pointsToRedeem || Math.min(Math.floor(pointsAvailable / 100) * 100, Math.ceil(total / 5) * 100)} points
+                        </span>
+                      </label>
+                      {redeemPoints && (
+                        <p className="text-xs text-green-400 ml-6">
+                          -${discount} discount applied!
+                        </p>
+                      )}
+                      <p className="text-[10px] text-muted-foreground ml-6">
+                        You have {pointsAvailable} points · 100 pts = $5 off
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="border-t border-border pt-4 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg font-display">Subtotal</span>
+                      <span className="text-lg font-display text-foreground">${total}</span>
+                    </div>
+                    {redeemPoints && discount > 0 && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-green-400">Points discount</span>
+                        <span className="text-sm text-green-400">-${discount}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg font-display">Total</span>
+                      <span className="text-2xl font-display text-primary">${finalTotal}</span>
+                    </div>
                   </div>
 
                   <div className="space-y-3">
@@ -224,9 +273,21 @@ const CartDrawer = () => {
                 <Textarea id="cart-notes" value={formData.notes} onChange={(e) => updateField("notes", e.target.value)} placeholder="Any special requests..." className="bg-secondary border-border min-h-[60px]" />
               </div>
 
-              <div className="border-t border-border pt-3 flex items-center justify-between mb-2">
-                <span className="font-display">Total</span>
-                <span className="text-xl font-display text-primary">${total}</span>
+              <div className="border-t border-border pt-3 space-y-1 mb-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-display">Subtotal</span>
+                  <span className="text-lg font-display text-foreground">${total}</span>
+                </div>
+                {redeemPoints && discount > 0 && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-green-400">Points discount</span>
+                    <span className="text-sm text-green-400">-${discount}</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between">
+                  <span className="font-display">Total</span>
+                  <span className="text-xl font-display text-primary">${finalTotal}</span>
+                </div>
               </div>
 
               <Button type="submit" disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-scarlet-glow font-semibold tracking-wide py-5">
