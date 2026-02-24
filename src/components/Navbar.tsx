@@ -22,7 +22,7 @@ const Navbar = () => {
           </span>
         </Link>
 
-        <div className="flex items-center gap-1 bg-muted/60 rounded-full p-1">
+        <div className="flex items-center gap-0.5 md:gap-1 bg-muted/60 rounded-full p-0.5 md:p-1">
           {navLinks.map((link) => {
             const isActive = link.path === "/" ? pathname === "/" : pathname.startsWith("/pressure-washing");
             const activeClass = link.path === "/"
@@ -33,7 +33,7 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={cn(
-                  "text-[10px] md:text-sm tracking-widest uppercase transition-all px-2.5 md:px-5 py-1.5 md:py-2 rounded-full font-medium whitespace-nowrap",
+                  "text-[9px] md:text-sm tracking-wider md:tracking-widest uppercase transition-all px-2 md:px-5 py-1 md:py-2 rounded-full font-medium whitespace-nowrap",
                   isActive
                     ? activeClass
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
