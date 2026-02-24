@@ -86,6 +86,123 @@ export type Database = {
         }
         Relationships: []
       }
+      fleet_booking_vehicles: {
+        Row: {
+          created_at: string
+          fleet_booking_id: string
+          fleet_vehicle_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          fleet_booking_id: string
+          fleet_vehicle_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          fleet_booking_id?: string
+          fleet_vehicle_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fleet_booking_vehicles_fleet_booking_id_fkey"
+            columns: ["fleet_booking_id"]
+            isOneToOne: false
+            referencedRelation: "fleet_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fleet_booking_vehicles_fleet_vehicle_id_fkey"
+            columns: ["fleet_vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "fleet_vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fleet_bookings: {
+        Row: {
+          appointment_date: string | null
+          appointment_time: string | null
+          created_at: string
+          discount_percent: number
+          id: string
+          notes: string | null
+          service_name: string
+          service_type: string
+          status: string
+          total_price: number
+          unit_price: number
+          user_id: string
+          vehicle_count: number
+        }
+        Insert: {
+          appointment_date?: string | null
+          appointment_time?: string | null
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          notes?: string | null
+          service_name: string
+          service_type?: string
+          status?: string
+          total_price: number
+          unit_price: number
+          user_id: string
+          vehicle_count?: number
+        }
+        Update: {
+          appointment_date?: string | null
+          appointment_time?: string | null
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          notes?: string | null
+          service_name?: string
+          service_type?: string
+          status?: string
+          total_price?: number
+          unit_price?: number
+          user_id?: string
+          vehicle_count?: number
+        }
+        Relationships: []
+      }
+      fleet_vehicles: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          license_plate: string | null
+          user_id: string
+          vehicle_make: string | null
+          vehicle_model: string | null
+          vehicle_year: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string
+          license_plate?: string | null
+          user_id: string
+          vehicle_make?: string | null
+          vehicle_model?: string | null
+          vehicle_year?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          license_plate?: string | null
+          user_id?: string
+          vehicle_make?: string | null
+          vehicle_model?: string | null
+          vehicle_year?: string | null
+        }
+        Relationships: []
+      }
       notification_preferences: {
         Row: {
           appointment_reminders: boolean
