@@ -11,3 +11,9 @@ verify_jwt = false
 
 [functions.booking-notification]
 verify_jwt = false
+
+[functions.weather-forecast]
+verify_jwt = false
+
+[functions.weather-rain-check]
+verify_jwt = false

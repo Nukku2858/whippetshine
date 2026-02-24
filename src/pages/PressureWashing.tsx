@@ -4,10 +4,9 @@ import Navbar from "@/components/Navbar";
 import PWHeroSection from "@/components/pressure-washing/PWHeroSection";
 import PWPackagesSection from "@/components/pressure-washing/PWPackagesSection";
 import PWHousePackagesSection from "@/components/pressure-washing/PWHousePackagesSection";
-
+import WeatherForecast from "@/components/pressure-washing/WeatherForecast";
 import FooterSection from "@/components/FooterSection";
 import LoyaltyPromoSection from "@/components/LoyaltyPromoSection";
-
 
 const PressureWashing = () => {
   const { hash } = useLocation();
@@ -27,6 +26,7 @@ const PressureWashing = () => {
         <PWPackagesSection />
         <PWHousePackagesSection />
       </div>
+      <WeatherForecast />
       <LoyaltyPromoSection />
       <FooterSection />
       

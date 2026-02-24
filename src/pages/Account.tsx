@@ -16,6 +16,7 @@ import SavedAddresses from "@/components/account/SavedAddresses";
 import ReferralProgram from "@/components/account/ReferralProgram";
 import FavoriteServices from "@/components/account/FavoriteServices";
 import NotificationPreferences from "@/components/account/NotificationPreferences";
+import WeatherAlerts from "@/components/account/WeatherAlerts";
 
 interface PointsTransaction {
   id: string;
@@ -312,6 +313,9 @@ const Account = () => {
               <Save size={16} className="mr-2" /> {saving ? "Saving..." : "Save Profile"}
             </Button>
           </div>
+
+          {/* Weather Alerts */}
+          <WeatherAlerts userId={user!.id} />
 
           {/* Upcoming Appointments */}
           <div className="bg-card border border-border rounded-lg p-8 mb-8">
