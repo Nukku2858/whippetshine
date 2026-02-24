@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
+import whippetLogo from "@/assets/whippet-logo.png";
 
 const CustomRequest = () => {
   const navigate = useNavigate();
@@ -51,8 +52,9 @@ const CustomRequest = () => {
             <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">
               Custom Service
             </p>
-            <h1 className="text-4xl md:text-5xl font-display mb-4">
-              Custom <span className="text-primary">Request</span>
+            <h1 className="text-5xl md:text-7xl mb-4 italic font-black tracking-tight" style={{ fontFamily: "'Permanent Marker', cursive" }}>
+              <span className="text-foreground">CUSTOM</span>{" "}
+              <span className="text-primary drop-shadow-[0_0_15px_rgba(234,56,76,0.6)]">REQUEST</span>
             </h1>
             <p className="text-muted-foreground text-lg">
               Need something specific? Reach out and we'll put together a custom quote for you.
@@ -90,8 +92,15 @@ const CustomRequest = () => {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="space-y-6 bg-card border border-border rounded-lg p-8"
+              className="relative space-y-6 bg-card border border-border rounded-lg p-8 overflow-hidden"
             >
+              {/* Whippet watermark */}
+              <img
+                src={whippetLogo}
+                alt=""
+                aria-hidden="true"
+                className="absolute right-4 bottom-4 w-32 h-32 object-contain opacity-[0.06] pointer-events-none select-none"
+              />
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xl font-display flex items-center gap-2">
                   {method === "text" ? (
