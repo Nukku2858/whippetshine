@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, Gift, Save, CalendarDays, Clock, DollarSign, XCircle, RefreshCw } from "lucide-react";
+import { ArrowLeft, Star, Gift, Save, CalendarDays, Clock, DollarSign, XCircle, RefreshCw, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -387,6 +387,24 @@ const Account = () => {
           {/* Referral Program */}
           <div className="mb-8">
             <ReferralProgram referralCode={profile?.referral_code || null} pointsBalance={profile?.points_balance || 0} />
+          </div>
+
+          {/* Fleet Portal Link */}
+          <div className="mb-8">
+            <button
+              onClick={() => navigate("/fleet")}
+              className="w-full bg-card border border-border rounded-lg p-6 text-left hover:border-primary transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="bg-primary/15 rounded-full p-2.5">
+                  <Truck size={20} className="text-primary" />
+                </div>
+                <div>
+                  <p className="text-lg font-display group-hover:text-primary transition-colors">Fleet & Commercial Portal</p>
+                  <p className="text-sm text-muted-foreground">Manage multiple vehicles, batch book, and get volume discounts.</p>
+                </div>
+              </div>
+            </button>
           </div>
 
           {/* Notification Preferences */}
