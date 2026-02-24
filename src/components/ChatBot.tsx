@@ -110,37 +110,42 @@ const ChatBot = () => {
           <X size={22} />
         ) : (
           <svg
-            viewBox="0 0 110 100"
-            className="w-[68px] h-[62px]"
+            viewBox="0 0 160 80"
+            className="w-[88px] h-[44px]"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Chat speech bubble with ? */}
-            <rect x="56" y="2" width="50" height="34" rx="10" className="fill-primary" />
-            <polygon points="66,36 74,36 64,46" className="fill-primary" />
-            <text x="81" y="28" textAnchor="middle" className="fill-primary-foreground" fontSize="24" fontWeight="bold" fontFamily="sans-serif">?</text>
+            {/* Chat bubble with ? */}
+            <rect x="100" y="0" width="36" height="26" rx="8" className="fill-primary" />
+            <polygon points="108,26 116,26 106,34" className="fill-primary" />
+            <text x="118" y="20" textAnchor="middle" className="fill-primary-foreground" fontSize="18" fontWeight="bold" fontFamily="sans-serif">?</text>
 
-            {/* Sitting whippet/greyhound – cleaner shape */}
+            {/* Running whippet/greyhound silhouette */}
             <g className="fill-primary">
-              {/* Head + long snout */}
-              <ellipse cx="50" cy="38" rx="10" ry="8" />
-              <ellipse cx="62" cy="36" rx="6" ry="5" />
-              {/* Ear (floppy) */}
-              <ellipse cx="44" cy="32" rx="4" ry="7" transform="rotate(15 44 32)" />
-              {/* Slim neck */}
-              <path d="M42,44 Q38,48 36,54 Q34,48 38,42 Z" />
-              <path d="M48,44 Q44,52 40,58 L36,54 Q40,48 44,44 Z" />
-              {/* Chest + body */}
-              <path d="M36,54 Q30,58 26,66 Q24,72 24,80 L20,80 Q18,72 20,64 Q22,56 30,50 Q34,48 36,54 Z" />
-              <path d="M40,58 Q44,64 44,72 Q44,78 42,80 L38,80 Q40,74 40,68 Q38,62 36,58 Z" />
-              {/* Back haunch */}
-              <path d="M26,66 Q22,68 20,74 Q18,78 16,80 L12,80 Q14,74 18,68 Q22,64 26,66 Z" />
-              {/* Tail curving up */}
-              <path d="M22,62 Q16,56 10,52 Q8,50 6,52 Q4,54 8,54 Q12,56 18,60 Z" />
+              {/* Head – long pointed snout */}
+              <path d="M120,32 Q126,28 132,28 Q136,28 138,30 Q136,32 132,33 Q128,34 124,34 Z" />
+              {/* Ear flicked back */}
+              <path d="M120,30 Q116,26 118,24 Q120,24 122,28 Z" />
+              {/* Neck – long and sleek */}
+              <path d="M110,38 Q114,34 120,32 L124,34 Q118,36 114,40 Z" />
+              {/* Body – streamlined */}
+              <path d="M40,42 Q55,34 75,34 Q90,34 105,36 Q112,37 114,40 Q115,44 110,48 Q95,54 75,52 Q55,50 40,46 Z" />
+              {/* Chest / front */}
+              <path d="M105,36 Q110,37 114,40 Q112,44 108,46 Q104,42 105,36 Z" />
+              {/* Front leg 1 – extended forward */}
+              <path d="M108,46 Q112,52 118,60 Q120,64 122,68 L119,68 Q116,62 112,56 Q108,50 106,48 Z" />
+              {/* Front leg 2 – tucked */}
+              <path d="M100,48 Q104,54 108,62 Q110,66 110,68 L107,68 Q106,64 104,58 Q100,52 98,48 Z" />
+              {/* Belly line */}
+              <path d="M50,50 Q65,56 80,54 Q90,52 98,48 Q90,54 80,56 Q65,58 50,52 Z" />
+              {/* Rear leg 1 – extended back */}
+              <path d="M50,50 Q44,54 38,60 Q34,64 30,68 L33,68 Q36,64 40,58 Q46,52 52,50 Z" />
+              {/* Rear leg 2 – kicking back */}
+              <path d="M44,48 Q38,52 32,56 Q26,60 20,66 Q18,68 16,68 L19,66 Q24,60 30,54 Q36,50 42,46 Z" />
+              {/* Tail – long flowing */}
+              <path d="M40,42 Q32,38 24,36 Q18,34 12,34 Q8,34 6,36 Q10,34 16,36 Q22,38 30,42 Q36,44 40,44 Z" />
             </g>
             {/* Eye */}
-            <circle cx="54" cy="36" r="1.8" className="fill-background" />
-            {/* Nose */}
-            <circle cx="67" cy="35" r="1.5" className="fill-background" />
+            <circle cx="130" cy="30" r="1.2" className="fill-background" />
           </svg>
         )}
       </button>
