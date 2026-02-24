@@ -6,6 +6,7 @@ import PWPackagesSection from "@/components/pressure-washing/PWPackagesSection";
 import PWHousePackagesSection from "@/components/pressure-washing/PWHousePackagesSection";
 
 import FooterSection from "@/components/FooterSection";
+import LoyaltyPromoSection from "@/components/LoyaltyPromoSection";
 import ChatBot from "@/components/ChatBot";
 
 const PressureWashing = () => {
@@ -26,7 +27,7 @@ const PressureWashing = () => {
         <PWPackagesSection />
         <PWHousePackagesSection />
       </div>
-      
+      <LoyaltyPromoSection />
       <FooterSection />
       <ChatBot />
     </main>
