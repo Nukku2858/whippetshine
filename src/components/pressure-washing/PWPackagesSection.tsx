@@ -1,4 +1,5 @@
-import { Check } from "lucide-react";
+import { useState } from "react";
+import { Check, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import drivewayVideo from "@/assets/driveway-pressure-wash.mp4";
@@ -7,50 +8,85 @@ interface Package {
   name: string;
   price: number;
   description: string;
-  features: string[];
   popular?: boolean;
 }
+
+const standardFeatures = [
+  "High-pressure surface cleaning",
+  "Pre-treatment of oil & stain spots",
+  "Edge-to-edge concrete coverage",
+  "Weed & debris removal from cracks",
+  "Post-wash rinse & inspection",
+];
+
+const uniqueFeatures: Record<string, string> = {
+  "Small Driveway": "Walkway touch-up included",
+  "Standard Driveway": "Sidewalk & walkway cleaning included",
+  "Large Driveway": "Garage pad & apron wash included",
+};
 
 const packages: Package[] = [
   {
     name: "Small Driveway",
     price: 150,
-    description: "1-car driveways — ~300–500 sq ft of concrete restored.",
-    features: [
-      "High-pressure surface cleaning",
-      "Pre-treatment of oil & stain spots",
-      "Edge-to-edge concrete coverage",
-      "Weed & debris removal from cracks",
-      "Post-wash rinse & inspection",
-    ],
+    description: "1-car driveways — ~300–500 sq ft.",
   },
   {
     name: "Standard Driveway",
     price: 225,
-    description: "2-car driveways — ~500–800 sq ft, our most popular size.",
-    features: [
-      "Everything in Small Driveway",
-      "Extended surface area coverage",
-      "Hot water treatment for tough stains",
-      "Sidewalk & walkway add-on included",
-      "Expansion joint detailing",
-    ],
+    description: "2-car driveways — ~500–800 sq ft.",
     popular: true,
   },
   {
     name: "Large Driveway",
     price: 375,
-    description: "3+ car driveways & extended surfaces — 800+ sq ft.",
-    features: [
-      "Everything in Standard Driveway",
-      "Full driveway + apron cleaning",
-      "Garage pad wash",
-      "Patio / back porch surface wash",
-      "Post-clean sealant application",
-      "Turnaround & parking pad coverage",
-    ],
+    description: "3+ car driveways — 800+ sq ft.",
   },
 ];
+
+const addOns = [
+  { name: "Concrete sealer application", price: 125, description: "A protective sealant coat applied after cleaning to guard against future stains, moisture damage, and freeze-thaw cracking." },
+  { name: "Oil & rust stain removal", price: 65, description: "Targeted chemical treatment for deep-set oil, transmission fluid, and rust stains that standard washing can't fully lift." },
+  { name: "Gutter & downspout flush", price: 75, description: "Clears debris and buildup from gutters and flushes downspouts to prevent water pooling near the driveway." },
+  { name: "Sidewalk & walkway add-on", price: 50, description: "Extends cleaning to all connecting sidewalks, front walks, and stepping-stone paths around the property." },
+  { name: "Patio & back porch wash", price: 85, description: "Full surface cleaning of patios, porches, and outdoor living areas — concrete, pavers, or flagstone." },
+  { name: "Fence & retaining wall wash", price: 95, description: "Removes green algae, mildew, and dirt buildup from vinyl, wood, or composite fences and retaining walls." },
+];
+
+const AddOnsList = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
+
+  return (
+    <div className="grid sm:grid-cols-2 gap-4">
+      {addOns.map((addon, i) => (
+        <button
+          key={addon.name}
+          type="button"
+          onClick={() => toggle(i)}
+          className="text-left bg-card border border-border rounded-lg px-5 py-3 transition-all duration-200 hover:border-primary"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {openIndex === i ? (
+                <Minus size={16} className="text-primary shrink-0" />
+              ) : (
+                <Plus size={16} className="text-primary shrink-0" />
+              )}
+              <span className="text-sm text-secondary-foreground">{addon.name}</span>
+            </div>
+            <span className="text-sm font-semibold text-primary ml-4 whitespace-nowrap">+${addon.price}</span>
+          </div>
+          {openIndex === i && (
+            <p className="mt-3 ml-7 text-xs text-muted-foreground leading-relaxed">
+              {addon.description}
+            </p>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 const PWPackagesSection = () => {
   const { ref, isVisible } = useScrollReveal(0.1);
@@ -101,12 +137,16 @@ const PWPackagesSection = () => {
                 <span className="text-3xl font-display text-primary">${pkg.price}</span>
               </div>
               <ul className="space-y-2 mb-6 flex-1">
-                {pkg.features.map((feature) => (
+                {standardFeatures.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm">
                     <Check size={14} className="text-primary mt-0.5 shrink-0" />
                     <span className="text-secondary-foreground">{feature}</span>
                   </li>
                 ))}
+                <li className="flex items-start gap-2 text-sm font-medium">
+                  <Check size={14} className="text-primary mt-0.5 shrink-0" />
+                  <span className="text-primary">{uniqueFeatures[pkg.name]}</span>
+                </li>
               </ul>
               <Button
                 onClick={scrollToBooking}
@@ -120,6 +160,17 @@ const PWPackagesSection = () => {
               </Button>
             </div>
           ))}
+        </div>
+
+        {/* Add-Ons Section */}
+        <div className="mt-12 max-w-3xl mx-auto">
+          <div className="text-center mb-6">
+            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Enhance Your Wash</p>
+            <h3 className="text-2xl md:text-3xl font-display">
+              Available <span className="text-primary">Add-Ons</span>
+            </h3>
+          </div>
+          <AddOnsList />
         </div>
       </div>
     </section>
