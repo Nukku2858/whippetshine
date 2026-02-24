@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { format } from "date-fns";
-import { CalendarIcon, ShoppingCart, Loader2 } from "lucide-react";
+import { CalendarIcon, ShoppingCart, Loader2, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { getDiscountForCount } from "./FleetDiscountTiers";
 
 interface FleetVehicle {
@@ -37,6 +38,7 @@ interface Props {
 }
 
 const FleetBatchBooking = ({ userId, vehicles, onBookingComplete }: Props) => {
+  const { user, profile } = useAuth();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [service, setService] = useState<string>("");
   const [date, setDate] = useState<Date>();
@@ -72,44 +74,77 @@ const FleetBatchBooking = ({ userId, vehicles, onBookingComplete }: Props) => {
     }
     setSubmitting(true);
 
-    const { data: booking, error } = await supabase
-      .from("fleet_bookings")
-      .insert({
-        user_id: userId,
-        service_name: service,
-        service_type: selectedService?.category || "detailing",
-        vehicle_count: count,
-        discount_percent: tier.percent,
-        unit_price: unitPrice,
-        total_price: totalPrice,
-        appointment_date: format(date, "yyyy-MM-dd"),
-        appointment_time: time,
-        status: "pending",
-      })
-      .select("id")
-      .single();
+    try {
+      // 1. Create fleet booking record
+      const { data: booking, error } = await supabase
+        .from("fleet_bookings")
+        .insert({
+          user_id: userId,
+          service_name: service,
+          service_type: selectedService?.category || "detailing",
+          vehicle_count: count,
+          discount_percent: tier.percent,
+          unit_price: unitPrice,
+          total_price: totalPrice,
+          appointment_date: format(date, "yyyy-MM-dd"),
+          appointment_time: time,
+          status: "pending",
+        })
+        .select("id")
+        .single();
 
-    if (error || !booking) {
-      toast.error("Failed to create booking");
+      if (error || !booking) {
+        toast.error("Failed to create booking");
+        setSubmitting(false);
+        return;
+      }
+
+      // 2. Link vehicles to the booking
+      const vehicleLinks = selectedIds.map((vid) => ({
+        fleet_booking_id: booking.id,
+        fleet_vehicle_id: vid,
+      }));
+      await supabase.from("fleet_booking_vehicles").insert(vehicleLinks);
+
+      // 3. Build cart items for Stripe checkout — one line item per vehicle at discounted price
+      const cartItems = selectedIds.map((vid, idx) => {
+        const v = vehicles.find((veh) => veh.id === vid);
+        const vehicleLabel = v ? v.label : `Vehicle ${idx + 1}`;
+        return {
+          id: `fleet-${booking.id}-${vid}`,
+          name: `${service} — ${vehicleLabel}${tier.percent > 0 ? ` (${tier.percent}% fleet discount)` : ""}`,
+          price: discountedUnit,
+          type: "package",
+        };
+      });
+
+      // 4. Call create-checkout edge function
+      const { data: checkoutData, error: checkoutError } = await supabase.functions.invoke("create-checkout", {
+        body: {
+          email: user?.email || "",
+          name: profile?.name || "",
+          phone: profile?.phone || "",
+          date: format(date, "yyyy-MM-dd"),
+          time,
+          vehicle: `Fleet booking: ${count} vehicles`,
+          notes: `Fleet booking #${booking.id.slice(0, 8)} · ${tier.label} discount (${tier.percent}%)`,
+          cartItems,
+        },
+      });
+
+      if (checkoutError || !checkoutData?.url) {
+        toast.error("Failed to start checkout. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+
+      // 5. Redirect to Stripe
+      window.location.href = checkoutData.url;
+    } catch (e) {
+      console.error("Fleet checkout error:", e);
+      toast.error("Something went wrong. Please try again.");
       setSubmitting(false);
-      return;
     }
-
-    // Link vehicles to the booking
-    const vehicleLinks = selectedIds.map((vid) => ({
-      fleet_booking_id: booking.id,
-      fleet_vehicle_id: vid,
-    }));
-
-    await supabase.from("fleet_booking_vehicles").insert(vehicleLinks);
-
-    toast.success(`Fleet booking created for ${count} vehicles!`);
-    setSelectedIds([]);
-    setService("");
-    setDate(undefined);
-    setTime("");
-    setSubmitting(false);
-    onBookingComplete();
   };
 
   if (vehicles.length === 0) {
@@ -236,9 +271,9 @@ const FleetBatchBooking = ({ userId, vehicles, onBookingComplete }: Props) => {
         className="w-full bg-primary text-primary-foreground hover:bg-scarlet-glow font-semibold gap-2"
       >
         {submitting ? (
-          <><Loader2 size={16} className="animate-spin" /> Booking...</>
+          <><Loader2 size={16} className="animate-spin" /> Processing...</>
         ) : (
-          <><ShoppingCart size={16} /> Book {count} Vehicle{count !== 1 && "s"}</>
+          <><CreditCard size={16} /> Pay & Book {count} Vehicle{count !== 1 && "s"} — ${totalPrice}</>
         )}
       </Button>
     </div>
