@@ -4,7 +4,7 @@ import whippetLogo from "@/assets/whippet-logo.png";
 
 const navLinks = [
   { label: "Auto Detailing", path: "/" },
-  { label: "Pressure Washing", path: "/pressure-washing" },
+  { label: "Pressure Washing", path: "/pressure-washing#pw-video" },
 ];
 
 const Navbar = () => {
