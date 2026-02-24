@@ -71,7 +71,7 @@ const PackagesSection = () => {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-4 gap-6 items-stretch">
           {packages.map((pkg) => (
             <div
               key={pkg.name}
@@ -87,8 +87,8 @@ const PackagesSection = () => {
                 </span>
               )}
               <h3 className="text-2xl font-display mb-2">{pkg.name}</h3>
-              <p className="text-muted-foreground text-sm mb-6 min-h-[48px]">{pkg.description}</p>
-              <div className="mb-8 h-12 flex items-center">
+              <p className="text-muted-foreground text-sm mb-6 h-[60px]">{pkg.description}</p>
+              <div className="mb-8 h-12 flex items-baseline">
                 <span className="text-4xl font-display text-primary">${pkg.price}</span>
               </div>
               <ul className="space-y-3 mb-8 flex-1">
@@ -115,10 +115,10 @@ const PackagesSection = () => {
           {/* Custom Request card */}
           <div className="relative rounded-lg p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 bg-card border border-dashed border-border hover:border-primary">
             <h3 className="text-2xl mb-2 italic font-black" style={{ fontFamily: "'Permanent Marker', cursive" }}>Custom</h3>
-            <p className="text-muted-foreground text-sm mb-6 min-h-[48px]">
+            <p className="text-muted-foreground text-sm mb-6 h-[60px]">
               Need something unique? Request a custom quote tailored to your exact needs.
             </p>
-            <div className="mb-8 h-12 flex items-center">
+            <div className="mb-8 h-12 flex items-baseline">
               <span className="text-4xl font-display text-primary">Quote</span>
             </div>
             <ul className="space-y-3 mb-8 flex-1">
