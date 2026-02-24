@@ -31,12 +31,23 @@ const PRICE_TO_PACKAGE: Record<string, string> = {
   price_1T4BnxQ47JXIZZAQRJio6Mid: "house-large",
 };
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function buildConfirmationEmail(
   name: string,
   packageInfo: { name: string; type: string },
   metadata: Record<string, string>,
   intakeUrl: string
 ): string {
+  const safeName = escapeHtml(name);
+  const safePackageName = escapeHtml(packageInfo.name);
   return `
 <!DOCTYPE html>
 <html>
@@ -49,19 +60,19 @@ function buildConfirmationEmail(
     </div>
     
     <div style="background:#141414;border:1px solid #222;border-radius:12px;padding:32px;">
-      <h2 style="color:#fff;font-size:22px;margin-top:0;">Hey ${name}! 👋</h2>
+      <h2 style="color:#fff;font-size:22px;margin-top:0;">Hey ${safeName}! 👋</h2>
       <p style="color:#ccc;font-size:16px;line-height:1.6;">
-        Thank you for booking with WhippetShine! Your payment for <strong style="color:#e53e3e;">${packageInfo.name}</strong> has been confirmed.
+        Thank you for booking with WhippetShine! Your payment for <strong style="color:#e53e3e;">${safePackageName}</strong> has been confirmed.
       </p>
       
       <div style="background:#1a1a1a;border-radius:8px;padding:20px;margin:24px 0;">
         <h3 style="color:#e53e3e;font-size:14px;text-transform:uppercase;letter-spacing:2px;margin-top:0;">Booking Details</h3>
         <table style="width:100%;color:#ccc;font-size:15px;">
-          <tr><td style="padding:6px 0;color:#888;">Service</td><td style="padding:6px 0;">${packageInfo.name}</td></tr>
-          ${metadata.date ? `<tr><td style="padding:6px 0;color:#888;">Date</td><td style="padding:6px 0;">${metadata.date}</td></tr>` : ""}
-          ${metadata.time ? `<tr><td style="padding:6px 0;color:#888;">Time</td><td style="padding:6px 0;">${metadata.time}</td></tr>` : ""}
-          ${metadata.vehicle ? `<tr><td style="padding:6px 0;color:#888;">Vehicle</td><td style="padding:6px 0;">${metadata.vehicle}</td></tr>` : ""}
-          ${metadata.phone ? `<tr><td style="padding:6px 0;color:#888;">Phone</td><td style="padding:6px 0;">${metadata.phone}</td></tr>` : ""}
+          <tr><td style="padding:6px 0;color:#888;">Service</td><td style="padding:6px 0;">${safePackageName}</td></tr>
+          ${metadata.date ? `<tr><td style="padding:6px 0;color:#888;">Date</td><td style="padding:6px 0;">${escapeHtml(metadata.date)}</td></tr>` : ""}
+          ${metadata.time ? `<tr><td style="padding:6px 0;color:#888;">Time</td><td style="padding:6px 0;">${escapeHtml(metadata.time)}</td></tr>` : ""}
+          ${metadata.vehicle ? `<tr><td style="padding:6px 0;color:#888;">Vehicle</td><td style="padding:6px 0;">${escapeHtml(metadata.vehicle)}</td></tr>` : ""}
+          ${metadata.phone ? `<tr><td style="padding:6px 0;color:#888;">Phone</td><td style="padding:6px 0;">${escapeHtml(metadata.phone)}</td></tr>` : ""}
         </table>
       </div>
 
@@ -114,7 +125,7 @@ function buildPointsEmail(
       <p style="color:#888;font-size:14px;margin-top:4px;">Loyalty Points Update</p>
     </div>
     <div style="background:#141414;border:1px solid #222;border-radius:12px;padding:32px;">
-      <h2 style="color:#fff;font-size:22px;margin-top:0;">Hey ${name}! 🐾</h2>
+      <h2 style="color:#fff;font-size:22px;margin-top:0;">Hey ${escapeHtml(name)}! 🐾</h2>
       <p style="color:#ccc;font-size:16px;line-height:1.6;">Here's your loyalty points summary from your latest booking:</p>
       <div style="background:#1a1a1a;border-radius:8px;padding:20px;margin:24px 0;">
         <table style="width:100%;">
@@ -356,7 +367,7 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error("Webhook error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: "An error occurred. Please try again later." }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });

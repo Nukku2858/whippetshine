@@ -2,6 +2,15 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
 
+function sanitizeString(val: unknown, maxLen: number): string {
+  if (typeof val !== "string") return "";
+  return val.trim().slice(0, maxLen);
+}
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 255;
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -47,7 +56,21 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { name, email, phone, date, time, vehicle, notes, redeemPoints, discountAmount } = body;
+    const name = sanitizeString(body.name, 100);
+    const email = sanitizeString(body.email, 255);
+    const phone = sanitizeString(body.phone, 20);
+    const date = sanitizeString(body.date, 20);
+    const time = sanitizeString(body.time, 20);
+    const vehicle = sanitizeString(body.vehicle, 200);
+    const notes = sanitizeString(body.notes, 1000);
+    const { redeemPoints, discountAmount } = body;
+
+    if (!email || !isValidEmail(email)) {
+      return new Response(JSON.stringify({ error: "A valid email is required." }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+      });
+    }
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
@@ -64,7 +87,22 @@ serve(async (req) => {
 
     // NEW: Cart-based checkout
     if (body.cartItems && Array.isArray(body.cartItems)) {
+      if (body.cartItems.length === 0 || body.cartItems.length > 20) {
+        return new Response(JSON.stringify({ error: "Invalid cart items." }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        });
+      }
       for (const item of body.cartItems as CartItem[]) {
+        // Validate each cart item
+        const itemName = sanitizeString(item.name, 200);
+        const itemPrice = typeof item.price === "number" ? item.price : 0;
+        if (!itemName || itemPrice <= 0 || itemPrice > 100000) {
+          return new Response(JSON.stringify({ error: "Invalid cart item." }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400,
+          });
+        }
         if (item.stripePriceId) {
           // Use existing Stripe price ID
           lineItems.push({ price: item.stripePriceId, quantity: 1 });
@@ -73,8 +111,8 @@ serve(async (req) => {
           lineItems.push({
             price_data: {
               currency: "usd",
-              product_data: { name: item.name },
-              unit_amount: Math.round(item.price * 100),
+              product_data: { name: itemName },
+              unit_amount: Math.round(itemPrice * 100),
             },
             quantity: 1,
           });
@@ -159,7 +197,8 @@ serve(async (req) => {
       status: 200,
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error("Checkout error:", error);
+    return new Response(JSON.stringify({ error: "An error occurred. Please try again later." }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });
