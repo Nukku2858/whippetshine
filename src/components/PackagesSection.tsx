@@ -25,7 +25,7 @@ const packages: Package[] = [
   },
   {
     name: "Midsize",
-    price: 225,
+    price: 250,
     description: "SUVs, crossovers & minivans — extra coverage for larger interiors.",
     features: [
       "Everything in Sedan",
@@ -39,7 +39,7 @@ const packages: Package[] = [
   },
   {
     name: "Full Size",
-    price: 300,
+    price: 325,
     description: "Trucks, large SUVs & vans — the complete treatment for big rigs.",
     features: [
       "Everything in Midsize",

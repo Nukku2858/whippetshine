@@ -112,8 +112,8 @@ const BookingSection = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="sedan">Sedan — $150</SelectItem>
-                <SelectItem value="midsize">Midsize — $225</SelectItem>
-                <SelectItem value="fullsize">Full Size — $300</SelectItem>
+                <SelectItem value="midsize">Midsize — $250</SelectItem>
+                <SelectItem value="fullsize">Full Size — $325</SelectItem>
               </SelectContent>
             </Select>
           </div>
