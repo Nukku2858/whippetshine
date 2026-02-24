@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
+import { createClient } from "npm:@supabase/supabase-js@2.57.2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -46,7 +47,7 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { name, email, phone, date, time, vehicle, notes } = body;
+    const { name, email, phone, date, time, vehicle, notes, redeemPoints, discountAmount } = body;
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
@@ -99,11 +100,60 @@ serve(async (req) => {
       throw new Error("No items provided");
     }
 
+    // Handle points redemption discount
+    let discounts: any[] = [];
+    if (redeemPoints && redeemPoints > 0 && discountAmount && discountAmount > 0) {
+      // Deduct points from user profile before checkout
+      const supabaseAdmin = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      );
+
+      // Find user by email to validate points
+      const { data: authData } = await supabaseAdmin.auth.admin.listUsers();
+      const matchedUser = authData?.users?.find((u: any) => u.email === email);
+
+      if (matchedUser) {
+        const { data: profileData } = await supabaseAdmin
+          .from("profiles")
+          .select("points_balance")
+          .eq("user_id", matchedUser.id)
+          .single();
+
+        if (profileData && profileData.points_balance >= redeemPoints) {
+          // Create a one-time Stripe coupon for the discount
+          const coupon = await stripe.coupons.create({
+            amount_off: Math.round(discountAmount * 100),
+            currency: "usd",
+            duration: "once",
+            name: `Loyalty Points Redemption (${redeemPoints} pts)`,
+          });
+
+          discounts = [{ coupon: coupon.id }];
+
+          // Deduct points
+          await supabaseAdmin
+            .from("profiles")
+            .update({ points_balance: profileData.points_balance - redeemPoints })
+            .eq("user_id", matchedUser.id);
+
+          // Record the redemption transaction
+          await supabaseAdmin.from("points_transactions").insert({
+            user_id: matchedUser.id,
+            points: redeemPoints,
+            type: "redeemed",
+            description: `Redeemed ${redeemPoints} points for $${discountAmount} off`,
+          });
+        }
+      }
+    }
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : email,
       line_items: lineItems,
       mode: "payment",
+      discounts,
       success_url: `${req.headers.get("origin")}/payment-success`,
       cancel_url: `${req.headers.get("origin")}/#booking`,
       metadata: {
@@ -113,6 +163,7 @@ serve(async (req) => {
         time,
         vehicle: vehicle || "",
         notes: notes || "",
+        redeemed_points: redeemPoints ? String(redeemPoints) : "0",
       },
     });
 
