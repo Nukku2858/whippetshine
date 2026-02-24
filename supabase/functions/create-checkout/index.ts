@@ -100,16 +100,16 @@ serve(async (req) => {
       throw new Error("No items provided");
     }
 
-    // Handle points redemption discount
+    // Handle points redemption discount — DON'T deduct yet, just create coupon
+    // Points are deducted in the webhook on successful payment
     let discounts: any[] = [];
+    let validatedRedeemPoints = 0;
     if (redeemPoints && redeemPoints > 0 && discountAmount && discountAmount > 0) {
-      // Deduct points from user profile before checkout
       const supabaseAdmin = createClient(
         Deno.env.get("SUPABASE_URL") ?? "",
         Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
       );
 
-      // Find user by email to validate points
       const { data: authData } = await supabaseAdmin.auth.admin.listUsers();
       const matchedUser = authData?.users?.find((u: any) => u.email === email);
 
@@ -121,7 +121,6 @@ serve(async (req) => {
           .single();
 
         if (profileData && profileData.points_balance >= redeemPoints) {
-          // Create a one-time Stripe coupon for the discount
           const coupon = await stripe.coupons.create({
             amount_off: Math.round(discountAmount * 100),
             currency: "usd",
@@ -130,20 +129,7 @@ serve(async (req) => {
           });
 
           discounts = [{ coupon: coupon.id }];
-
-          // Deduct points
-          await supabaseAdmin
-            .from("profiles")
-            .update({ points_balance: profileData.points_balance - redeemPoints })
-            .eq("user_id", matchedUser.id);
-
-          // Record the redemption transaction
-          await supabaseAdmin.from("points_transactions").insert({
-            user_id: matchedUser.id,
-            points: redeemPoints,
-            type: "redeemed",
-            description: `Redeemed ${redeemPoints} points for $${discountAmount} off`,
-          });
+          validatedRedeemPoints = redeemPoints;
         }
       }
     }
@@ -163,7 +149,8 @@ serve(async (req) => {
         time,
         vehicle: vehicle || "",
         notes: notes || "",
-        redeemed_points: redeemPoints ? String(redeemPoints) : "0",
+        redeemed_points: validatedRedeemPoints ? String(validatedRedeemPoints) : "0",
+        discount_amount: discountAmount ? String(discountAmount) : "0",
       },
     });
 

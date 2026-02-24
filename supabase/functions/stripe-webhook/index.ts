@@ -183,31 +183,22 @@ serve(async (req) => {
       const emailData = await emailRes.json();
       console.log("Email sent:", JSON.stringify(emailData));
 
-      // Award loyalty points (1 point per $1 spent)
+      // Award loyalty points (1 point per $1 spent) & deduct redeemed points
       const amountPaid = session.amount_total ? Math.floor(session.amount_total / 100) : 0;
-      if (amountPaid > 0 && customerEmail) {
+      const redeemedPoints = parseInt(metadata.redeemed_points || "0", 10);
+      const discountAmt = parseFloat(metadata.discount_amount || "0");
+
+      if (customerEmail && (amountPaid > 0 || redeemedPoints > 0)) {
         try {
           const supabaseAdmin = createClient(
             Deno.env.get("SUPABASE_URL") ?? "",
             Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
           );
 
-          // Find user by email
           const { data: authData } = await supabaseAdmin.auth.admin.listUsers();
           const matchedUser = authData?.users?.find((u: any) => u.email === customerEmail);
 
           if (matchedUser) {
-            // Insert points transaction
-            await supabaseAdmin.from("points_transactions").insert({
-              user_id: matchedUser.id,
-              points: amountPaid,
-              type: "earned",
-              description: `Earned from ${packageInfo.name} booking`,
-              stripe_session_id: session.id,
-            });
-
-            // Update balance
-            await supabaseAdmin.rpc("", {}).catch(() => {}); // fallback
             const { data: currentProfile } = await supabaseAdmin
               .from("profiles")
               .select("points_balance")
@@ -215,16 +206,42 @@ serve(async (req) => {
               .single();
 
             if (currentProfile) {
+              let newBalance = currentProfile.points_balance || 0;
+
+              // Deduct redeemed points (deferred from checkout creation)
+              if (redeemedPoints > 0) {
+                newBalance = Math.max(0, newBalance - redeemedPoints);
+                await supabaseAdmin.from("points_transactions").insert({
+                  user_id: matchedUser.id,
+                  points: redeemedPoints,
+                  type: "redeemed",
+                  description: `Redeemed ${redeemedPoints} points for $${discountAmt} off`,
+                  stripe_session_id: session.id,
+                });
+                console.log(`Deducted ${redeemedPoints} points from user ${matchedUser.id}`);
+              }
+
+              // Award new points
+              if (amountPaid > 0) {
+                newBalance += amountPaid;
+                await supabaseAdmin.from("points_transactions").insert({
+                  user_id: matchedUser.id,
+                  points: amountPaid,
+                  type: "earned",
+                  description: `Earned from ${packageInfo.name} booking`,
+                  stripe_session_id: session.id,
+                });
+                console.log(`Awarded ${amountPaid} points to user ${matchedUser.id}`);
+              }
+
               await supabaseAdmin
                 .from("profiles")
-                .update({ points_balance: (currentProfile.points_balance || 0) + amountPaid })
+                .update({ points_balance: newBalance })
                 .eq("user_id", matchedUser.id);
             }
-
-            console.log(`Awarded ${amountPaid} points to user ${matchedUser.id}`);
           }
         } catch (pointsErr) {
-          console.error("Points award error (non-fatal):", pointsErr);
+          console.error("Points error (non-fatal):", pointsErr);
         }
       }
     }
