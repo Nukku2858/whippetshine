@@ -21,16 +21,16 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-1 bg-muted/60 rounded-full p-1">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               className={cn(
-                "text-sm tracking-widest uppercase transition-colors",
+                "text-sm tracking-widest uppercase transition-all px-5 py-2 rounded-full font-medium",
                 pathname === link.path
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >
               {link.label}
