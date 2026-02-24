@@ -74,7 +74,7 @@ const PackagesSection = () => {
               key={pkg.name}
               className={`relative rounded-lg p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
                 pkg.popular
-                  ? "bg-card border-2 border-primary shadow-[var(--shadow-gold)]"
+                  ? "bg-card border-2 border-primary shadow-[var(--shadow-scarlet)]"
                   : "bg-card border border-border"
               }`}
             >
@@ -100,7 +100,7 @@ const PackagesSection = () => {
                 onClick={scrollToBooking}
                 className={`w-full font-semibold tracking-wide ${
                   pkg.popular
-                    ? "bg-primary text-primary-foreground hover:bg-gold-glow"
+                    ? "bg-primary text-primary-foreground hover:bg-scarlet-glow"
                     : "bg-secondary text-secondary-foreground hover:bg-muted"
                 }`}
               >
