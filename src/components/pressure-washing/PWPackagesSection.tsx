@@ -68,7 +68,7 @@ const PWPackagesSection = () => {
           </h2>
         </div>
 
-        <div className="mb-12 rounded-xl overflow-hidden border border-border shadow-lg max-w-3xl mx-auto">
+        <div id="pw-video" className="mb-12 rounded-xl overflow-hidden border border-border shadow-lg max-w-3xl mx-auto scroll-mt-24">
           <video
             src={drivewayVideo}
             autoPlay
