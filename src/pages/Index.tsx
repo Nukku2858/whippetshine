@@ -29,8 +29,8 @@ const Index = () => {
       <HeroSection />
 
       {/* Detailing showcase video – mobile only */}
-      <section className="md:hidden py-12 px-6">
-        <div className="max-w-sm mx-auto rounded-xl overflow-hidden border border-border shadow-lg">
+      <section className="py-12 px-6">
+        <div className="max-w-3xl mx-auto rounded-xl overflow-hidden border border-border shadow-lg">
           <video
             src={detailingVideo}
             autoPlay
