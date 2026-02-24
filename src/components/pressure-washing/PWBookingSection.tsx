@@ -111,9 +111,14 @@ const PWBookingSection = () => {
                 <SelectValue placeholder="Select a package" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem disabled value="driveway-header" className="font-display text-xs text-muted-foreground uppercase tracking-widest">— Driveway Packages —</SelectItem>
                 <SelectItem value="pw-small">Small Driveway — $150</SelectItem>
                 <SelectItem value="pw-standard">Standard Driveway — $225</SelectItem>
                 <SelectItem value="pw-large">Large Driveway — $375</SelectItem>
+                <SelectItem disabled value="house-header" className="font-display text-xs text-muted-foreground uppercase tracking-widest mt-2">— House Packages —</SelectItem>
+                <SelectItem value="house-small">Small Home — $250</SelectItem>
+                <SelectItem value="house-standard">Standard Home — $400</SelectItem>
+                <SelectItem value="house-large">Large Home — $600</SelectItem>
               </SelectContent>
             </Select>
           </div>

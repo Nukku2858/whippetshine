@@ -14,6 +14,9 @@ const PRICE_MAP: Record<string, string> = {
   "pw-small": "price_1T4BMzQ47JXIZZAQhBwFHmPX",
   "pw-standard": "price_1T4BN9Q47JXIZZAQe8P82JrQ",
   "pw-large": "price_1T4BNMQ47JXIZZAQIaL4fIkv",
+  "house-small": "price_1T4BnYQ47JXIZZAQbOf4tty8",
+  "house-standard": "price_1T4BnkQ47JXIZZAQlvrXANCs",
+  "house-large": "price_1T4BnxQ47JXIZZAQRJio6Mid",
 };
 
 serve(async (req) => {
