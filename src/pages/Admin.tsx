@@ -58,7 +58,34 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    if (isAdmin) fetchBookings();
+    if (isAdmin) {
+      fetchBookings();
+
+      const channel = supabase
+        .channel('admin-bookings')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'bookings',
+          },
+          (payload) => {
+            if (payload.eventType === 'UPDATE') {
+              setBookings(prev =>
+                prev.map(b => b.id === (payload.new as AdminBooking).id ? payload.new as AdminBooking : b)
+              );
+            } else if (payload.eventType === 'INSERT') {
+              setBookings(prev => [payload.new as AdminBooking, ...prev]);
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
   }, [isAdmin]);
 
   const updateProgress = async (bookingId: string, step: string) => {

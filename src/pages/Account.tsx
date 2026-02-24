@@ -106,6 +106,29 @@ const Account = () => {
           if (data) setTransactions(data as PointsTransaction[]);
         });
       fetchBookings();
+
+      // Real-time subscription for booking updates
+      const channel = supabase
+        .channel('account-bookings')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'bookings',
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            setBookings(prev =>
+              prev.map(b => b.id === payload.new.id ? { ...b, ...payload.new } as Booking : b)
+            );
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [user]);
 
