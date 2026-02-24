@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import PackagesSection from "@/components/PackagesSection";
@@ -9,11 +11,23 @@ import { Droplets } from "lucide-react";
 import detailingVideo from "@/assets/detailing-showcase.mp4";
 
 const Index = () => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [hash]);
+
   return (
     <main className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
-      <PackagesSection />
+      <div id="detailing-packages">
+        <PackagesSection />
+      </div>
       <BookingSection />
 
       {/* Pressure Washing CTA – desktop only */}
