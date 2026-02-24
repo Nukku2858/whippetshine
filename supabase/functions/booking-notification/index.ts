@@ -5,6 +5,24 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function sanitizeString(val: unknown, maxLen: number): string {
+  if (typeof val !== "string") return "";
+  return val.trim().replace(/[\r\n]/g, " ").slice(0, maxLen);
+}
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 255;
+}
+
 interface NotificationRequest {
   action: "cancelled" | "rescheduled";
   serviceName: string;
@@ -30,8 +48,29 @@ serve(async (req) => {
   }
 
   try {
-    const body: NotificationRequest = await req.json();
-    const { action, serviceName, customerEmail, customerName, appointmentDate, appointmentTime, newDate, newTime } = body;
+    const raw: NotificationRequest = await req.json();
+
+    // Validate and sanitize inputs
+    if (!raw.action || !["cancelled", "rescheduled"].includes(raw.action)) {
+      return new Response(JSON.stringify({ error: "Invalid action" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const customerEmail = sanitizeString(raw.customerEmail, 255);
+    if (!customerEmail || !isValidEmail(customerEmail)) {
+      return new Response(JSON.stringify({ error: "Invalid email" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const action = raw.action;
+    const serviceName = escapeHtml(sanitizeString(raw.serviceName, 100));
+    const customerName = escapeHtml(sanitizeString(raw.customerName, 100));
+    const appointmentDate = escapeHtml(sanitizeString(raw.appointmentDate, 30));
+    const appointmentTime = escapeHtml(sanitizeString(raw.appointmentTime, 20));
+    const newDate = escapeHtml(sanitizeString(raw.newDate, 30));
+    const newTime = escapeHtml(sanitizeString(raw.newTime, 20));
 
     const displayName = customerName || "Customer";
     const isCancelled = action === "cancelled";
@@ -127,8 +166,7 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error("Booking notification error:", error);
-    const msg = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ error: msg }), {
+    return new Response(JSON.stringify({ error: "An error occurred. Please try again later." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
