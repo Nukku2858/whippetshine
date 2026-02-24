@@ -7,7 +7,7 @@ import PWHousePackagesSection from "@/components/pressure-washing/PWHousePackage
 
 import FooterSection from "@/components/FooterSection";
 import LoyaltyPromoSection from "@/components/LoyaltyPromoSection";
-import ChatBot from "@/components/ChatBot";
+
 
 const PressureWashing = () => {
   const { hash } = useLocation();
@@ -29,7 +29,7 @@ const PressureWashing = () => {
       </div>
       <LoyaltyPromoSection />
       <FooterSection />
-      <ChatBot />
+      
     </main>
   );
 };

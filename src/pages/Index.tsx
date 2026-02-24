@@ -11,7 +11,7 @@ import { Droplets } from "lucide-react";
 import detailingVideo from "@/assets/detailing-showcase.mp4";
 import ReviewsSection from "@/components/ReviewsSection";
 import LoyaltyPromoSection from "@/components/LoyaltyPromoSection";
-import ChatBot from "@/components/ChatBot";
+
 
 const Index = () => {
   const { hash } = useLocation();
@@ -67,7 +67,7 @@ const Index = () => {
       </section>
 
       <FooterSection />
-      <ChatBot />
+      
     </main>
   );
 };
