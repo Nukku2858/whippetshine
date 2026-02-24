@@ -45,12 +45,12 @@ const packages: Package[] = [
 ];
 
 const addOns = [
-  { name: "Concrete sealer application", price: 125, description: "A protective sealant coat applied after cleaning to guard against future stains, moisture damage, and freeze-thaw cracking." },
-  { name: "Oil & rust stain removal", price: 65, description: "Targeted chemical treatment for deep-set oil, transmission fluid, and rust stains that standard washing can't fully lift." },
-  { name: "Gutter & downspout flush", price: 75, description: "Clears debris and buildup from gutters and flushes downspouts to prevent water pooling near the driveway." },
-  { name: "Sidewalk & walkway add-on", price: 50, description: "Extends cleaning to all connecting sidewalks, front walks, and stepping-stone paths around the property." },
-  { name: "Patio & back porch wash", price: 85, description: "Full surface cleaning of patios, porches, and outdoor living areas — concrete, pavers, or flagstone." },
-  { name: "Fence & retaining wall wash", price: 95, description: "Removes green algae, mildew, and dirt buildup from vinyl, wood, or composite fences and retaining walls." },
+  { name: "Concrete sealer application", addonPrice: 125, standalonePrice: 200, description: "A protective sealant coat applied after cleaning to guard against future stains, moisture damage, and freeze-thaw cracking." },
+  { name: "Oil & rust stain removal", addonPrice: 65, standalonePrice: 100, description: "Targeted chemical treatment for deep-set oil, transmission fluid, and rust stains that standard washing can't fully lift." },
+  { name: "Gutter & downspout flush", addonPrice: 75, standalonePrice: 125, description: "Clears debris and buildup from gutters and flushes downspouts to prevent water pooling near the driveway." },
+  { name: "Sidewalk & walkway cleaning", addonPrice: 50, standalonePrice: 85, description: "Extends cleaning to all connecting sidewalks, front walks, and stepping-stone paths around the property." },
+  { name: "Patio & back porch wash", addonPrice: 85, standalonePrice: 150, description: "Full surface cleaning of patios, porches, and outdoor living areas — concrete, pavers, or flagstone." },
+  { name: "Fence & retaining wall wash", addonPrice: 95, standalonePrice: 175, description: "Removes green algae, mildew, and dirt buildup from vinyl, wood, or composite fences and retaining walls." },
 ];
 
 const AddOnsList = () => {
@@ -75,7 +75,10 @@ const AddOnsList = () => {
               )}
               <span className="text-sm text-secondary-foreground">{addon.name}</span>
             </div>
-            <span className="text-sm font-semibold text-primary ml-4 whitespace-nowrap">+${addon.price}</span>
+            <div className="flex flex-col items-end ml-4">
+              <span className="text-sm font-semibold text-primary whitespace-nowrap">+${addon.addonPrice}</span>
+              <span className="text-[10px] text-muted-foreground whitespace-nowrap">${addon.standalonePrice} standalone</span>
+            </div>
           </div>
           {openIndex === i && (
             <p className="mt-3 ml-7 text-xs text-muted-foreground leading-relaxed">
@@ -165,10 +168,11 @@ const PWPackagesSection = () => {
         {/* Add-Ons Section */}
         <div className="mt-12 max-w-3xl mx-auto">
           <div className="text-center mb-6">
-            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Enhance Your Wash</p>
+            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Add-On or Standalone</p>
             <h3 className="text-2xl md:text-3xl font-display">
-              Available <span className="text-primary">Add-Ons</span>
+              Additional <span className="text-primary">Services</span>
             </h3>
+            <p className="text-muted-foreground text-sm mt-2">Bundle with a package to save, or book as a standalone service.</p>
           </div>
           <AddOnsList />
         </div>
