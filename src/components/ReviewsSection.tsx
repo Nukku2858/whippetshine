@@ -3,7 +3,7 @@ import reviewCustomer from "@/assets/review-customer.jpg";
 
 const reviews = [
   {
-    name: "Jake M.",
+    name: "TheLotFather",
     image: reviewCustomer,
     text: "WhippetShine transformed my truck — it looked better than the day I bought it. Absolutely insane attention to detail. These guys don't cut corners.",
     rating: 5,
