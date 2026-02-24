@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
-
+import { createClient } from "npm:@supabase/supabase-js@2.57.2";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -182,6 +182,51 @@ serve(async (req) => {
 
       const emailData = await emailRes.json();
       console.log("Email sent:", JSON.stringify(emailData));
+
+      // Award loyalty points (1 point per $1 spent)
+      const amountPaid = session.amount_total ? Math.floor(session.amount_total / 100) : 0;
+      if (amountPaid > 0 && customerEmail) {
+        try {
+          const supabaseAdmin = createClient(
+            Deno.env.get("SUPABASE_URL") ?? "",
+            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+          );
+
+          // Find user by email
+          const { data: authData } = await supabaseAdmin.auth.admin.listUsers();
+          const matchedUser = authData?.users?.find((u: any) => u.email === customerEmail);
+
+          if (matchedUser) {
+            // Insert points transaction
+            await supabaseAdmin.from("points_transactions").insert({
+              user_id: matchedUser.id,
+              points: amountPaid,
+              type: "earned",
+              description: `Earned from ${packageInfo.name} booking`,
+              stripe_session_id: session.id,
+            });
+
+            // Update balance
+            await supabaseAdmin.rpc("", {}).catch(() => {}); // fallback
+            const { data: currentProfile } = await supabaseAdmin
+              .from("profiles")
+              .select("points_balance")
+              .eq("user_id", matchedUser.id)
+              .single();
+
+            if (currentProfile) {
+              await supabaseAdmin
+                .from("profiles")
+                .update({ points_balance: (currentProfile.points_balance || 0) + amountPaid })
+                .eq("user_id", matchedUser.id);
+            }
+
+            console.log(`Awarded ${amountPaid} points to user ${matchedUser.id}`);
+          }
+        } catch (pointsErr) {
+          console.error("Points award error (non-fatal):", pointsErr);
+        }
+      }
     }
 
     return new Response(JSON.stringify({ received: true }), {

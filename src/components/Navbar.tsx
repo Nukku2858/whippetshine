@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import whippetLogo from "@/assets/whippet-logo.png";
+import { Star, User } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { label: "Auto Detailing", path: "/" },
@@ -9,6 +10,7 @@ const navLinks = [
 
 const Navbar = () => {
   const { pathname } = useLocation();
+  const { user, profile } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
@@ -42,6 +44,21 @@ const Navbar = () => {
             );
           })}
         </div>
+
+        <Link
+          to={user ? "/account" : "/auth"}
+          className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors shrink-0"
+        >
+          {user && profile ? (
+            <>
+              <Star size={14} className="text-primary" />
+              <span className="text-xs md:text-sm font-medium text-primary">{profile.points_balance}</span>
+              <User size={16} />
+            </>
+          ) : (
+            <span className="text-[10px] md:text-sm font-medium uppercase tracking-wider">Sign In</span>
+          )}
+        </Link>
       </div>
     </nav>
   );
