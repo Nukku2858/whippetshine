@@ -11,9 +11,9 @@ interface Package {
 
 const packages: Package[] = [
   {
-    name: "Signature Wash",
+    name: "Sedan",
     price: 150,
-    description: "A meticulous hand wash and interior refresh — the standard others aspire to.",
+    description: "Cars, coupes & compact vehicles — precision detailing for everyday rides.",
     features: [
       "Premium hand wash & chamois dry",
       "Wheel & tire deep clean + dressing",
@@ -24,19 +24,32 @@ const packages: Package[] = [
     ],
   },
   {
-    name: "Elite Detail",
-    price: 275,
-    description: "Complete interior & exterior transformation — showroom presence, guaranteed.",
+    name: "Midsize",
+    price: 225,
+    description: "SUVs, crossovers & minivans — extra coverage for larger interiors.",
     features: [
-      "Everything in Signature",
+      "Everything in Sedan",
+      "Extended interior deep clean",
       "Clay bar decontamination",
       "Hand-applied spray wax & sealant",
       "Leather cleaning & conditioning",
-      "Deep carpet & upholstery shampoo",
-      "Engine bay detail & dressing",
       "Tire & trim UV protection",
     ],
     popular: true,
+  },
+  {
+    name: "Full Size",
+    price: 300,
+    description: "Trucks, large SUVs & vans — the complete treatment for big rigs.",
+    features: [
+      "Everything in Midsize",
+      "Deep carpet & upholstery shampoo",
+      "Engine bay detail & dressing",
+      "Bed / cargo area cleaning",
+      "Full paint decontamination",
+      "Premium sealant & ceramic boost",
+      "Headlight restoration",
+    ],
   },
 ];
 

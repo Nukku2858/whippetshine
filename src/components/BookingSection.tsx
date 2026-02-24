@@ -111,8 +111,9 @@ const BookingSection = () => {
                 <SelectValue placeholder="Select a package" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="signature">Signature Wash — $150</SelectItem>
-                <SelectItem value="elite">Elite Detail — $275</SelectItem>
+                <SelectItem value="sedan">Sedan — $150</SelectItem>
+                <SelectItem value="midsize">Midsize — $225</SelectItem>
+                <SelectItem value="fullsize">Full Size — $300</SelectItem>
               </SelectContent>
             </Select>
           </div>
