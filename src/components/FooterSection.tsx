@@ -7,7 +7,7 @@ const FooterSection = () => {
         <div>
           <h3 className="text-3xl font-display text-primary mb-4">Whippet Shine</h3>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            Shelby, Ohio's trusted car detailing professionals. We treat every vehicle like it's our own.
+            Shelby, Ohio's trusted car detailing & house pressure washing professionals. We treat every vehicle and home like it's our own.
           </p>
         </div>
 
@@ -41,7 +41,7 @@ const FooterSection = () => {
       </div>
 
       <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-border text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Whippet Shine — Shelby, Ohio
+        © {new Date().getFullYear()} Whippet Shine — Auto Detailing & House Pressure Washing — Shelby, Ohio
       </div>
     </footer>
   );
