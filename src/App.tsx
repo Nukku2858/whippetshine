@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import PressureWashing from "./pages/PressureWashing";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import IntakeForm from "./pages/IntakeForm";
+import CustomRequest from "./pages/CustomRequest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/pressure-washing" element={<PressureWashing />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/intake" element={<IntakeForm />} />
+          <Route path="/custom-request" element={<CustomRequest />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
