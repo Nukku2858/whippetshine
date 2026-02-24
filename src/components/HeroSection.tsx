@@ -1,7 +1,6 @@
 import heroImage from "@/assets/hero-car.jpg";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const scrollToPackages = () => {
@@ -36,12 +35,6 @@ const HeroSection = () => {
             View Packages
           </Button>
         </div>
-      </div>
-
-      <div className="absolute top-6 right-6 z-20">
-        <Link to="/pressure-washing" className="text-muted-foreground hover:text-primary transition-colors text-sm tracking-widest uppercase">
-          Pressure Washing →
-        </Link>
       </div>
 
       <button
