@@ -238,6 +238,9 @@ const BookingSection = () => {
               "Proceed to Payment"
             )}
           </Button>
+          <p className="text-xs text-muted-foreground text-center mt-3">
+            All bookings are subject to availability and final confirmation after payment.
+          </p>
         </form>
       </div>
     </section>
