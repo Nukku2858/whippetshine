@@ -5,7 +5,11 @@ import whippetLogo from "@/assets/whippet-logo.png";
 const FooterSection = () => {
   return (
     <footer className="relative py-16 px-4 md:px-6 border-t border-border overflow-hidden">
-      <img src={whippetLogo} alt="" className="absolute left-[-3%] top-1/2 -translate-y-1/2 w-48 md:w-72 opacity-[0.08] pointer-events-none select-none mix-blend-screen" />
+      <div className="absolute inset-0 flex items-center pointer-events-none select-none overflow-hidden">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <img key={i} src={whippetLogo} alt="" className="w-36 md:w-48 opacity-[0.06] mix-blend-screen shrink-0 mx-4" />
+        ))}
+      </div>
       <div className="relative max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-1">
           <div className="flex items-center gap-3 mb-4">
