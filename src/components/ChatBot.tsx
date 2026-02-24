@@ -95,12 +95,14 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Floating button – whippet silhouette */}
+      {/* Floating button – whippet with chat bubble */}
       <button
         onClick={() => setOpen(!open)}
         className={cn(
           "fixed bottom-5 right-5 z-50 shadow-lg transition-all hover:scale-105",
-          open ? "rounded-full p-3.5 bg-primary text-primary-foreground" : "bg-transparent p-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
+          open
+            ? "rounded-full p-3.5 bg-primary text-primary-foreground"
+            : "bg-transparent p-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
         )}
         aria-label={open ? "Close chat" : "Open chat"}
       >
@@ -108,14 +110,37 @@ const ChatBot = () => {
           <X size={22} />
         ) : (
           <svg
-            viewBox="0 0 120 80"
-            className="w-16 h-11 fill-primary hover:fill-scarlet-glow transition-colors"
+            viewBox="0 0 110 100"
+            className="w-[68px] h-[62px]"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Whippet / greyhound silhouette facing left */}
-            <path d="M10,58 Q8,52 12,48 Q14,44 18,42 Q22,38 26,32 Q28,26 32,22 Q36,18 42,16 Q48,14 54,14 Q58,14 62,16 Q64,18 64,22 Q66,20 70,18 Q74,16 78,18 Q76,22 74,26 Q80,24 86,26 Q92,28 96,32 Q100,36 102,42 Q104,48 106,54 Q108,60 110,66 L106,66 Q104,58 102,52 Q100,48 98,46 Q96,50 94,56 Q92,62 90,66 L86,66 Q88,58 88,52 Q86,46 82,42 Q78,38 72,36 Q66,34 60,34 Q54,36 48,40 Q44,44 40,50 Q38,56 36,66 L32,66 Q34,54 36,48 Q32,52 28,58 Q26,62 24,66 L20,66 Q22,60 24,54 Q20,56 16,58 Q14,60 10,58 Z" />
+            {/* Chat speech bubble with ? */}
+            <rect x="56" y="2" width="50" height="34" rx="10" className="fill-primary" />
+            <polygon points="66,36 74,36 64,46" className="fill-primary" />
+            <text x="81" y="28" textAnchor="middle" className="fill-primary-foreground" fontSize="24" fontWeight="bold" fontFamily="sans-serif">?</text>
+
+            {/* Sitting whippet/greyhound – cleaner shape */}
+            <g className="fill-primary">
+              {/* Head + long snout */}
+              <ellipse cx="50" cy="38" rx="10" ry="8" />
+              <ellipse cx="62" cy="36" rx="6" ry="5" />
+              {/* Ear (floppy) */}
+              <ellipse cx="44" cy="32" rx="4" ry="7" transform="rotate(15 44 32)" />
+              {/* Slim neck */}
+              <path d="M42,44 Q38,48 36,54 Q34,48 38,42 Z" />
+              <path d="M48,44 Q44,52 40,58 L36,54 Q40,48 44,44 Z" />
+              {/* Chest + body */}
+              <path d="M36,54 Q30,58 26,66 Q24,72 24,80 L20,80 Q18,72 20,64 Q22,56 30,50 Q34,48 36,54 Z" />
+              <path d="M40,58 Q44,64 44,72 Q44,78 42,80 L38,80 Q40,74 40,68 Q38,62 36,58 Z" />
+              {/* Back haunch */}
+              <path d="M26,66 Q22,68 20,74 Q18,78 16,80 L12,80 Q14,74 18,68 Q22,64 26,66 Z" />
+              {/* Tail curving up */}
+              <path d="M22,62 Q16,56 10,52 Q8,50 6,52 Q4,54 8,54 Q12,56 18,60 Z" />
+            </g>
             {/* Eye */}
-            <circle cx="68" cy="22" r="1.5" className="fill-background" />
+            <circle cx="54" cy="36" r="1.8" className="fill-background" />
+            {/* Nose */}
+            <circle cx="67" cy="35" r="1.5" className="fill-background" />
           </svg>
         )}
       </button>
