@@ -19,13 +19,24 @@ const PRICE_MAP: Record<string, string> = {
   "house-large": "price_1T4BnxQ47JXIZZAQRJio6Mid",
 };
 
+const ADDON_PRICE_MAP: Record<string, string> = {
+  "clay-bar": "price_1T4FicQ47JXIZZAQZMTeRETr",
+  "ceramic-boost": "price_1T4FkXQ47JXIZZAQV3vmfGY0",
+  "engine-bay": "price_1T4FksQ47JXIZZAQWgjmeU3T",
+  "headlight-restoration": "price_1T4Fl9Q47JXIZZAQ8y7jbtLW",
+  "leather-conditioning": "price_1T4FlPQ47JXIZZAQnkQqk0x3",
+  "carpet-shampoo": "price_1T4FleQ47JXIZZAQg4m5zrg2",
+  "pet-hair": "price_1T4FlsQ47JXIZZAQGOMqjm3f",
+  "odor-elimination": "price_1T4FmCQ47JXIZZAQMu0OnCZe",
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { packageId, name, email, phone, date, time, vehicle, notes } = await req.json();
+    const { packageId, name, email, phone, date, time, vehicle, notes, addOns } = await req.json();
 
     const priceId = PRICE_MAP[packageId];
     if (!priceId) {
@@ -43,10 +54,24 @@ serve(async (req) => {
       customerId = customers.data[0].id;
     }
 
+    // Build line items: base package + selected add-ons
+    const lineItems: Array<{ price: string; quantity: number }> = [
+      { price: priceId, quantity: 1 },
+    ];
+
+    if (Array.isArray(addOns)) {
+      for (const addonId of addOns) {
+        const addonPriceId = ADDON_PRICE_MAP[addonId];
+        if (addonPriceId) {
+          lineItems.push({ price: addonPriceId, quantity: 1 });
+        }
+      }
+    }
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : email,
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: lineItems,
       mode: "payment",
       success_url: `${req.headers.get("origin")}/payment-success`,
       cancel_url: `${req.headers.get("origin")}/#booking`,

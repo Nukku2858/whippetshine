@@ -4,9 +4,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { Calendar, Clock, Car, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+
+const ADDONS = [
+  { id: "clay-bar", name: "Clay Bar Decontamination", price: 75 },
+  { id: "ceramic-boost", name: "Ceramic Boost & Sealant", price: 120 },
+  { id: "engine-bay", name: "Engine Bay Detail & Dressing", price: 85 },
+  { id: "headlight-restoration", name: "Headlight Restoration", price: 65 },
+  { id: "leather-conditioning", name: "Leather Cleaning & Conditioning", price: 60 },
+  { id: "carpet-shampoo", name: "Deep Carpet & Upholstery Shampoo", price: 80 },
+  { id: "pet-hair", name: "Pet Hair Removal", price: 50 },
+  { id: "odor-elimination", name: "Odor Elimination Treatment", price: 55 },
+];
 
 const BookingSection = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +31,7 @@ const BookingSection = () => {
     vehicle: "",
     notes: "",
   });
+  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -36,6 +49,7 @@ const BookingSection = () => {
           time: formData.time,
           vehicle: formData.vehicle,
           notes: formData.notes,
+          addOns: selectedAddOns,
         },
       });
       if (error) throw error;
@@ -48,6 +62,12 @@ const BookingSection = () => {
       toast.error(err.message || "Something went wrong. Please try again.");
       setLoading(false);
     }
+  };
+
+  const toggleAddOn = (id: string) => {
+    setSelectedAddOns((prev) =>
+      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
+    );
   };
 
   const updateField = (field: string, value: string) => {
@@ -177,6 +197,30 @@ const BookingSection = () => {
               placeholder="Any special requests or areas of concern..."
               className="bg-secondary border-border min-h-[80px]"
             />
+          </div>
+
+          {/* Add-Ons Selection */}
+          <div className="space-y-3">
+            <Label className="text-base">Add-Ons <span className="text-muted-foreground text-sm font-normal">(optional)</span></Label>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {ADDONS.map((addon) => (
+                <label
+                  key={addon.id}
+                  className={`flex items-center gap-3 bg-secondary border rounded-lg px-4 py-3 cursor-pointer transition-all ${
+                    selectedAddOns.includes(addon.id)
+                      ? "border-primary shadow-sm"
+                      : "border-border hover:border-muted-foreground/30"
+                  }`}
+                >
+                  <Checkbox
+                    checked={selectedAddOns.includes(addon.id)}
+                    onCheckedChange={() => toggleAddOn(addon.id)}
+                  />
+                  <span className="text-sm flex-1 text-secondary-foreground">{addon.name}</span>
+                  <span className="text-xs font-semibold text-primary whitespace-nowrap">+${addon.price}</span>
+                </label>
+              ))}
+            </div>
           </div>
 
           <Button
