@@ -19,7 +19,7 @@ const FooterSection = () => {
           </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <Phone size={16} className="text-primary shrink-0" />
-            <span>(419) 555-0123</span>
+            <span>567-370-4021</span>
           </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <Mail size={16} className="text-primary shrink-0" />
