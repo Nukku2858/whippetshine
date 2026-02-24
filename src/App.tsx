@@ -10,6 +10,7 @@ import IntakeForm from "./pages/IntakeForm";
 import CustomRequest from "./pages/CustomRequest";
 import Auth from "./pages/Auth";
 import Account from "./pages/Account";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { CartProvider } from "./contexts/CartContext";
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/custom-request" element={<CustomRequest />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
