@@ -1,5 +1,6 @@
-import { Check } from "lucide-react";
+import { Check, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface Package {
   name: string;
@@ -54,13 +55,15 @@ const packages: Package[] = [
 ];
 
 const PackagesSection = () => {
+  const navigate = useNavigate();
+
   const scrollToBooking = () => {
     document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <section id="packages" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">Our Services</p>
           <h2 className="text-5xl md:text-6xl font-display">
@@ -68,7 +71,7 @@ const PackagesSection = () => {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-4 gap-6">
           {packages.map((pkg) => (
             <div
               key={pkg.name}
@@ -108,6 +111,37 @@ const PackagesSection = () => {
               </Button>
             </div>
           ))}
+
+          {/* Custom Request card */}
+          <div className="relative rounded-lg p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 bg-card border border-dashed border-border hover:border-primary">
+            <h3 className="text-2xl font-display mb-2">Custom</h3>
+            <p className="text-muted-foreground text-sm mb-6">
+              Need something unique? Request a custom quote tailored to your exact needs.
+            </p>
+            <div className="mb-8">
+              <span className="text-4xl font-display text-primary">Quote</span>
+            </div>
+            <ul className="space-y-3 mb-8 flex-1">
+              {[
+                "Personalized service plan",
+                "Add-on services available",
+                "Fleet & multi-vehicle discounts",
+                "Specialty coatings & treatments",
+                "Reach us by text or email",
+              ].map((feature) => (
+                <li key={feature} className="flex items-start gap-3 text-sm">
+                  <MessageSquare size={16} className="text-primary mt-0.5 shrink-0" />
+                  <span className="text-secondary-foreground">{feature}</span>
+                </li>
+              ))}
+            </ul>
+            <Button
+              onClick={() => navigate("/custom-request")}
+              className="w-full font-semibold tracking-wide bg-secondary text-secondary-foreground hover:bg-muted"
+            >
+              Request Quote
+            </Button>
+          </div>
         </div>
       </div>
     </section>
