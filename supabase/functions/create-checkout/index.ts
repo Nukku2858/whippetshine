@@ -148,8 +148,8 @@ serve(async (req) => {
         Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
       );
 
-      const { data: authData } = await supabaseAdmin.auth.admin.listUsers();
-      const matchedUser = authData?.users?.find((u: any) => u.email === email);
+      const { data: { users: matchedUsers } } = await supabaseAdmin.auth.admin.listUsers({ filter: email, page: 1, perPage: 1 });
+      const matchedUser = matchedUsers?.find((u: any) => u.email === email);
 
       if (matchedUser) {
         const { data: profileData } = await supabaseAdmin

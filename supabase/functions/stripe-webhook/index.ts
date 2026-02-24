@@ -251,8 +251,8 @@ serve(async (req) => {
       );
 
       // Find user to link booking
-      const { data: authData } = await supabaseAdmin.auth.admin.listUsers();
-      const matchedUser = authData?.users?.find((u: any) => u.email === customerEmail);
+      const { data: { users: matchedUsers } } = await supabaseAdmin.auth.admin.listUsers({ filter: customerEmail, page: 1, perPage: 1 });
+      const matchedUser = matchedUsers?.find((u: any) => u.email === customerEmail);
 
       if (matchedUser) {
         try {
