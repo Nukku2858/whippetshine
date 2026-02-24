@@ -11,6 +11,9 @@ const PRICE_MAP: Record<string, string> = {
   sedan: "price_1T48mAQ47JXIZZAQ0t9hBp7k",
   midsize: "price_1T498fQ47JXIZZAQ0YeWMBKk",
   fullsize: "price_1T498rQ47JXIZZAQMymxfuc8",
+  "pw-small": "price_1T4BMzQ47JXIZZAQhBwFHmPX",
+  "pw-standard": "price_1T4BN9Q47JXIZZAQe8P82JrQ",
+  "pw-large": "price_1T4BNMQ47JXIZZAQIaL4fIkv",
 };
 
 serve(async (req) => {
