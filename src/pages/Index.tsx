@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { Droplets } from "lucide-react";
 import detailingVideo from "@/assets/detailing-showcase.mp4";
 import ReviewsSection from "@/components/ReviewsSection";
+import ChatBot from "@/components/ChatBot";
 
 const Index = () => {
   const { hash } = useLocation();
@@ -63,6 +64,7 @@ const Index = () => {
       </section>
 
       <FooterSection />
+      <ChatBot />
     </main>
   );
 };
