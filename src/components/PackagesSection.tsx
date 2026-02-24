@@ -20,14 +20,14 @@ const standardFeatures = [
 ];
 
 const addOns = [
-  "Clay bar decontamination",
-  "Ceramic boost & sealant",
-  "Engine bay detail & dressing",
-  "Headlight restoration",
-  "Leather cleaning & conditioning",
-  "Deep carpet & upholstery shampoo",
-  "Pet hair removal",
-  "Odor elimination treatment",
+  { name: "Clay bar decontamination", price: 75 },
+  { name: "Ceramic boost & sealant", price: 120 },
+  { name: "Engine bay detail & dressing", price: 85 },
+  { name: "Headlight restoration", price: 65 },
+  { name: "Leather cleaning & conditioning", price: 60 },
+  { name: "Deep carpet & upholstery shampoo", price: 80 },
+  { name: "Pet hair removal", price: 50 },
+  { name: "Odor elimination treatment", price: 55 },
 ];
 
 const packages: Package[] = [
@@ -148,9 +148,12 @@ const PackagesSection = () => {
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             {addOns.map((addon) => (
-              <div key={addon} className="flex items-center gap-3 bg-card border border-border rounded-lg px-5 py-3">
-                <Plus size={16} className="text-primary shrink-0" />
-                <span className="text-sm text-secondary-foreground">{addon}</span>
+              <div key={addon.name} className="flex items-center justify-between bg-card border border-border rounded-lg px-5 py-3">
+                <div className="flex items-center gap-3">
+                  <Plus size={16} className="text-primary shrink-0" />
+                  <span className="text-sm text-secondary-foreground">{addon.name}</span>
+                </div>
+                <span className="text-sm font-semibold text-primary ml-4 whitespace-nowrap">+${addon.price}</span>
               </div>
             ))}
           </div>
