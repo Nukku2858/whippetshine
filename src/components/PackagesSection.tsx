@@ -93,20 +93,20 @@ const PackagesSection = () => {
   };
 
   return (
-    <section id="packages" className="py-24 px-6 scroll-mt-20">
+    <section id="packages" className="py-16 px-6 scroll-mt-16">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">Our Services</p>
-          <h2 className="text-5xl md:text-6xl font-display">
+        <div className="text-center mb-10">
+          <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Our Services</p>
+          <h2 className="text-4xl md:text-5xl font-display">
             Detailing <span className="text-primary">Packages</span>
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6 items-stretch">
+        <div className="grid md:grid-cols-4 gap-5 items-stretch">
           {packages.map((pkg) => (
             <div
               key={pkg.name}
-              className={`relative rounded-lg p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
+              className={`relative rounded-lg p-6 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
                 pkg.popular
                   ? "bg-card border-2 border-primary shadow-[var(--shadow-scarlet)]"
                   : "bg-card border border-border"
@@ -117,15 +117,15 @@ const PackagesSection = () => {
                   Most Popular
                 </span>
               )}
-              <h3 className="text-2xl font-display mb-2">{pkg.name}</h3>
-              <p className="text-muted-foreground text-sm mb-6">{pkg.description}</p>
-              <div className="mb-8 h-12 flex items-baseline">
-                <span className="text-4xl font-display text-primary">${pkg.price}</span>
+              <h3 className="text-xl font-display mb-1">{pkg.name}</h3>
+              <p className="text-muted-foreground text-sm mb-4">{pkg.description}</p>
+              <div className="mb-5 h-10 flex items-baseline">
+                <span className="text-3xl font-display text-primary">${pkg.price}</span>
               </div>
-              <ul className="space-y-3 mb-8 flex-1">
+              <ul className="space-y-2 mb-6 flex-1">
                 {standardFeatures.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3 text-sm">
-                    <Check size={16} className="text-primary mt-0.5 shrink-0" />
+                  <li key={feature} className="flex items-start gap-2 text-sm">
+                    <Check size={14} className="text-primary mt-0.5 shrink-0" />
                     <span className="text-secondary-foreground">{feature}</span>
                   </li>
                 ))}
@@ -144,15 +144,15 @@ const PackagesSection = () => {
           ))}
 
           {/* Custom Request card */}
-          <div className="relative rounded-lg p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 bg-card border border-dashed border-border hover:border-primary">
-            <h3 className="text-2xl mb-2 italic font-black" style={{ fontFamily: "'Permanent Marker', cursive" }}>Custom</h3>
-            <p className="text-muted-foreground text-sm mb-6">
+          <div className="relative rounded-lg p-6 flex flex-col transition-all duration-300 hover:-translate-y-1 bg-card border border-dashed border-border hover:border-primary">
+            <h3 className="text-xl mb-1 italic font-black" style={{ fontFamily: "'Permanent Marker', cursive" }}>Custom</h3>
+            <p className="text-muted-foreground text-sm mb-4">
               Need something unique? Request a custom quote.
             </p>
-            <div className="mb-8 h-12 flex items-baseline">
-              <span className="text-4xl font-display text-primary">Quote</span>
+            <div className="mb-5 h-10 flex items-baseline">
+              <span className="text-3xl font-display text-primary">Quote</span>
             </div>
-            <ul className="space-y-3 mb-8 flex-1">
+            <ul className="space-y-2 mb-6 flex-1">
               {[
                 "Personalized service plan",
                 "Add-on services available",
@@ -160,8 +160,8 @@ const PackagesSection = () => {
                 "Specialty coatings & treatments",
                 "Reach us by text or email",
               ].map((feature) => (
-                <li key={feature} className="flex items-start gap-3 text-sm">
-                  <MessageSquare size={16} className="text-primary mt-0.5 shrink-0" />
+                <li key={feature} className="flex items-start gap-2 text-sm">
+                  <MessageSquare size={14} className="text-primary mt-0.5 shrink-0" />
                   <span className="text-secondary-foreground">{feature}</span>
                 </li>
               ))}
@@ -176,10 +176,10 @@ const PackagesSection = () => {
         </div>
 
         {/* Add-Ons Section */}
-        <div className="mt-16 max-w-3xl mx-auto">
-          <div className="text-center mb-8">
-            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">Enhance Your Detail</p>
-            <h3 className="text-3xl md:text-4xl font-display">
+        <div className="mt-12 max-w-3xl mx-auto">
+          <div className="text-center mb-6">
+            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Enhance Your Detail</p>
+            <h3 className="text-2xl md:text-3xl font-display">
               Available <span className="text-primary">Add-Ons</span>
             </h3>
           </div>
