@@ -6,7 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const ELEVENLABS_AGENT_ID = "agent_7101kj74q6g2e4rakatn095k37yp";
+const ELEVENLABS_AGENT_ID = "agent_7701kj74z208f6gb7zyrht6se0bg";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
