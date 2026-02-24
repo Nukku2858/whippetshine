@@ -32,10 +32,10 @@ const FooterSection = () => {
 
         <div className="space-y-4">
           <h4 className="font-display text-xl mb-4">Contact</h4>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          <a href="https://maps.google.com/?q=66+Carleton+Ave,+Shelby,+OH+44875" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
             <MapPin size={16} className="text-primary shrink-0" />
             <span>66 Carleton Ave, Shelby, OH 44875</span>
-          </div>
+          </a>
           <a href="tel:5673704021" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
             <Phone size={16} className="text-primary shrink-0" />
             <span>567-370-4021</span>
