@@ -183,7 +183,7 @@ const BookingSection = () => {
             type="submit"
             size="lg"
             disabled={loading}
-            className="w-full bg-primary text-primary-foreground hover:bg-gold-glow font-semibold tracking-wide text-lg py-6"
+            className="w-full bg-primary text-primary-foreground hover:bg-scarlet-glow font-semibold tracking-wide text-lg py-6"
           >
             {loading ? (
               <>

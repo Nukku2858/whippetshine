@@ -51,9 +51,9 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        gold: {
+        scarlet: {
           DEFAULT: "hsl(var(--primary))",
-          glow: "hsl(var(--gold-glow))",
+          glow: "hsl(var(--scarlet-glow))",
         },
         "surface-elevated": "hsl(var(--surface-elevated))",
         sidebar: {

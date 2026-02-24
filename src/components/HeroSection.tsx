@@ -30,7 +30,7 @@ const HeroSection = () => {
           <Button
             size="lg"
             onClick={scrollToPackages}
-            className="bg-primary text-primary-foreground hover:bg-gold-glow text-lg px-10 py-6 font-semibold tracking-wide"
+            className="bg-primary text-primary-foreground hover:bg-scarlet-glow text-lg px-10 py-6 font-semibold tracking-wide"
           >
             View Packages
           </Button>
