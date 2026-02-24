@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LogIn, UserPlus, Star } from "lucide-react";
+import { ArrowLeft, LogIn, UserPlus, Star, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
 import whippetLogo from "@/assets/whippet-logo.png";
@@ -13,7 +14,7 @@ import whippetLogo from "@/assets/whippet-logo.png";
 const Auth = () => {
   const navigate = useNavigate();
   const { signIn, signUp } = useAuth();
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,13 @@ const Auth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    if (mode === "login") {
+    if (mode === "forgot") {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) toast.error(error.message);
+      else toast.success("Check your email for a reset link!");
+    } else if (mode === "login") {
       const { error } = await signIn(email, password);
       if (error) {
         toast.error(error.message);
@@ -68,15 +75,19 @@ const Auth = () => {
               className="text-5xl md:text-7xl mb-4 italic font-black tracking-tight"
               style={{ fontFamily: "'Permanent Marker', cursive" }}
             >
-              <span className="text-foreground">{mode === "login" ? "WELCOME" : "JOIN THE"}</span>{" "}
+              <span className="text-foreground">
+                {mode === "login" ? "WELCOME" : mode === "signup" ? "JOIN THE" : "RESET"}
+              </span>{" "}
               <span className="text-primary drop-shadow-[0_0_15px_rgba(234,56,76,0.6)]">
-                {mode === "login" ? "BACK" : "PACK"}
+                {mode === "login" ? "BACK" : mode === "signup" ? "PACK" : "PASSWORD"}
               </span>
             </h1>
             <p className="text-muted-foreground text-lg">
               {mode === "login"
                 ? "Sign in to track your points and redeem rewards."
-                : "Create an account to start earning points with every booking."}
+                : mode === "signup"
+                ? "Create an account to start earning points with every booking."
+                : "Enter your email and we'll send you a reset link."}
             </p>
           </div>
 
@@ -92,30 +103,32 @@ const Auth = () => {
               className="absolute right-4 bottom-4 w-32 h-32 object-contain opacity-[0.06] pointer-events-none select-none"
             />
 
-            <div className="flex bg-muted/60 rounded-full p-1 mb-2">
-              <button
-                type="button"
-                onClick={() => setMode("login")}
-                className={`flex-1 text-sm py-2 rounded-full font-medium transition-all ${
-                  mode === "login"
-                    ? "bg-primary text-primary-foreground shadow-md"
-                    : "text-muted-foreground"
-                }`}
-              >
-                Sign In
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode("signup")}
-                className={`flex-1 text-sm py-2 rounded-full font-medium transition-all ${
-                  mode === "signup"
-                    ? "bg-primary text-primary-foreground shadow-md"
-                    : "text-muted-foreground"
-                }`}
-              >
-                Sign Up
-              </button>
-            </div>
+            {mode !== "forgot" && (
+              <div className="flex bg-muted/60 rounded-full p-1 mb-2">
+                <button
+                  type="button"
+                  onClick={() => setMode("login")}
+                  className={`flex-1 text-sm py-2 rounded-full font-medium transition-all ${
+                    mode === "login"
+                      ? "bg-primary text-primary-foreground shadow-md"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  Sign In
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("signup")}
+                  className={`flex-1 text-sm py-2 rounded-full font-medium transition-all ${
+                    mode === "signup"
+                      ? "bg-primary text-primary-foreground shadow-md"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  Sign Up
+                </button>
+              </div>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -130,19 +143,21 @@ const Auth = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="bg-secondary border-border"
-              />
-            </div>
+            {mode !== "forgot" && (
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  minLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="bg-secondary border-border"
+                />
+              </div>
+            )}
 
             <Button
               type="submit"
@@ -150,12 +165,33 @@ const Auth = () => {
               disabled={loading}
               className="w-full bg-primary text-primary-foreground hover:bg-scarlet-glow font-semibold text-lg py-6"
             >
-              {loading ? "Please wait..." : mode === "login" ? (
+              {loading ? "Please wait..." : mode === "forgot" ? (
+                <><Mail size={18} className="mr-2" /> Send Reset Link</>
+              ) : mode === "login" ? (
                 <><LogIn size={18} className="mr-2" /> Sign In</>
               ) : (
                 <><UserPlus size={18} className="mr-2" /> Create Account</>
               )}
             </Button>
+
+            {mode === "login" && (
+              <button
+                type="button"
+                onClick={() => setMode("forgot")}
+                className="w-full text-sm text-muted-foreground hover:text-primary transition-colors text-center"
+              >
+                Forgot your password?
+              </button>
+            )}
+            {mode === "forgot" && (
+              <button
+                type="button"
+                onClick={() => setMode("login")}
+                className="w-full text-sm text-muted-foreground hover:text-primary transition-colors text-center"
+              >
+                ← Back to Sign In
+              </button>
+            )}
           </form>
 
           <div className="mt-8 bg-card border border-border rounded-lg p-6 text-center">
