@@ -54,17 +54,17 @@ const FooterSection = () => {
         <div className="space-y-4">
           <h4 className="font-display text-xl mb-4">Hours</h4>
           <div className="space-y-2">
-            <div className="flex items-center justify-between bg-card border border-border rounded-lg px-4 py-3">
-              <span className="text-sm font-medium text-foreground">Mon – Fri</span>
-              <span className="text-sm text-primary font-semibold">8:00 AM – 5:00 PM</span>
+            <div className="flex items-center justify-between gap-4 bg-card border border-border rounded-lg px-4 py-3">
+              <span className="text-sm font-medium text-foreground whitespace-nowrap">Mon – Fri</span>
+              <span className="text-sm text-primary font-semibold whitespace-nowrap">8:00 AM – 5:00 PM</span>
             </div>
-            <div className="flex items-center justify-between bg-card border border-border rounded-lg px-4 py-3">
-              <span className="text-sm font-medium text-foreground">Saturday</span>
-              <span className="text-sm text-primary font-semibold">9:00 AM – 3:00 PM</span>
+            <div className="flex items-center justify-between gap-4 bg-card border border-border rounded-lg px-4 py-3">
+              <span className="text-sm font-medium text-foreground whitespace-nowrap">Saturday</span>
+              <span className="text-sm text-primary font-semibold whitespace-nowrap">9:00 AM – 3:00 PM</span>
             </div>
-            <div className="flex items-center justify-between bg-card border border-border rounded-lg px-4 py-3">
-              <span className="text-sm font-medium text-foreground">Sunday</span>
-              <span className="text-sm text-muted-foreground font-semibold">Closed</span>
+            <div className="flex items-center justify-between gap-4 bg-card border border-border rounded-lg px-4 py-3">
+              <span className="text-sm font-medium text-foreground whitespace-nowrap">Sunday</span>
+              <span className="text-sm text-muted-foreground font-semibold whitespace-nowrap">Closed</span>
             </div>
           </div>
         </div>
