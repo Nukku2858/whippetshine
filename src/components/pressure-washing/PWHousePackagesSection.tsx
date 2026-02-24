@@ -1,4 +1,5 @@
-import { Check } from "lucide-react";
+import { useState } from "react";
+import { Check, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import houseVideo from "@/assets/house-pressure-wash.mp4";
@@ -7,43 +8,85 @@ interface Package {
   name: string;
   price: number;
   description: string;
-  features: string[];
   popular?: boolean;
 }
+
+const standardFeatures = [
+  "Full exterior siding wash",
+  "Mildew, algae & cobweb removal",
+  "Porch & entryway cleaning",
+  "Window frame & sill rinse",
+  "Post-wash walkthrough & inspection",
+];
+
+const uniqueFeatures: Record<string, string> = {
+  "Small Home": "Front walkway wash included",
+  "Standard Home": "Second-story & eaves coverage included",
+  "Large Home": "Garage, fence & foundation wash included",
+};
 
 const packages: Package[] = [
   {
     name: "Small Home",
     price: 250,
     description: "Single-story homes — up to 1,500 sq ft.",
-    features: [
-      "Full exterior siding wash",
-      "Porch & entryway cleaning",
-      "Mildew & cobweb removal",
-    ],
   },
   {
     name: "Standard Home",
     price: 400,
     description: "Two-story homes — 1,500–2,500 sq ft.",
-    features: [
-      "Everything in Small Home",
-      "Second-story & eaves coverage",
-      "Gutter face & soffit wash",
-    ],
     popular: true,
   },
   {
     name: "Large Home",
     price: 600,
     description: "Large & multi-story homes — 2,500+ sq ft.",
-    features: [
-      "Everything in Standard Home",
-      "Full wrap-around coverage",
-      "Garage, fence & foundation wash",
-    ],
   },
 ];
+
+const addOns = [
+  { name: "Gutter face & soffit wash", price: 85, description: "Removes black streaks, mold, and grime from gutter faces and soffits for a clean roofline appearance." },
+  { name: "Roof soft wash", price: 175, description: "Low-pressure chemical treatment that safely removes moss, algae, and dark streaks from shingles without damage." },
+  { name: "Deck & patio restoration", price: 120, description: "Deep cleans wood, composite, or concrete deck surfaces and restores them to near-original condition." },
+  { name: "Window exterior wash", price: 70, description: "Streak-free cleaning of all exterior-facing windows, screens, and frames using purified water." },
+  { name: "Fence & gate wash", price: 95, description: "Removes green algae, mildew, and weathering from vinyl, wood, or composite fences and gates." },
+  { name: "Foundation & trim brightening", price: 65, description: "Targets dirt buildup, efflorescence, and discoloration along the home's foundation and trim lines." },
+];
+
+const AddOnsList = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
+
+  return (
+    <div className="grid sm:grid-cols-2 gap-4">
+      {addOns.map((addon, i) => (
+        <button
+          key={addon.name}
+          type="button"
+          onClick={() => toggle(i)}
+          className="text-left bg-card border border-border rounded-lg px-5 py-3 transition-all duration-200 hover:border-primary"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {openIndex === i ? (
+                <Minus size={16} className="text-primary shrink-0" />
+              ) : (
+                <Plus size={16} className="text-primary shrink-0" />
+              )}
+              <span className="text-sm text-secondary-foreground">{addon.name}</span>
+            </div>
+            <span className="text-sm font-semibold text-primary ml-4 whitespace-nowrap">+${addon.price}</span>
+          </div>
+          {openIndex === i && (
+            <p className="mt-3 ml-7 text-xs text-muted-foreground leading-relaxed">
+              {addon.description}
+            </p>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 const PWHousePackagesSection = () => {
   const { ref, isVisible } = useScrollReveal(0.1);
@@ -94,12 +137,16 @@ const PWHousePackagesSection = () => {
                 <span className="text-3xl font-display text-primary">${pkg.price}</span>
               </div>
               <ul className="space-y-2 mb-6 flex-1">
-                {pkg.features.map((feature) => (
+                {standardFeatures.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm">
                     <Check size={14} className="text-primary mt-0.5 shrink-0" />
                     <span className="text-secondary-foreground">{feature}</span>
                   </li>
                 ))}
+                <li className="flex items-start gap-2 text-sm font-medium">
+                  <Check size={14} className="text-primary mt-0.5 shrink-0" />
+                  <span className="text-primary">{uniqueFeatures[pkg.name]}</span>
+                </li>
               </ul>
               <Button
                 onClick={scrollToBooking}
@@ -113,6 +160,17 @@ const PWHousePackagesSection = () => {
               </Button>
             </div>
           ))}
+        </div>
+
+        {/* Add-Ons Section */}
+        <div className="mt-12 max-w-3xl mx-auto">
+          <div className="text-center mb-6">
+            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Enhance Your Wash</p>
+            <h3 className="text-2xl md:text-3xl font-display">
+              House <span className="text-primary">Add-Ons</span>
+            </h3>
+          </div>
+          <AddOnsList />
         </div>
       </div>
     </section>
