@@ -13,9 +13,9 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3 md:px-6 md:py-4">
-        <Link to="/" className="flex items-center gap-2 shrink-0">
-          <img src={whippetLogo} alt="Whippet Shine" className="h-8 w-8 object-contain mix-blend-screen" />
-          <span className="text-xl md:text-2xl font-display tracking-wide">
+        <Link to="/" className="flex items-center gap-2.5 shrink-0 border border-border/60 rounded-lg px-3 py-1.5 bg-card/40 backdrop-blur-sm">
+          <img src={whippetLogo} alt="Whippet Shine" className="h-7 w-7 object-contain mix-blend-screen" />
+          <span className="text-lg md:text-xl font-display tracking-[0.15em] uppercase">
             <span className="text-muted-foreground">Whippet</span>
             <span className="text-primary">Shine</span>
           </span>
