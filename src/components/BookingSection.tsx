@@ -239,7 +239,7 @@ const BookingSection = () => {
             )}
           </Button>
           <p className="text-xs text-muted-foreground text-center mt-3">
-            All bookings are subject to availability and final confirmation after payment.
+            By submitting, you agree that all appointments are subject to availability and require final confirmation. Payment secures your preferred time slot but does not guarantee scheduling until confirmed by our team.
           </p>
         </form>
       </div>
