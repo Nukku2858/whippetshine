@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 interface Package {
   name: string;
@@ -44,6 +45,7 @@ const packages: Package[] = [
 ];
 
 const PWHousePackagesSection = () => {
+  const { ref, isVisible } = useScrollReveal(0.1);
   const scrollToBooking = () => {
     document.getElementById("pw-booking")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -58,15 +60,16 @@ const PWHousePackagesSection = () => {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div ref={ref} className="grid md:grid-cols-3 gap-6">
           {packages.map((pkg) => (
             <div
               key={pkg.name}
-              className={`relative rounded-lg p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
+              className={`relative rounded-lg p-8 flex flex-col transition-all duration-500 hover:-translate-y-1 ${
                 pkg.popular
                   ? "bg-card border-2 border-primary shadow-[var(--shadow-scarlet)]"
                   : "bg-card border border-border"
-              }`}
+              } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              style={{ transitionDelay: isVisible ? `${packages.indexOf(pkg) * 150}ms` : "0ms" }}
             >
               {pkg.popular && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold tracking-wider uppercase px-4 py-1 rounded-full">
