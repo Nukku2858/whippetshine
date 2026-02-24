@@ -128,7 +128,7 @@ const PackagesSection = () => {
     <section id="packages" className="py-16 px-6 scroll-mt-16">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10">
-          <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Our Services</p>
+          <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Our Auto Services</p>
           <h2 className="text-4xl md:text-5xl font-display">
             Detailing <span className="text-primary">Packages</span>
           </h2>
