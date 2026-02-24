@@ -62,6 +62,60 @@ export type Database = {
         }
         Relationships: []
       }
+      favorite_services: {
+        Row: {
+          created_at: string
+          id: string
+          service_name: string
+          service_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          service_name: string
+          service_type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          service_name?: string
+          service_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          appointment_reminders: boolean
+          created_at: string
+          id: string
+          points_updates: boolean
+          promotions: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointment_reminders?: boolean
+          created_at?: string
+          id?: string
+          points_updates?: boolean
+          promotions?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointment_reminders?: boolean
+          created_at?: string
+          id?: string
+          points_updates?: boolean
+          promotions?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       points_transactions: {
         Row: {
           created_at: string
@@ -99,6 +153,8 @@ export type Database = {
           name: string | null
           phone: string | null
           points_balance: number
+          referral_code: string | null
+          referred_by: string | null
           updated_at: string
           user_id: string
           vehicle_make: string | null
@@ -111,6 +167,8 @@ export type Database = {
           name?: string | null
           phone?: string | null
           points_balance?: number
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
           user_id: string
           vehicle_make?: string | null
@@ -123,7 +181,93 @@ export type Database = {
           name?: string | null
           phone?: string | null
           points_balance?: number
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
+          user_id?: string
+          vehicle_make?: string | null
+          vehicle_model?: string | null
+          vehicle_year?: string | null
+        }
+        Relationships: []
+      }
+      referral_redemptions: {
+        Row: {
+          created_at: string
+          id: string
+          points_awarded: number
+          referred_user_id: string
+          referrer_user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          points_awarded?: number
+          referred_user_id: string
+          referrer_user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          points_awarded?: number
+          referred_user_id?: string
+          referrer_user_id?: string
+        }
+        Relationships: []
+      }
+      saved_addresses: {
+        Row: {
+          address: string
+          created_at: string
+          id: string
+          is_default: boolean
+          label: string
+          user_id: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          label?: string
+          user_id: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          label?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      saved_vehicles: {
+        Row: {
+          created_at: string
+          id: string
+          is_default: boolean
+          label: string
+          user_id: string
+          vehicle_make: string | null
+          vehicle_model: string | null
+          vehicle_year: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          label?: string
+          user_id: string
+          vehicle_make?: string | null
+          vehicle_model?: string | null
+          vehicle_year?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          label?: string
           user_id?: string
           vehicle_make?: string | null
           vehicle_model?: string | null

@@ -11,6 +11,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
+import SavedVehicles from "@/components/account/SavedVehicles";
+import SavedAddresses from "@/components/account/SavedAddresses";
+import ReferralProgram from "@/components/account/ReferralProgram";
+import FavoriteServices from "@/components/account/FavoriteServices";
+import NotificationPreferences from "@/components/account/NotificationPreferences";
 
 interface PointsTransaction {
   id: string;
@@ -362,6 +367,27 @@ const Account = () => {
                 ))}
               </div>
             )}
+          </div>
+
+          {/* Saved Vehicles & Addresses */}
+          <div className="space-y-8 mb-8">
+            <SavedVehicles userId={user!.id} />
+            <SavedAddresses userId={user!.id} />
+          </div>
+
+          {/* Favorite Services */}
+          <div className="mb-8">
+            <FavoriteServices userId={user!.id} />
+          </div>
+
+          {/* Referral Program */}
+          <div className="mb-8">
+            <ReferralProgram referralCode={profile?.referral_code || null} pointsBalance={profile?.points_balance || 0} />
+          </div>
+
+          {/* Notification Preferences */}
+          <div className="mb-8">
+            <NotificationPreferences userId={user!.id} />
           </div>
 
           <Button variant="outline" onClick={handleSignOut} className="w-full border-border text-muted-foreground hover:text-foreground">
