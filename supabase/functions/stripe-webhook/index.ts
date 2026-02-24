@@ -89,6 +89,54 @@ function buildConfirmationEmail(
 </html>`;
 }
 
+function buildPointsEmail(
+  name: string,
+  earnedPoints: number,
+  redeemedPoints: number,
+  discountAmt: number,
+  newBalance: number
+): string {
+  const earnedBlock = earnedPoints > 0
+    ? `<tr><td style="padding:8px 0;color:#22c55e;font-size:16px;">✅ Earned <strong>+${earnedPoints} points</strong></td></tr>`
+    : "";
+  const redeemedBlock = redeemedPoints > 0
+    ? `<tr><td style="padding:8px 0;color:#f59e0b;font-size:16px;">🎁 Redeemed <strong>${redeemedPoints} points</strong> for $${discountAmt} off</td></tr>`
+    : "";
+
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#0a0a0a;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <h1 style="color:#e53e3e;font-size:28px;margin:0;">WhippetShine</h1>
+      <p style="color:#888;font-size:14px;margin-top:4px;">Loyalty Points Update</p>
+    </div>
+    <div style="background:#141414;border:1px solid #222;border-radius:12px;padding:32px;">
+      <h2 style="color:#fff;font-size:22px;margin-top:0;">Hey ${name}! 🐾</h2>
+      <p style="color:#ccc;font-size:16px;line-height:1.6;">Here's your loyalty points summary from your latest booking:</p>
+      <div style="background:#1a1a1a;border-radius:8px;padding:20px;margin:24px 0;">
+        <table style="width:100%;">
+          ${earnedBlock}
+          ${redeemedBlock}
+        </table>
+      </div>
+      <div style="text-align:center;background:linear-gradient(135deg,#1a1a1a,#222);border-radius:8px;padding:24px;margin:20px 0;">
+        <p style="color:#888;font-size:13px;text-transform:uppercase;letter-spacing:2px;margin:0 0 8px;">Your Balance</p>
+        <p style="color:#e53e3e;font-size:36px;font-weight:bold;margin:0;">${newBalance}</p>
+        <p style="color:#888;font-size:14px;margin:4px 0 0;">points</p>
+      </div>
+      <p style="color:#888;font-size:14px;text-align:center;">100 points = $5 off your next booking</p>
+    </div>
+    <div style="text-align:center;margin-top:32px;color:#555;font-size:13px;">
+      <p>WhippetShine · 66 Carleton Ave, Shelby, OH 44875</p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -238,6 +286,38 @@ serve(async (req) => {
                 .from("profiles")
                 .update({ points_balance: newBalance })
                 .eq("user_id", matchedUser.id);
+
+              // Send points notification email
+              if (resendKey && (amountPaid > 0 || redeemedPoints > 0)) {
+                try {
+                  const pointsHtml = buildPointsEmail(
+                    customerName,
+                    amountPaid,
+                    redeemedPoints,
+                    discountAmt,
+                    newBalance
+                  );
+                  const pointsEmailRes = await fetch("https://api.resend.com/emails", {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${resendKey}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      from: "WhippetShine <onboarding@resend.dev>",
+                      to: [customerEmail],
+                      subject: amountPaid > 0
+                        ? `🎉 You earned ${amountPaid} loyalty points!`
+                        : `🎁 Points redeemed — $${discountAmt} off applied`,
+                      html: pointsHtml,
+                    }),
+                  });
+                  const pointsEmailData = await pointsEmailRes.json();
+                  console.log("Points email sent:", JSON.stringify(pointsEmailData));
+                } catch (emailErr) {
+                  console.error("Points email error (non-fatal):", emailErr);
+                }
+              }
             }
           }
         } catch (pointsErr) {
