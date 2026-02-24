@@ -10,8 +10,10 @@ const PressureWashing = () => {
     <main className="min-h-screen bg-background">
       <Navbar />
       <PWHeroSection />
-      <PWPackagesSection />
-      <PWHousePackagesSection />
+      <div id="pw-packages">
+        <PWPackagesSection />
+        <PWHousePackagesSection />
+      </div>
       <PWBookingSection />
       <FooterSection />
     </main>

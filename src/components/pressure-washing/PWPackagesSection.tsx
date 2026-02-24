@@ -56,7 +56,7 @@ const PWPackagesSection = () => {
   };
 
   return (
-    <section id="pw-packages" className="py-24 px-6">
+    <section className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">Our Services</p>
