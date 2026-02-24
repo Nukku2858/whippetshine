@@ -7,6 +7,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// Legacy price maps for backward compatibility with old booking forms
 const PRICE_MAP: Record<string, string> = {
   sedan: "price_1T48mAQ47JXIZZAQ0t9hBp7k",
   midsize: "price_1T498fQ47JXIZZAQ0YeWMBKk",
@@ -30,18 +31,22 @@ const ADDON_PRICE_MAP: Record<string, string> = {
   "odor-elimination": "price_1T4FmCQ47JXIZZAQMu0OnCZe",
 };
 
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  type: string;
+  stripePriceId?: string;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { packageId, name, email, phone, date, time, vehicle, notes, addOns } = await req.json();
-
-    const priceId = PRICE_MAP[packageId];
-    if (!priceId) {
-      throw new Error("Invalid package selected");
-    }
+    const body = await req.json();
+    const { name, email, phone, date, time, vehicle, notes } = body;
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
@@ -54,18 +59,44 @@ serve(async (req) => {
       customerId = customers.data[0].id;
     }
 
-    // Build line items: base package + selected add-ons
-    const lineItems: Array<{ price: string; quantity: number }> = [
-      { price: priceId, quantity: 1 },
-    ];
+    let lineItems: Array<{ price?: string; price_data?: any; quantity: number }> = [];
 
-    if (Array.isArray(addOns)) {
-      for (const addonId of addOns) {
-        const addonPriceId = ADDON_PRICE_MAP[addonId];
-        if (addonPriceId) {
-          lineItems.push({ price: addonPriceId, quantity: 1 });
+    // NEW: Cart-based checkout
+    if (body.cartItems && Array.isArray(body.cartItems)) {
+      for (const item of body.cartItems as CartItem[]) {
+        if (item.stripePriceId) {
+          // Use existing Stripe price ID
+          lineItems.push({ price: item.stripePriceId, quantity: 1 });
+        } else {
+          // Create dynamic price for standalone services
+          lineItems.push({
+            price_data: {
+              currency: "usd",
+              product_data: { name: item.name },
+              unit_amount: Math.round(item.price * 100),
+            },
+            quantity: 1,
+          });
         }
       }
+    }
+    // LEGACY: Package-based checkout (backward compat with old booking forms)
+    else if (body.packageId) {
+      const priceId = PRICE_MAP[body.packageId];
+      if (!priceId) throw new Error("Invalid package selected");
+      lineItems.push({ price: priceId, quantity: 1 });
+
+      // Add legacy add-ons
+      if (Array.isArray(body.addOns)) {
+        for (const addonId of body.addOns) {
+          const addonPriceId = ADDON_PRICE_MAP[addonId];
+          if (addonPriceId) {
+            lineItems.push({ price: addonPriceId, quantity: 1 });
+          }
+        }
+      }
+    } else {
+      throw new Error("No items provided");
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -80,7 +111,7 @@ serve(async (req) => {
         phone,
         date,
         time,
-        vehicle,
+        vehicle: vehicle || "",
         notes: notes || "",
       },
     });
