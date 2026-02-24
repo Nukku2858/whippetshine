@@ -50,22 +50,24 @@ const Navbar = () => {
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-md px-6 py-4 space-y-4 animate-slide-down overflow-hidden">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setOpen(false)}
-              className={cn(
-                "block text-sm tracking-widest uppercase transition-colors",
-                pathname === link.path
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-md px-6 py-4 animate-slide-down overflow-hidden">
+          <div className="flex gap-1 bg-muted/60 rounded-full p-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "flex-1 text-center text-sm tracking-widest uppercase transition-all px-4 py-2 rounded-full font-medium",
+                  pathname === link.path
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </nav>
