@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,9 +6,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { CheckCircle, Phone, ClipboardList } from "lucide-react";
+import { CheckCircle, Phone, ClipboardList, Mic, MicOff, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
+import { useConversation } from "@elevenlabs/react";
+import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
+
 
 type ServiceType = "detailing" | "driveway" | "house";
 
@@ -26,6 +30,49 @@ const IntakeForm = () => {
   const customerEmail = searchParams.get("email") || "";
   const [submitted, setSubmitted] = useState(false);
   const [showPhoneOption, setShowPhoneOption] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  const conversation = useConversation({
+    onConnect: () => {
+      console.log("Connected to ElevenLabs agent");
+      toast.success("Connected! You can start talking.");
+    },
+    onDisconnect: () => {
+      console.log("Disconnected from ElevenLabs agent");
+    },
+    onError: (error) => {
+      console.error("ElevenLabs error:", error);
+      toast.error("Failed to connect to voice assistant.");
+      setIsConnecting(false);
+    },
+  });
+
+  const startVoiceIntake = useCallback(async () => {
+    setIsConnecting(true);
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      const { data, error } = await supabase.functions.invoke("elevenlabs-conversation-token");
+      if (error || !data?.token) {
+        throw new Error(error?.message || "Failed to get conversation token");
+      }
+
+      await conversation.startSession({
+        conversationToken: data.token,
+        connectionType: "webrtc",
+      });
+    } catch (err: any) {
+      console.error("Failed to start voice intake:", err);
+      toast.error(err.message || "Microphone access is required for voice intake.");
+    } finally {
+      setIsConnecting(false);
+    }
+  }, [conversation]);
+
+  const stopVoiceIntake = useCallback(async () => {
+    await conversation.endSession();
+  }, [conversation]);
+
 
   const [detailingData, setDetailingData] = useState({
     year: "",
@@ -118,56 +165,70 @@ const IntakeForm = () => {
               onClick={() => setShowPhoneOption(true)}
               className="gap-2"
             >
-              <Phone size={18} /> AI Phone Intake
+              <Mic size={18} /> Voice Intake
             </Button>
           </div>
 
           {showPhoneOption ? (
-            <form onSubmit={handlePhoneRequest} className="space-y-6 bg-card border border-border rounded-lg p-8">
-              <div className="text-center mb-4">
-                <h3 className="text-xl font-semibold text-foreground mb-2">Phone Intake with AI Assistant</h3>
-                <p className="text-muted-foreground text-sm">
-                  Prefer to talk it out? Our friendly AI assistant will call you to walk through the intake — quick, easy, and conversational.
+            <div className="space-y-6 bg-card border border-border rounded-lg p-8 text-center">
+              <div className="mb-8">
+                <div className={cn(
+                  "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 transition-all duration-500",
+                  conversation.status === "connected" 
+                    ? "bg-primary text-primary-foreground animate-pulse shadow-[0_0_20px_rgba(234,56,76,0.5)]" 
+                    : "bg-secondary text-muted-foreground"
+                )}>
+                  {conversation.status === "connected" ? <Mic size={32} /> : <MicOff size={32} />}
+                </div>
+                <h3 className="text-2xl font-display mb-2">Voice Intake with Jessica</h3>
+                <p className="text-muted-foreground">
+                  {conversation.status === "connected" 
+                    ? "Jessica is listening... Tell her about your vehicle or home."
+                    : "Skip the typing! Talk directly with our AI assistant to provide your service details."}
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  required
-                  type="tel"
-                  value={phoneData.phone}
-                  onChange={(e) => setPhoneData((p) => ({ ...p, phone: e.target.value }))}
-                  placeholder="567-370-4021"
-                  className="bg-secondary border-border"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="preferredTime">Best Time to Call</Label>
-                <Select
-                  value={phoneData.preferredTime}
-                  onValueChange={(v) => setPhoneData((p) => ({ ...p, preferredTime: v }))}
-                  required
+              {conversation.status === "connected" ? (
+                <div className="space-y-4">
+                  <div className="p-4 bg-secondary/50 rounded-lg border border-border italic text-sm">
+                    {conversation.isSpeaking ? "Jessica is speaking..." : "Listening for your input..."}
+                  </div>
+                  <Button 
+                    onClick={stopVoiceIntake} 
+                    variant="destructive" 
+                    size="lg" 
+                    className="w-full font-semibold py-6"
+                  >
+                    End Session
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  onClick={startVoiceIntake} 
+                  disabled={isConnecting}
+                  size="lg" 
+                  className="w-full bg-primary text-primary-foreground hover:bg-scarlet-glow font-semibold text-lg py-6"
                 >
-                  <SelectTrigger className="bg-secondary border-border">
-                    <SelectValue placeholder="When should we call?" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="morning">Morning (8am–12pm)</SelectItem>
-                    <SelectItem value="afternoon">Afternoon (12pm–4pm)</SelectItem>
-                    <SelectItem value="evening">Evening (4pm–7pm)</SelectItem>
-                    <SelectItem value="asap">As soon as possible</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                  {isConnecting ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Connecting...
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="mr-2 h-5 w-5" />
+                      Start Voice Intake
+                    </>
+                  )}
+                </Button>
+              )}
 
-              <Button type="submit" size="lg" className="w-full bg-primary text-primary-foreground hover:bg-scarlet-glow font-semibold text-lg py-6">
-                Request AI Phone Call
-              </Button>
-            </form>
+              <p className="text-xs text-muted-foreground mt-4">
+                Note: This requires microphone access. All information discussed will be used to prepare for your service.
+              </p>
+            </div>
           ) : (
+
             <form onSubmit={handleSubmit} className="space-y-6 bg-card border border-border rounded-lg p-8">
               {/* Hidden pre-filled info */}
               <div className="grid sm:grid-cols-2 gap-4">
