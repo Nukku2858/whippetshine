@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Droplets } from "lucide-react";
 import detailingVideo from "@/assets/detailing-showcase.mp4";
+import ReviewsSection from "@/components/ReviewsSection";
 
 const Index = () => {
   const { hash } = useLocation();
@@ -29,6 +30,7 @@ const Index = () => {
         <PackagesSection />
       </div>
       <BookingSection />
+      <ReviewsSection />
 
       {/* Pressure Washing CTA – desktop only */}
       <section className="hidden md:block py-20 px-6">
