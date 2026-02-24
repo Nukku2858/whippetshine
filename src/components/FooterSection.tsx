@@ -23,7 +23,7 @@ const FooterSection = () => {
           </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <Mail size={16} className="text-primary shrink-0" />
-            <span>info@whippetshine.com</span>
+            <span>whippetshine@gmail.com</span>
           </div>
         </div>
 

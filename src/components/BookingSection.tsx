@@ -99,7 +99,7 @@ const BookingSection = () => {
               type="email"
               value={formData.email}
               onChange={(e) => updateField("email", e.target.value)}
-              placeholder="john@example.com"
+              placeholder="whippetshine@gmail.com"
               className="bg-secondary border-border"
             />
           </div>
