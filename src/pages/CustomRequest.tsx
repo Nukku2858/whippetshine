@@ -133,7 +133,7 @@ const CustomRequest = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="details">What do you need?</Label>
+                <Label htmlFor="details">What do you have in mind?</Label>
                 <Textarea
                   id="details"
                   required
