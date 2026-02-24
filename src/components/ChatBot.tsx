@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { MessageCircle, X, Send } from "lucide-react";
+import { X, Send } from "lucide-react";
+import whippetLogo from "@/assets/whippet-logo.png";
 import { cn } from "@/lib/utils";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -95,56 +96,32 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Floating button – whippet with chat bubble */}
+      {/* Floating chat button – whippet logo with ? badge */}
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          "fixed bottom-5 right-5 z-50 shadow-lg transition-all hover:scale-105",
+          "fixed bottom-5 right-5 z-50 transition-all hover:scale-105",
           open
-            ? "rounded-full p-3.5 bg-primary text-primary-foreground"
-            : "bg-transparent p-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
+            ? "rounded-full p-3.5 bg-primary text-primary-foreground shadow-lg"
+            : "relative p-0 bg-transparent"
         )}
         aria-label={open ? "Close chat" : "Open chat"}
       >
         {open ? (
           <X size={22} />
         ) : (
-          <svg
-            viewBox="0 0 200 100"
-            className="w-[110px] h-[55px]"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* ---- Chat bubble with ? ---- */}
-            <rect x="130" y="0" width="44" height="32" rx="9" className="fill-primary" />
-            <polygon points="140,32 150,32 136,42" className="fill-primary" />
-            <text x="152" y="25" textAnchor="middle" className="fill-primary-foreground" fontSize="22" fontWeight="bold" fontFamily="sans-serif">?</text>
-
-            {/* ---- Full-stride running greyhound (matching reference) ---- */}
-            <g className="fill-primary">
-              {/* Head: small, narrow, pointed snout stretching forward */}
-              <path d="M158,38 Q164,34 172,33 Q178,33 182,35 Q180,38 174,39 Q168,40 162,40 Z" />
-              {/* Ear: small rose ear laid flat */}
-              <path d="M156,36 Q154,30 157,30 Q160,32 158,37 Z" />
-              {/* Long curved neck flowing into shoulders */}
-              <path d="M140,50 Q146,44 152,40 L158,38 L162,40 Q154,44 148,50 Q144,54 142,54 Z" />
-              {/* Deep chest curving down */}
-              <path d="M130,48 Q136,44 140,48 Q142,54 142,62 Q140,66 136,66 Q132,64 130,58 Q128,52 130,48 Z" />
-              {/* Narrow body with extreme tuck-up (greyhound signature) */}
-              <path d="M68,52 Q82,46 96,44 Q110,42 124,44 Q128,46 130,48 L128,52 Q120,56 110,54 Q96,52 82,52 Q74,52 68,52 Z" />
-              {/* Front leg 1: fully stretched forward and down */}
-              <path d="M136,66 Q144,72 152,78 Q156,82 160,88 Q162,92 162,94 L158,94 Q158,90 154,84 Q148,76 140,68 Z" />
-              {/* Front leg 2: slightly behind */}
-              <path d="M132,64 Q138,72 142,80 Q144,86 146,92 L142,92 Q140,86 136,78 Q132,70 130,62 Z" />
-              {/* Rear leg 1: powerful thigh, extended far back */}
-              <path d="M76,52 Q68,58 58,66 Q50,74 44,84 Q42,90 40,94 L44,94 Q46,88 50,80 Q58,70 66,62 Q72,56 76,52 Z" />
-              {/* Rear leg 2: kicked even further back */}
-              <path d="M68,50 Q58,54 46,62 Q36,72 28,82 Q24,88 22,94 L26,94 Q28,86 34,78 Q42,66 54,56 Q62,50 68,50 Z" />
-              {/* Long flowing tail curving up */}
-              <path d="M68,50 Q56,44 42,40 Q30,38 18,38 Q12,38 8,40 Q14,37 22,37 Q34,38 48,42 Q58,46 66,50 Z" />
-            </g>
-            {/* Eye */}
-            <circle cx="172" cy="35.5" r="1.4" className="fill-background" />
-          </svg>
+          <div className="relative w-16 h-16 drop-shadow-[0_3px_10px_rgba(0,0,0,0.5)]">
+            {/* Whippet logo */}
+            <img
+              src={whippetLogo}
+              alt=""
+              className="w-full h-full object-contain"
+            />
+            {/* Chat ? badge */}
+            <span className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-md border-2 border-background">
+              ?
+            </span>
+          </div>
         )}
       </button>
 
