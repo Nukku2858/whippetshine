@@ -11,6 +11,8 @@ interface Profile {
   vehicle_make: string | null;
   vehicle_model: string | null;
   points_balance: number;
+  referral_code: string | null;
+  referred_by: string | null;
 }
 
 interface AuthContextType {
