@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, Gift, Save, CalendarDays, Clock, DollarSign } from "lucide-react";
+import { ArrowLeft, Star, Gift, Save, CalendarDays, Clock, DollarSign, XCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,6 +32,12 @@ interface Booking {
   created_at: string;
 }
 
+const STATUS_STYLES: Record<string, string> = {
+  confirmed: "bg-green-500/20 text-green-400",
+  cancelled: "bg-destructive/20 text-destructive",
+  rescheduled: "bg-yellow-500/20 text-yellow-400",
+};
+
 const Account = () => {
   const navigate = useNavigate();
   const { user, profile, loading, refreshProfile, signOut } = useAuth();
@@ -41,6 +49,13 @@ const Account = () => {
   const [saving, setSaving] = useState(false);
   const [transactions, setTransactions] = useState<PointsTransaction[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
+
+  // Cancel/Reschedule state
+  const [cancelId, setCancelId] = useState<string | null>(null);
+  const [rescheduleBooking, setRescheduleBooking] = useState<Booking | null>(null);
+  const [newDate, setNewDate] = useState("");
+  const [newTime, setNewTime] = useState("");
+  const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) navigate("/auth");
@@ -56,6 +71,19 @@ const Account = () => {
     }
   }, [profile]);
 
+  const fetchBookings = () => {
+    if (!user) return;
+    supabase
+      .from("bookings")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(50)
+      .then(({ data }) => {
+        if (data) setBookings(data as Booking[]);
+      });
+  };
+
   useEffect(() => {
     if (user) {
       supabase
@@ -67,16 +95,7 @@ const Account = () => {
         .then(({ data }) => {
           if (data) setTransactions(data as PointsTransaction[]);
         });
-
-      supabase
-        .from("bookings")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(50)
-        .then(({ data }) => {
-          if (data) setBookings(data as Booking[]);
-        });
+      fetchBookings();
     }
   }, [user]);
 
@@ -101,12 +120,114 @@ const Account = () => {
     setSaving(false);
   };
 
+  const handleCancel = async () => {
+    if (!cancelId) return;
+    setActionLoading(true);
+    const { error } = await supabase
+      .from("bookings")
+      .update({ status: "cancelled" })
+      .eq("id", cancelId);
+    if (error) {
+      toast.error("Failed to cancel appointment");
+    } else {
+      toast.success("Appointment cancelled. Contact us for a refund if needed.");
+      fetchBookings();
+    }
+    setCancelId(null);
+    setActionLoading(false);
+  };
+
+  const handleReschedule = async () => {
+    if (!rescheduleBooking || !newDate || !newTime) return;
+    setActionLoading(true);
+    const { error } = await supabase
+      .from("bookings")
+      .update({
+        appointment_date: newDate,
+        appointment_time: newTime,
+        status: "rescheduled",
+      })
+      .eq("id", rescheduleBooking.id);
+    if (error) {
+      toast.error("Failed to reschedule");
+    } else {
+      toast.success("Appointment rescheduled! We'll confirm the new time shortly.");
+      fetchBookings();
+    }
+    setRescheduleBooking(null);
+    setNewDate("");
+    setNewTime("");
+    setActionLoading(false);
+  };
+
   const handleSignOut = async () => {
     await signOut();
     navigate("/");
   };
 
   if (loading) return null;
+
+  const upcomingBookings = bookings.filter((b) => b.status === "confirmed" || b.status === "rescheduled");
+  const pastBookings = bookings.filter((b) => b.status === "cancelled" || (b.status !== "confirmed" && b.status !== "rescheduled"));
+
+  const renderBookingCard = (b: Booking, showActions: boolean) => (
+    <div key={b.id} className="bg-secondary/50 rounded-lg px-4 py-4 space-y-3">
+      <div className="flex items-center justify-between">
+        <p className="font-medium text-foreground">{b.service_name}</p>
+        <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${STATUS_STYLES[b.status] || STATUS_STYLES.confirmed}`}>
+          {b.status}
+        </span>
+      </div>
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        {b.appointment_date && (
+          <span className="flex items-center gap-1">
+            <CalendarDays size={12} className="text-primary" />
+            {b.appointment_date}
+          </span>
+        )}
+        {b.appointment_time && (
+          <span className="flex items-center gap-1">
+            <Clock size={12} className="text-primary" />
+            {b.appointment_time}
+          </span>
+        )}
+        <span className="flex items-center gap-1">
+          <DollarSign size={12} className="text-primary" />
+          ${b.amount_paid}
+        </span>
+      </div>
+      {b.vehicle_or_address && (
+        <p className="text-xs text-muted-foreground">{b.vehicle_or_address}</p>
+      )}
+      <p className="text-[10px] text-muted-foreground/60">
+        Booked {new Date(b.created_at).toLocaleDateString()}
+      </p>
+      {showActions && (
+        <div className="flex gap-2 pt-1">
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs border-border hover:bg-muted gap-1.5"
+            onClick={() => {
+              setRescheduleBooking(b);
+              setNewDate(b.appointment_date || "");
+              setNewTime(b.appointment_time || "");
+            }}
+          >
+            <RefreshCw size={12} /> Reschedule
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs border-destructive/30 text-destructive hover:bg-destructive/10 gap-1.5"
+            onClick={() => setCancelId(b.id)}
+          >
+            <XCircle size={12} /> Cancel
+          </Button>
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <main className="min-h-screen bg-background">
@@ -165,54 +286,33 @@ const Account = () => {
             </Button>
           </div>
 
-          {/* Past Purchases & Appointments */}
+          {/* Upcoming Appointments */}
           <div className="bg-card border border-border rounded-lg p-8 mb-8">
             <h2 className="text-2xl font-display mb-6 flex items-center gap-2">
-              <CalendarDays size={20} className="text-primary" /> Past Appointments
+              <CalendarDays size={20} className="text-primary" /> Upcoming Appointments
             </h2>
-            {bookings.length === 0 ? (
+            {upcomingBookings.length === 0 ? (
               <p className="text-muted-foreground text-sm text-center py-4">
-                No past bookings yet. Your appointment history will appear here!
+                No upcoming appointments. Book a service to get started!
               </p>
             ) : (
               <div className="space-y-3">
-                {bookings.map((b) => (
-                  <div key={b.id} className="bg-secondary/50 rounded-lg px-4 py-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="font-medium text-foreground">{b.service_name}</p>
-                      <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full capitalize">
-                        {b.status}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                      {b.appointment_date && (
-                        <span className="flex items-center gap-1">
-                          <CalendarDays size={12} className="text-primary" />
-                          {b.appointment_date}
-                        </span>
-                      )}
-                      {b.appointment_time && (
-                        <span className="flex items-center gap-1">
-                          <Clock size={12} className="text-primary" />
-                          {b.appointment_time}
-                        </span>
-                      )}
-                      <span className="flex items-center gap-1">
-                        <DollarSign size={12} className="text-primary" />
-                        ${b.amount_paid}
-                      </span>
-                    </div>
-                    {b.vehicle_or_address && (
-                      <p className="text-xs text-muted-foreground">{b.vehicle_or_address}</p>
-                    )}
-                    <p className="text-[10px] text-muted-foreground/60">
-                      Booked {new Date(b.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                ))}
+                {upcomingBookings.map((b) => renderBookingCard(b, true))}
               </div>
             )}
           </div>
+
+          {/* Past Appointments */}
+          {pastBookings.length > 0 && (
+            <div className="bg-card border border-border rounded-lg p-8 mb-8">
+              <h2 className="text-2xl font-display mb-6 flex items-center gap-2">
+                <Clock size={20} className="text-muted-foreground" /> Past Appointments
+              </h2>
+              <div className="space-y-3">
+                {pastBookings.map((b) => renderBookingCard(b, false))}
+              </div>
+            </div>
+          )}
 
           {/* Points History */}
           <div className="bg-card border border-border rounded-lg p-8 mb-8">
@@ -248,6 +348,87 @@ const Account = () => {
         </div>
       </section>
       <FooterSection />
+
+      {/* Cancel Confirmation Dialog */}
+      <Dialog open={!!cancelId} onOpenChange={() => setCancelId(null)}>
+        <DialogContent className="bg-card border-border">
+          <DialogHeader>
+            <DialogTitle>Cancel Appointment</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to cancel this appointment? You can contact us at{" "}
+              <a href="mailto:whippetshine@gmail.com" className="text-primary hover:underline">
+                whippetshine@gmail.com
+              </a>{" "}
+              to arrange a refund or rescheduling.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setCancelId(null)} className="border-border">
+              Keep Appointment
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleCancel}
+              disabled={actionLoading}
+            >
+              {actionLoading ? "Cancelling..." : "Yes, Cancel"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Reschedule Dialog */}
+      <Dialog open={!!rescheduleBooking} onOpenChange={() => setRescheduleBooking(null)}>
+        <DialogContent className="bg-card border-border">
+          <DialogHeader>
+            <DialogTitle>Reschedule Appointment</DialogTitle>
+            <DialogDescription>
+              Pick a new preferred date and time. All rescheduled appointments are subject to availability and will be confirmed by our team.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-2">
+              <Label>New Date</Label>
+              <Input
+                type="date"
+                value={newDate}
+                onChange={(e) => setNewDate(e.target.value)}
+                className="bg-secondary border-border"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>New Time</Label>
+              <Select value={newTime} onValueChange={setNewTime}>
+                <SelectTrigger className="bg-secondary border-border">
+                  <SelectValue placeholder="Select time" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="8am">8:00 AM</SelectItem>
+                  <SelectItem value="9am">9:00 AM</SelectItem>
+                  <SelectItem value="10am">10:00 AM</SelectItem>
+                  <SelectItem value="11am">11:00 AM</SelectItem>
+                  <SelectItem value="12pm">12:00 PM</SelectItem>
+                  <SelectItem value="1pm">1:00 PM</SelectItem>
+                  <SelectItem value="2pm">2:00 PM</SelectItem>
+                  <SelectItem value="3pm">3:00 PM</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setRescheduleBooking(null)} className="border-border">
+              Never Mind
+            </Button>
+            <Button
+              onClick={handleReschedule}
+              disabled={actionLoading || !newDate || !newTime}
+              className="bg-primary text-primary-foreground hover:bg-scarlet-glow"
+            >
+              {actionLoading ? "Rescheduling..." : "Confirm Reschedule"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 };
