@@ -119,33 +119,31 @@ const ChatBot = () => {
             <polygon points="108,26 116,26 106,34" className="fill-primary" />
             <text x="118" y="20" textAnchor="middle" className="fill-primary-foreground" fontSize="18" fontWeight="bold" fontFamily="sans-serif">?</text>
 
-            {/* Running whippet/greyhound silhouette */}
+            {/* Running greyhound silhouette */}
             <g className="fill-primary">
-              {/* Head – long pointed snout */}
-              <path d="M120,32 Q126,28 132,28 Q136,28 138,30 Q136,32 132,33 Q128,34 124,34 Z" />
-              {/* Ear flicked back */}
-              <path d="M120,30 Q116,26 118,24 Q120,24 122,28 Z" />
-              {/* Neck – long and sleek */}
-              <path d="M110,38 Q114,34 120,32 L124,34 Q118,36 114,40 Z" />
-              {/* Body – streamlined */}
-              <path d="M40,42 Q55,34 75,34 Q90,34 105,36 Q112,37 114,40 Q115,44 110,48 Q95,54 75,52 Q55,50 40,46 Z" />
-              {/* Chest / front */}
-              <path d="M105,36 Q110,37 114,40 Q112,44 108,46 Q104,42 105,36 Z" />
-              {/* Front leg 1 – extended forward */}
-              <path d="M108,46 Q112,52 118,60 Q120,64 122,68 L119,68 Q116,62 112,56 Q108,50 106,48 Z" />
-              {/* Front leg 2 – tucked */}
-              <path d="M100,48 Q104,54 108,62 Q110,66 110,68 L107,68 Q106,64 104,58 Q100,52 98,48 Z" />
-              {/* Belly line */}
-              <path d="M50,50 Q65,56 80,54 Q90,52 98,48 Q90,54 80,56 Q65,58 50,52 Z" />
-              {/* Rear leg 1 – extended back */}
-              <path d="M50,50 Q44,54 38,60 Q34,64 30,68 L33,68 Q36,64 40,58 Q46,52 52,50 Z" />
-              {/* Rear leg 2 – kicking back */}
-              <path d="M44,48 Q38,52 32,56 Q26,60 20,66 Q18,68 16,68 L19,66 Q24,60 30,54 Q36,50 42,46 Z" />
-              {/* Tail – long flowing */}
-              <path d="M40,42 Q32,38 24,36 Q18,34 12,34 Q8,34 6,36 Q10,34 16,36 Q22,38 30,42 Q36,44 40,44 Z" />
+              {/* Head – narrow skull, very long tapered muzzle */}
+              <path d="M118,30 Q124,26 130,25 Q136,24 142,26 L144,28 Q140,30 136,31 Q130,32 124,33 Z" />
+              {/* Rose ear folded back */}
+              <path d="M118,28 Q115,23 117,21 Q119,21 121,26 Z" />
+              {/* Long arched neck */}
+              <path d="M106,40 Q110,36 116,32 L124,33 Q116,36 110,42 Z" />
+              {/* Deep chest – greyhound's defining feature */}
+              <path d="M96,36 Q102,34 106,38 Q108,42 108,48 Q106,52 100,52 Q96,50 94,46 Q94,40 96,36 Z" />
+              {/* Narrow tucked waist – extreme tuck-up */}
+              <path d="M56,42 Q68,38 80,36 Q90,35 96,36 L94,46 Q88,48 78,47 Q68,46 58,44 Z" />
+              {/* Front leg 1 – long, reaching far forward */}
+              <path d="M100,52 Q108,58 116,64 Q120,68 124,72 L121,72 Q118,68 112,62 Q106,56 100,52 Z" />
+              {/* Front leg 2 – slightly behind */}
+              <path d="M96,50 Q102,58 106,64 Q108,68 110,72 L107,72 Q104,66 100,60 Q96,54 94,50 Z" />
+              {/* Rear leg 1 – powerful thigh, extended back */}
+              <path d="M62,44 Q56,48 48,56 Q42,62 36,70 Q34,72 34,72 L37,72 Q40,66 46,60 Q52,52 58,46 Z" />
+              {/* Rear leg 2 – kicking far back */}
+              <path d="M56,42 Q48,46 40,52 Q32,58 24,66 Q20,70 18,72 L21,72 Q26,66 34,58 Q42,50 50,44 Z" />
+              {/* Long thin whip tail – curves up elegantly */}
+              <path d="M56,42 Q46,38 36,36 Q26,34 16,34 Q10,34 6,36 Q12,34 20,35 Q30,37 40,40 Q48,42 54,44 Z" />
             </g>
             {/* Eye */}
-            <circle cx="130" cy="30" r="1.2" className="fill-background" />
+            <circle cx="134" cy="27" r="1.2" className="fill-background" />
           </svg>
         )}
       </button>
