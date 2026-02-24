@@ -1,4 +1,4 @@
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -11,8 +11,19 @@ const PaymentSuccess = () => {
         <CheckCircle className="mx-auto text-primary" size={64} />
         <h1 className="text-4xl font-display">Payment Confirmed</h1>
         <p className="text-muted-foreground text-lg">
-          Thank you for your booking! We'll reach out to confirm the details shortly.
+          Thank you for your booking! We've sent a confirmation email with your next steps.
         </p>
+        <div className="bg-card border border-border rounded-lg p-6 text-left space-y-3">
+          <div className="flex items-start gap-3">
+            <Mail className="text-primary mt-1 shrink-0" size={20} />
+            <div>
+              <p className="text-foreground font-medium">Check your inbox</p>
+              <p className="text-muted-foreground text-sm">
+                You'll receive a confirmation email with a link to complete your intake form. This helps us prepare for your appointment.
+              </p>
+            </div>
+          </div>
+        </div>
         <Button onClick={() => navigate("/")} variant="outline" size="lg">
           Back to Home
         </Button>
