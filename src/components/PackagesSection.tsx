@@ -21,14 +21,14 @@ const standardFeatures = [
 ];
 
 const addOns = [
-  { name: "Clay bar decontamination", price: 75, description: "Removes embedded contaminants like tree sap, industrial fallout, and overspray from your paint, leaving a glass-smooth finish ready for protection." },
-  { name: "Ceramic boost & sealant", price: 120, description: "A high-gloss ceramic layer that shields your paint from UV rays, water spots, and light scratches for up to 6 months of lasting protection." },
-  { name: "Engine bay detail & dressing", price: 85, description: "Full degrease and deep clean of the engine compartment, followed by a UV-protectant dressing for a showroom-quality underhood appearance." },
-  { name: "Headlight restoration", price: 65, description: "Wet-sands and polishes oxidized, yellowed headlight lenses back to crystal clarity, improving both looks and nighttime visibility." },
-  { name: "Leather cleaning & conditioning", price: 60, description: "Gently lifts dirt and oils from leather surfaces, then applies a rich conditioner to prevent cracking, fading, and premature wear." },
-  { name: "Deep carpet & upholstery shampoo", price: 80, description: "Hot-water extraction and agitation of all fabric surfaces — carpets, mats, and seats — to remove deep stains, dirt, and allergens." },
-  { name: "Pet hair removal", price: 50, description: "Specialized tools and techniques to extract stubborn pet hair from every crevice, seat seam, and carpet fiber in your vehicle." },
-  { name: "Odor elimination treatment", price: 55, description: "Targets odor at the source with an ozone or enzyme-based treatment that neutralizes smoke, food, pet, and mildew smells — not just masks them." },
+  { name: "Clay bar decontamination", addonPrice: 75, standalonePrice: 125, description: "Removes embedded contaminants like tree sap, industrial fallout, and overspray from your paint, leaving a glass-smooth finish ready for protection." },
+  { name: "Ceramic boost & sealant", addonPrice: 120, standalonePrice: 200, description: "A high-gloss ceramic layer that shields your paint from UV rays, water spots, and light scratches for up to 6 months of lasting protection." },
+  { name: "Engine bay detail & dressing", addonPrice: 85, standalonePrice: 150, description: "Full degrease and deep clean of the engine compartment, followed by a UV-protectant dressing for a showroom-quality underhood appearance." },
+  { name: "Headlight restoration", addonPrice: 65, standalonePrice: 110, description: "Wet-sands and polishes oxidized, yellowed headlight lenses back to crystal clarity, improving both looks and nighttime visibility." },
+  { name: "Leather cleaning & conditioning", addonPrice: 60, standalonePrice: 100, description: "Gently lifts dirt and oils from leather surfaces, then applies a rich conditioner to prevent cracking, fading, and premature wear." },
+  { name: "Deep carpet & upholstery shampoo", addonPrice: 80, standalonePrice: 140, description: "Hot-water extraction and agitation of all fabric surfaces — carpets, mats, and seats — to remove deep stains, dirt, and allergens." },
+  { name: "Pet hair removal", addonPrice: 50, standalonePrice: 85, description: "Specialized tools and techniques to extract stubborn pet hair from every crevice, seat seam, and carpet fiber in your vehicle." },
+  { name: "Odor elimination treatment", addonPrice: 55, standalonePrice: 95, description: "Targets odor at the source with an ozone or enzyme-based treatment that neutralizes smoke, food, pet, and mildew smells — not just masks them." },
 ];
 
 const packages: Package[] = [
@@ -72,7 +72,10 @@ const AddOnsList = () => {
               )}
               <span className="text-sm text-secondary-foreground">{addon.name}</span>
             </div>
-            <span className="text-sm font-semibold text-primary ml-4 whitespace-nowrap">+${addon.price}</span>
+            <div className="flex flex-col items-end ml-4">
+              <span className="text-sm font-semibold text-primary whitespace-nowrap">+${addon.addonPrice}</span>
+              <span className="text-[10px] text-muted-foreground whitespace-nowrap">${addon.standalonePrice} standalone</span>
+            </div>
           </div>
           {openIndex === i && (
             <p className="mt-3 ml-7 text-xs text-muted-foreground leading-relaxed">
@@ -178,10 +181,11 @@ const PackagesSection = () => {
         {/* Add-Ons Section */}
         <div className="mt-12 max-w-3xl mx-auto">
           <div className="text-center mb-6">
-            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Enhance Your Detail</p>
+            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Add-On or Standalone</p>
             <h3 className="text-2xl md:text-3xl font-display">
-              Available <span className="text-primary">Add-Ons</span>
+              Additional <span className="text-primary">Services</span>
             </h3>
+            <p className="text-muted-foreground text-sm mt-2">Bundle with a package to save, or book as a standalone service.</p>
           </div>
           <AddOnsList />
         </div>
