@@ -87,8 +87,8 @@ const PackagesSection = () => {
                 </span>
               )}
               <h3 className="text-2xl font-display mb-2">{pkg.name}</h3>
-              <p className="text-muted-foreground text-sm mb-6">{pkg.description}</p>
-              <div className="mb-8">
+              <p className="text-muted-foreground text-sm mb-6 min-h-[48px]">{pkg.description}</p>
+              <div className="mb-8 h-12 flex items-center">
                 <span className="text-4xl font-display text-primary">${pkg.price}</span>
               </div>
               <ul className="space-y-3 mb-8 flex-1">
@@ -114,11 +114,11 @@ const PackagesSection = () => {
 
           {/* Custom Request card */}
           <div className="relative rounded-lg p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 bg-card border border-dashed border-border hover:border-primary">
-            <h3 className="text-2xl font-display mb-2">Custom</h3>
-            <p className="text-muted-foreground text-sm mb-6">
+            <h3 className="text-2xl mb-2 italic font-black" style={{ fontFamily: "'Permanent Marker', cursive" }}>Custom</h3>
+            <p className="text-muted-foreground text-sm mb-6 min-h-[48px]">
               Need something unique? Request a custom quote tailored to your exact needs.
             </p>
-            <div className="mb-8">
+            <div className="mb-8 h-12 flex items-center">
               <span className="text-4xl font-display text-primary">Quote</span>
             </div>
             <ul className="space-y-3 mb-8 flex-1">
