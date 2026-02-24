@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import PWHeroSection from "@/components/pressure-washing/PWHeroSection";
 import PWPackagesSection from "@/components/pressure-washing/PWPackagesSection";
 import PWHousePackagesSection from "@/components/pressure-washing/PWHousePackagesSection";
-import PWBookingSection from "@/components/pressure-washing/PWBookingSection";
+
 import FooterSection from "@/components/FooterSection";
 import ChatBot from "@/components/ChatBot";
 
@@ -26,7 +26,7 @@ const PressureWashing = () => {
         <PWPackagesSection />
         <PWHousePackagesSection />
       </div>
-      <PWBookingSection />
+      
       <FooterSection />
       <ChatBot />
     </main>
