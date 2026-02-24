@@ -85,7 +85,7 @@ const BookingSection = () => {
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => updateField("phone", e.target.value)}
-                placeholder="(419) 555-1234"
+                placeholder="567-370-4021"
                 className="bg-secondary border-border"
               />
             </div>
