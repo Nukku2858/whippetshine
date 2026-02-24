@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "npm:@supabase/supabase-js@2.57.2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,22 +15,33 @@ serve(async (req) => {
   }
 
   try {
+    // Authenticate the user
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const ELEVENLABS_API_KEY = Deno.env.get("ELEVENLABS_API_KEY");
     if (!ELEVENLABS_API_KEY) {
       throw new Error("ELEVENLABS_API_KEY is not configured");
-    }
-
-    const url = new URL(req.url);
-    const action = url.searchParams.get("action");
-
-    if (action === "list") {
-      const response = await fetch("https://api.elevenlabs.io/v1/convai/agents", {
-        headers: { "xi-api-key": ELEVENLABS_API_KEY },
-      });
-      const data = await response.json();
-      return new Response(JSON.stringify(data), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
     }
 
     const response = await fetch(
@@ -42,13 +54,12 @@ serve(async (req) => {
     );
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`ElevenLabs API error: ${JSON.stringify(errorData)}`);
+      throw new Error("ElevenLabs API error");
     }
 
-    const { token } = await response.json();
+    const { token: convToken } = await response.json();
 
-    return new Response(JSON.stringify({ token }), {
+    return new Response(JSON.stringify({ token: convToken }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error: any) {
