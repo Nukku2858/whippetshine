@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LogIn, UserPlus } from "lucide-react";
+import { ArrowLeft, LogIn, UserPlus, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
+import whippetLogo from "@/assets/whippet-logo.png";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -42,8 +43,15 @@ const Auth = () => {
   return (
     <main className="min-h-screen bg-background">
       <Navbar />
-      <section className="py-24 px-6">
-        <div className="max-w-md mx-auto">
+      <section className="relative py-24 px-6 overflow-hidden">
+        {/* Repeating watermark */}
+        <div className="absolute inset-0 flex items-center pointer-events-none select-none overflow-hidden opacity-[0.04]">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <img key={i} src={whippetLogo} alt="" className="w-44 md:w-64 mix-blend-screen shrink-0 mx-6" />
+          ))}
+        </div>
+
+        <div className="relative max-w-md mx-auto">
           <Button
             variant="ghost"
             onClick={() => navigate("/")}
@@ -56,9 +64,14 @@ const Auth = () => {
             <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">
               Loyalty Program
             </p>
-            <h1 className="text-5xl md:text-7xl mb-4 font-display tracking-tight">
-              <span className="text-foreground">{mode === "login" ? "WELCOME" : "JOIN"}</span>{" "}
-              <span className="text-primary drop-shadow-[0_0_15px_rgba(234,56,76,0.6)]">BACK</span>
+            <h1
+              className="text-5xl md:text-7xl mb-4 italic font-black tracking-tight"
+              style={{ fontFamily: "'Permanent Marker', cursive" }}
+            >
+              <span className="text-foreground">{mode === "login" ? "WELCOME" : "JOIN THE"}</span>{" "}
+              <span className="text-primary drop-shadow-[0_0_15px_rgba(234,56,76,0.6)]">
+                {mode === "login" ? "BACK" : "PACK"}
+              </span>
             </h1>
             <p className="text-muted-foreground text-lg">
               {mode === "login"
@@ -69,8 +82,16 @@ const Auth = () => {
 
           <form
             onSubmit={handleSubmit}
-            className="space-y-6 bg-card border border-border rounded-lg p-8"
+            className="relative space-y-6 bg-card border border-border rounded-lg p-8 overflow-hidden"
           >
+            {/* Whippet watermark inside form */}
+            <img
+              src={whippetLogo}
+              alt=""
+              aria-hidden="true"
+              className="absolute right-4 bottom-4 w-32 h-32 object-contain opacity-[0.06] pointer-events-none select-none"
+            />
+
             <div className="flex bg-muted/60 rounded-full p-1 mb-2">
               <button
                 type="button"
@@ -138,7 +159,13 @@ const Auth = () => {
           </form>
 
           <div className="mt-8 bg-card border border-border rounded-lg p-6 text-center">
-            <p className="text-primary font-display text-xl mb-1">Earn 1 point per $1 spent</p>
+            <Star className="mx-auto text-primary mb-2" size={24} />
+            <p
+              className="text-primary text-2xl mb-1"
+              style={{ fontFamily: "'Permanent Marker', cursive" }}
+            >
+              Earn 1 point per $1 spent
+            </p>
             <p className="text-muted-foreground text-sm">
               100 points = $5 off your next booking. Points never expire!
             </p>
