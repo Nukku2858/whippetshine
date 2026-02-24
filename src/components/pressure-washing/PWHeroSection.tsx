@@ -28,7 +28,7 @@ const PWHeroSection = () => {
           </span>
         </h1>
         <p className="text-white text-lg md:text-xl max-w-2xl mx-auto mb-10 opacity-0 animate-fade-up" style={{ animationDelay: "0.3s" }}>
-          Driveways, sidewalks & patios — restored to like-new condition.
+          Houses, driveways, sidewalks & patios — restored to like-new condition.
         </p>
         <div className="opacity-0 animate-fade-up" style={{ animationDelay: "0.45s" }}>
           <Button
