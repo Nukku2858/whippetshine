@@ -95,16 +95,29 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating button – whippet silhouette */}
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          "fixed bottom-5 right-5 z-50 rounded-full p-3.5 shadow-lg transition-all",
-          "bg-primary text-primary-foreground hover:scale-105"
+          "fixed bottom-5 right-5 z-50 shadow-lg transition-all hover:scale-105",
+          open ? "rounded-full p-3.5 bg-primary text-primary-foreground" : "bg-transparent p-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
         )}
         aria-label={open ? "Close chat" : "Open chat"}
       >
-        {open ? <X size={22} /> : <MessageCircle size={22} />}
+        {open ? (
+          <X size={22} />
+        ) : (
+          <svg
+            viewBox="0 0 120 80"
+            className="w-16 h-11 fill-primary hover:fill-scarlet-glow transition-colors"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Whippet / greyhound silhouette facing left */}
+            <path d="M10,58 Q8,52 12,48 Q14,44 18,42 Q22,38 26,32 Q28,26 32,22 Q36,18 42,16 Q48,14 54,14 Q58,14 62,16 Q64,18 64,22 Q66,20 70,18 Q74,16 78,18 Q76,22 74,26 Q80,24 86,26 Q92,28 96,32 Q100,36 102,42 Q104,48 106,54 Q108,60 110,66 L106,66 Q104,58 102,52 Q100,48 98,46 Q96,50 94,56 Q92,62 90,66 L86,66 Q88,58 88,52 Q86,46 82,42 Q78,38 72,36 Q66,34 60,34 Q54,36 48,40 Q44,44 40,50 Q38,56 36,66 L32,66 Q34,54 36,48 Q32,52 28,58 Q26,62 24,66 L20,66 Q22,60 24,54 Q20,56 16,58 Q14,60 10,58 Z" />
+            {/* Eye */}
+            <circle cx="68" cy="22" r="1.5" className="fill-background" />
+          </svg>
+        )}
       </button>
 
       {/* Chat panel */}
