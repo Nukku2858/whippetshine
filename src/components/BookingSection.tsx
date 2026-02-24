@@ -75,7 +75,7 @@ const BookingSection = () => {
   };
 
   return (
-    <section id="booking" className="py-24 px-6 bg-card/50">
+    <section id="booking" className="py-24 px-6 bg-card/50 scroll-mt-20">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-12">
           <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">Schedule Your Detail</p>
