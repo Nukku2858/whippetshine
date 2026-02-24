@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          amount_paid: number
+          appointment_date: string | null
+          appointment_time: string | null
+          created_at: string
+          currency: string
+          id: string
+          notes: string | null
+          service_name: string
+          service_type: string
+          status: string
+          stripe_session_id: string | null
+          user_id: string
+          vehicle_or_address: string | null
+        }
+        Insert: {
+          amount_paid?: number
+          appointment_date?: string | null
+          appointment_time?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          notes?: string | null
+          service_name: string
+          service_type?: string
+          status?: string
+          stripe_session_id?: string | null
+          user_id: string
+          vehicle_or_address?: string | null
+        }
+        Update: {
+          amount_paid?: number
+          appointment_date?: string | null
+          appointment_time?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          notes?: string | null
+          service_name?: string
+          service_type?: string
+          status?: string
+          stripe_session_id?: string | null
+          user_id?: string
+          vehicle_or_address?: string | null
+        }
+        Relationships: []
+      }
       points_transactions: {
         Row: {
           created_at: string
