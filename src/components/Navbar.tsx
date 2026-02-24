@@ -50,7 +50,7 @@ const Navbar = () => {
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-md px-6 py-4 space-y-4">
+        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-md px-6 py-4 space-y-4 animate-slide-down overflow-hidden">
           {navLinks.map((link) => (
             <Link
               key={link.path}
