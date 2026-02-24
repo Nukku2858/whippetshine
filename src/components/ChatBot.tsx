@@ -110,40 +110,41 @@ const ChatBot = () => {
           <X size={22} />
         ) : (
           <svg
-            viewBox="0 0 160 80"
-            className="w-[88px] h-[44px]"
+            viewBox="0 0 120 100"
+            className="w-[96px] h-[80px]"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Chat bubble with ? */}
-            <rect x="100" y="0" width="36" height="26" rx="8" className="fill-primary" />
-            <polygon points="108,26 116,26 106,34" className="fill-primary" />
-            <text x="118" y="20" textAnchor="middle" className="fill-primary-foreground" fontSize="18" fontWeight="bold" fontFamily="sans-serif">?</text>
+            {/* ---- Chat bubble with ? ---- */}
+            <rect x="62" y="2" width="52" height="36" rx="10" className="fill-primary" />
+            <polygon points="72,38 82,38 70,48" className="fill-primary" />
+            <text x="88" y="30" textAnchor="middle" className="fill-primary-foreground" fontSize="26" fontWeight="bold" fontFamily="sans-serif">?</text>
 
-            {/* Running greyhound silhouette */}
-            <g className="fill-primary">
-              {/* Head – narrow skull, very long tapered muzzle */}
-              <path d="M118,30 Q124,26 130,25 Q136,24 142,26 L144,28 Q140,30 136,31 Q130,32 124,33 Z" />
-              {/* Rose ear folded back */}
-              <path d="M118,28 Q115,23 117,21 Q119,21 121,26 Z" />
-              {/* Long arched neck */}
-              <path d="M106,40 Q110,36 116,32 L124,33 Q116,36 110,42 Z" />
-              {/* Deep chest – greyhound's defining feature */}
-              <path d="M96,36 Q102,34 106,38 Q108,42 108,48 Q106,52 100,52 Q96,50 94,46 Q94,40 96,36 Z" />
-              {/* Narrow tucked waist – extreme tuck-up */}
-              <path d="M56,42 Q68,38 80,36 Q90,35 96,36 L94,46 Q88,48 78,47 Q68,46 58,44 Z" />
-              {/* Front leg 1 – long, reaching far forward */}
-              <path d="M100,52 Q108,58 116,64 Q120,68 124,72 L121,72 Q118,68 112,62 Q106,56 100,52 Z" />
-              {/* Front leg 2 – slightly behind */}
-              <path d="M96,50 Q102,58 106,64 Q108,68 110,72 L107,72 Q104,66 100,60 Q96,54 94,50 Z" />
-              {/* Rear leg 1 – powerful thigh, extended back */}
-              <path d="M62,44 Q56,48 48,56 Q42,62 36,70 Q34,72 34,72 L37,72 Q40,66 46,60 Q52,52 58,46 Z" />
-              {/* Rear leg 2 – kicking far back */}
-              <path d="M56,42 Q48,46 40,52 Q32,58 24,66 Q20,70 18,72 L21,72 Q26,66 34,58 Q42,50 50,44 Z" />
-              {/* Long thin whip tail – curves up elegantly */}
-              <path d="M56,42 Q46,38 36,36 Q26,34 16,34 Q10,34 6,36 Q12,34 20,35 Q30,37 40,40 Q48,42 54,44 Z" />
+            {/* ---- Running greyhound silhouette ---- */}
+            <g className="fill-primary" transform="translate(2,36) scale(0.95)">
+              {/* Head – long narrow snout */}
+              <ellipse cx="100" cy="10" rx="8" ry="5" />
+              <path d="M108,8 Q114,6 118,8 L118,12 Q114,14 108,12 Z" />
+              {/* Eye */}
+              <circle cx="106" cy="9" r="1.5" className="fill-background" />
+              {/* Ear folded back */}
+              <path d="M94,6 Q92,0 95,0 Q98,2 96,8 Z" />
+              {/* Arched neck */}
+              <path d="M86,20 Q90,14 96,10 L100,14 Q94,18 90,24 Z" />
+              {/* Deep chest */}
+              <path d="M76,18 Q82,14 86,18 Q88,24 86,32 L80,34 Q76,30 74,24 Z" />
+              {/* Slim body with tuck-up */}
+              <path d="M36,24 Q50,18 65,18 Q72,18 76,18 L74,24 Q70,28 62,28 Q50,28 38,26 Z" />
+              {/* Front leg – extended forward */}
+              <path d="M80,34 Q88,42 94,50 Q96,54 98,58 L94,58 Q92,54 88,48 Q82,40 78,34 Z" />
+              {/* Front leg 2 */}
+              <path d="M76,32 Q82,40 86,48 Q88,54 88,58 L84,58 Q84,52 80,44 Q76,36 74,30 Z" />
+              {/* Rear leg – extended back */}
+              <path d="M42,26 Q36,32 28,40 Q22,48 18,56 Q16,58 16,58 L20,58 Q22,52 28,44 Q34,36 40,28 Z" />
+              {/* Rear leg 2 */}
+              <path d="M36,24 Q28,30 20,38 Q14,46 10,54 Q8,58 8,58 L12,58 Q14,52 20,44 Q28,34 34,26 Z" />
+              {/* Flowing tail */}
+              <path d="M36,24 Q28,20 18,18 Q10,16 4,18 Q8,16 16,16 Q24,17 32,22 Z" />
             </g>
-            {/* Eye */}
-            <circle cx="134" cy="27" r="1.2" className="fill-background" />
           </svg>
         )}
       </button>
