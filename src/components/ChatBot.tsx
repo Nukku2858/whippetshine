@@ -103,7 +103,7 @@ const ChatBot = () => {
           "fixed bottom-5 right-5 z-50 transition-all hover:scale-105",
           open
             ? "rounded-full p-3.5 bg-primary text-primary-foreground shadow-lg"
-            : "relative p-0 bg-transparent"
+            : "p-0 bg-transparent"
         )}
         aria-label={open ? "Close chat" : "Open chat"}
       >
