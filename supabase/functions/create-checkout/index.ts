@@ -8,8 +8,9 @@ const corsHeaders = {
 };
 
 const PRICE_MAP: Record<string, string> = {
-  signature: "price_1T48mAQ47JXIZZAQ0t9hBp7k",
-  elite: "price_1T48mMQ47JXIZZAQ2SwxUOBa",
+  sedan: "price_1T48mAQ47JXIZZAQ0t9hBp7k",
+  midsize: "price_1T496qQ47JXIZZAQLECSUUjM",
+  fullsize: "price_1T497GQ47JXIZZAQMp01AUWc",
 };
 
 serve(async (req) => {
