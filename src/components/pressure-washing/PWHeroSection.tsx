@@ -20,11 +20,14 @@ const PWHeroSection = () => {
           Shelby, Ohio — Residential Services
         </p>
         <h1 className="text-6xl md:text-8xl font-display leading-none mb-6 opacity-0 animate-fade-up" style={{ animationDelay: "0.15s" }}>
-          <span className="text-primary">Whippet</span>
-          <span className="text-muted-foreground"> Shine</span>
-          <span className="block text-primary-foreground text-4xl md:text-6xl mt-2">Pressure Washing</span>
+          <span className="text-muted-foreground">Whippet</span>
+          <span className="text-primary"> Shine</span>
+          <span className="block text-4xl md:text-6xl mt-2">
+            <span className="text-primary">Pressure</span>
+            <span className="text-muted-foreground"> Washing</span>
+          </span>
         </h1>
-        <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 opacity-0 animate-fade-up" style={{ animationDelay: "0.3s" }}>
+        <p className="text-white text-lg md:text-xl max-w-2xl mx-auto mb-10 opacity-0 animate-fade-up" style={{ animationDelay: "0.3s" }}>
           Driveways, sidewalks & patios — restored to like-new condition.
         </p>
         <div className="opacity-0 animate-fade-up" style={{ animationDelay: "0.45s" }}>
