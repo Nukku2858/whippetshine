@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import PackagesSection from "@/components/PackagesSection";
-import BookingSection from "@/components/BookingSection";
+
 import FooterSection from "@/components/FooterSection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -45,7 +45,7 @@ const Index = () => {
       <div id="detailing-packages">
         <PackagesSection />
       </div>
-      <BookingSection />
+      
       <ReviewsSection />
 
       {/* Pressure Washing CTA – desktop only */}
