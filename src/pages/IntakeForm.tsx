@@ -180,10 +180,10 @@ const IntakeForm = () => {
                 )}>
                   {conversation.status === "connected" ? <Mic size={32} /> : <MicOff size={32} />}
                 </div>
-                <h3 className="text-2xl font-display mb-2">Voice Intake with Jessica</h3>
+                <h3 className="text-2xl font-display mb-2">Voice Intake with Chad</h3>
                 <p className="text-muted-foreground">
                   {conversation.status === "connected" 
-                    ? "Jessica is listening... Tell her about your vehicle or home."
+                    ? "Chad is listening... Tell him about your vehicle or home."
                     : "Skip the typing! Talk directly with our AI assistant to provide your service details."}
                 </p>
               </div>
@@ -191,7 +191,7 @@ const IntakeForm = () => {
               {conversation.status === "connected" ? (
                 <div className="space-y-4">
                   <div className="p-4 bg-secondary/50 rounded-lg border border-border italic text-sm">
-                    {conversation.isSpeaking ? "Jessica is speaking..." : "Listening for your input..."}
+                    {conversation.isSpeaking ? "Chad is speaking..." : "Listening for your input..."}
                   </div>
                   <Button 
                     onClick={stopVoiceIntake} 
