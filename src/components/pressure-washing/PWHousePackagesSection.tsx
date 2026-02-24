@@ -45,12 +45,12 @@ const packages: Package[] = [
 ];
 
 const addOns = [
-  { name: "Gutter face & soffit wash", price: 85, description: "Removes black streaks, mold, and grime from gutter faces and soffits for a clean roofline appearance." },
-  { name: "Roof soft wash", price: 175, description: "Low-pressure chemical treatment that safely removes moss, algae, and dark streaks from shingles without damage." },
-  { name: "Deck & patio restoration", price: 120, description: "Deep cleans wood, composite, or concrete deck surfaces and restores them to near-original condition." },
-  { name: "Window exterior wash", price: 70, description: "Streak-free cleaning of all exterior-facing windows, screens, and frames using purified water." },
-  { name: "Fence & gate wash", price: 95, description: "Removes green algae, mildew, and weathering from vinyl, wood, or composite fences and gates." },
-  { name: "Foundation & trim brightening", price: 65, description: "Targets dirt buildup, efflorescence, and discoloration along the home's foundation and trim lines." },
+  { name: "Gutter face & soffit wash", addonPrice: 85, standalonePrice: 150, description: "Removes black streaks, mold, and grime from gutter faces and soffits for a clean roofline appearance." },
+  { name: "Roof soft wash", addonPrice: 175, standalonePrice: 300, description: "Low-pressure chemical treatment that safely removes moss, algae, and dark streaks from shingles without damage." },
+  { name: "Deck & patio restoration", addonPrice: 120, standalonePrice: 200, description: "Deep cleans wood, composite, or concrete deck surfaces and restores them to near-original condition." },
+  { name: "Window exterior wash", addonPrice: 70, standalonePrice: 120, description: "Streak-free cleaning of all exterior-facing windows, screens, and frames using purified water." },
+  { name: "Fence & gate wash", addonPrice: 95, standalonePrice: 175, description: "Removes green algae, mildew, and weathering from vinyl, wood, or composite fences and gates." },
+  { name: "Foundation & trim brightening", addonPrice: 65, standalonePrice: 110, description: "Targets dirt buildup, efflorescence, and discoloration along the home's foundation and trim lines." },
 ];
 
 const AddOnsList = () => {
@@ -75,7 +75,10 @@ const AddOnsList = () => {
               )}
               <span className="text-sm text-secondary-foreground">{addon.name}</span>
             </div>
-            <span className="text-sm font-semibold text-primary ml-4 whitespace-nowrap">+${addon.price}</span>
+            <div className="flex flex-col items-end ml-4">
+              <span className="text-sm font-semibold text-primary whitespace-nowrap">+${addon.addonPrice}</span>
+              <span className="text-[10px] text-muted-foreground whitespace-nowrap">${addon.standalonePrice} standalone</span>
+            </div>
           </div>
           {openIndex === i && (
             <p className="mt-3 ml-7 text-xs text-muted-foreground leading-relaxed">
@@ -165,10 +168,11 @@ const PWHousePackagesSection = () => {
         {/* Add-Ons Section */}
         <div className="mt-12 max-w-3xl mx-auto">
           <div className="text-center mb-6">
-            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Enhance Your Wash</p>
+            <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Add-On or Standalone</p>
             <h3 className="text-2xl md:text-3xl font-display">
-              House <span className="text-primary">Add-Ons</span>
+              Additional <span className="text-primary">Services</span>
             </h3>
+            <p className="text-muted-foreground text-sm mt-2">Bundle with a package to save, or book as a standalone service.</p>
           </div>
           <AddOnsList />
         </div>
