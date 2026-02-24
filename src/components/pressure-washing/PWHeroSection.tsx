@@ -1,4 +1,5 @@
 import heroImage from "@/assets/hero-pressure-wash.jpg";
+import whippetLogo from "@/assets/whippet-logo.png";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 
@@ -14,6 +15,7 @@ const PWHeroSection = () => {
         style={{ backgroundImage: `url(${heroImage})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+      <img src={whippetLogo} alt="" className="absolute right-[-5%] bottom-[10%] w-64 md:w-96 opacity-[0.06] pointer-events-none select-none" />
 
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <p className="text-foreground font-medium tracking-[0.3em] uppercase text-sm mb-4 opacity-0 animate-fade-up">

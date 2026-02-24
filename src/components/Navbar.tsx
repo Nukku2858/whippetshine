@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import whippetLogo from "@/assets/whippet-logo.png";
 
 const navLinks = [
   { label: "Auto Detailing", path: "/" },
@@ -12,9 +13,12 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3 md:px-6 md:py-4">
-        <Link to="/" className="text-xl md:text-2xl font-display tracking-wide shrink-0">
-          <span className="text-muted-foreground">Whippet</span>
-          <span className="text-primary">Shine</span>
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+          <img src={whippetLogo} alt="Whippet Shine" className="h-8 w-8 object-contain" />
+          <span className="text-xl md:text-2xl font-display tracking-wide">
+            <span className="text-muted-foreground">Whippet</span>
+            <span className="text-primary">Shine</span>
+          </span>
         </Link>
 
         <div className="flex items-center gap-1 bg-muted/60 rounded-full p-1">
