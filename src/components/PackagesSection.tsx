@@ -93,7 +93,7 @@ const PackagesSection = () => {
   };
 
   return (
-    <section id="packages" className="py-24 px-6">
+    <section id="packages" className="py-24 px-6 scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">Our Services</p>
