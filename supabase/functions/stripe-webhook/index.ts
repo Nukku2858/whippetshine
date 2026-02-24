@@ -231,20 +231,44 @@ serve(async (req) => {
       const emailData = await emailRes.json();
       console.log("Email sent:", JSON.stringify(emailData));
 
-      // Award loyalty points (1 point per $1 spent) & deduct redeemed points
+      // Save booking record
       const amountPaid = session.amount_total ? Math.floor(session.amount_total / 100) : 0;
+
+      const supabaseAdmin = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      );
+
+      // Find user to link booking
+      const { data: authData } = await supabaseAdmin.auth.admin.listUsers();
+      const matchedUser = authData?.users?.find((u: any) => u.email === customerEmail);
+
+      if (matchedUser) {
+        try {
+          await supabaseAdmin.from("bookings").insert({
+            user_id: matchedUser.id,
+            service_name: packageInfo.name,
+            service_type: packageInfo.type,
+            amount_paid: amountPaid,
+            appointment_date: metadata.date || null,
+            appointment_time: metadata.time || null,
+            vehicle_or_address: metadata.vehicle || null,
+            notes: metadata.notes || null,
+            stripe_session_id: session.id,
+            status: "confirmed",
+          });
+          console.log("Booking saved for user", matchedUser.id);
+        } catch (bookingErr) {
+          console.error("Booking save error (non-fatal):", bookingErr);
+        }
+      }
+
+      // Award loyalty points (1 point per $1 spent) & deduct redeemed points
       const redeemedPoints = parseInt(metadata.redeemed_points || "0", 10);
       const discountAmt = parseFloat(metadata.discount_amount || "0");
 
-      if (customerEmail && (amountPaid > 0 || redeemedPoints > 0)) {
+      if (customerEmail && matchedUser && (amountPaid > 0 || redeemedPoints > 0)) {
         try {
-          const supabaseAdmin = createClient(
-            Deno.env.get("SUPABASE_URL") ?? "",
-            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-          );
-
-          const { data: authData } = await supabaseAdmin.auth.admin.listUsers();
-          const matchedUser = authData?.users?.find((u: any) => u.email === customerEmail);
 
           if (matchedUser) {
             const { data: currentProfile } = await supabaseAdmin

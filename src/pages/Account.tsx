@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, Gift, Save } from "lucide-react";
+import { ArrowLeft, Star, Gift, Save, CalendarDays, Clock, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,18 @@ interface PointsTransaction {
   created_at: string;
 }
 
+interface Booking {
+  id: string;
+  service_name: string;
+  service_type: string;
+  amount_paid: number;
+  appointment_date: string | null;
+  appointment_time: string | null;
+  vehicle_or_address: string | null;
+  status: string;
+  created_at: string;
+}
+
 const Account = () => {
   const navigate = useNavigate();
   const { user, profile, loading, refreshProfile, signOut } = useAuth();
@@ -28,6 +40,7 @@ const Account = () => {
   const [vehicleModel, setVehicleModel] = useState("");
   const [saving, setSaving] = useState(false);
   const [transactions, setTransactions] = useState<PointsTransaction[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
     if (!loading && !user) navigate("/auth");
@@ -53,6 +66,16 @@ const Account = () => {
         .limit(20)
         .then(({ data }) => {
           if (data) setTransactions(data as PointsTransaction[]);
+        });
+
+      supabase
+        .from("bookings")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(50)
+        .then(({ data }) => {
+          if (data) setBookings(data as Booking[]);
         });
     }
   }, [user]);
@@ -140,6 +163,55 @@ const Account = () => {
             <Button onClick={handleSave} disabled={saving} className="mt-6 bg-primary text-primary-foreground hover:bg-scarlet-glow">
               <Save size={16} className="mr-2" /> {saving ? "Saving..." : "Save Profile"}
             </Button>
+          </div>
+
+          {/* Past Purchases & Appointments */}
+          <div className="bg-card border border-border rounded-lg p-8 mb-8">
+            <h2 className="text-2xl font-display mb-6 flex items-center gap-2">
+              <CalendarDays size={20} className="text-primary" /> Past Appointments
+            </h2>
+            {bookings.length === 0 ? (
+              <p className="text-muted-foreground text-sm text-center py-4">
+                No past bookings yet. Your appointment history will appear here!
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {bookings.map((b) => (
+                  <div key={b.id} className="bg-secondary/50 rounded-lg px-4 py-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-foreground">{b.service_name}</p>
+                      <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full capitalize">
+                        {b.status}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                      {b.appointment_date && (
+                        <span className="flex items-center gap-1">
+                          <CalendarDays size={12} className="text-primary" />
+                          {b.appointment_date}
+                        </span>
+                      )}
+                      {b.appointment_time && (
+                        <span className="flex items-center gap-1">
+                          <Clock size={12} className="text-primary" />
+                          {b.appointment_time}
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1">
+                        <DollarSign size={12} className="text-primary" />
+                        ${b.amount_paid}
+                      </span>
+                    </div>
+                    {b.vehicle_or_address && (
+                      <p className="text-xs text-muted-foreground">{b.vehicle_or_address}</p>
+                    )}
+                    <p className="text-[10px] text-muted-foreground/60">
+                      Booked {new Date(b.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Points History */}
