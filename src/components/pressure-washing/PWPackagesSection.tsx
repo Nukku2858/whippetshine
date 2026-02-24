@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import drivewayImg from "@/assets/driveway-pressure-wash.jpg";
+import drivewayVideo from "@/assets/driveway-pressure-wash.mp4";
 
 interface Package {
   name: string;
@@ -69,11 +69,13 @@ const PWPackagesSection = () => {
         </div>
 
         <div className="mb-12 rounded-xl overflow-hidden border border-border shadow-lg max-w-3xl mx-auto">
-          <img
-            src={drivewayImg}
-            alt="Before and after driveway pressure washing — dirty concrete being cleaned in real-time"
+          <video
+            src={drivewayVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
             className="w-full h-auto"
-            loading="lazy"
           />
         </div>
 

@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import houseImg from "@/assets/house-pressure-wash.jpg";
+import houseVideo from "@/assets/house-pressure-wash.mp4";
 
 interface Package {
   name: string;
@@ -62,11 +62,13 @@ const PWHousePackagesSection = () => {
         </div>
 
         <div className="mb-12 rounded-xl overflow-hidden border border-border shadow-lg max-w-3xl mx-auto">
-          <img
-            src={houseImg}
-            alt="Before and after house siding pressure washing — algae and grime being cleaned in real-time"
+          <video
+            src={houseVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
             className="w-full h-auto"
-            loading="lazy"
           />
         </div>
 
