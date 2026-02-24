@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, Gift, Save, CalendarDays, Clock, DollarSign, XCircle, RefreshCw, Truck } from "lucide-react";
+import { ArrowLeft, Star, Gift, Save, CalendarDays, Clock, DollarSign, XCircle, RefreshCw, Truck, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +17,8 @@ import ReferralProgram from "@/components/account/ReferralProgram";
 import FavoriteServices from "@/components/account/FavoriteServices";
 import NotificationPreferences from "@/components/account/NotificationPreferences";
 import WeatherAlerts from "@/components/account/WeatherAlerts";
+import ServiceProgress from "@/components/ServiceProgress";
+import { useAdmin } from "@/hooks/use-admin";
 
 interface PointsTransaction {
   id: string;
@@ -35,6 +37,7 @@ interface Booking {
   appointment_time: string | null;
   vehicle_or_address: string | null;
   status: string;
+  progress_step: string;
   created_at: string;
 }
 
@@ -47,6 +50,7 @@ const STATUS_STYLES: Record<string, string> = {
 const Account = () => {
   const navigate = useNavigate();
   const { user, profile, loading, refreshProfile, signOut } = useAuth();
+  const { isAdmin } = useAdmin();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [vehicleYear, setVehicleYear] = useState("");
@@ -227,6 +231,10 @@ const Account = () => {
       {b.vehicle_or_address && (
         <p className="text-xs text-muted-foreground">{b.vehicle_or_address}</p>
       )}
+      {/* Progress Tracker */}
+      {b.status !== "cancelled" && (
+        <ServiceProgress currentStep={b.progress_step || "scheduled"} />
+      )}
       <p className="text-[10px] text-muted-foreground/60">
         Booked {new Date(b.created_at).toLocaleDateString()}
       </p>
@@ -388,6 +396,26 @@ const Account = () => {
           <div className="mb-8">
             <ReferralProgram referralCode={profile?.referral_code || null} pointsBalance={profile?.points_balance || 0} />
           </div>
+
+          {/* Admin Panel Link */}
+          {isAdmin && (
+            <div className="mb-8">
+              <button
+                onClick={() => navigate("/admin")}
+                className="w-full bg-card border border-primary/30 rounded-lg p-6 text-left hover:border-primary transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="bg-primary/15 rounded-full p-2.5">
+                    <Shield size={20} className="text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-lg font-display group-hover:text-primary transition-colors">Admin Panel</p>
+                    <p className="text-sm text-muted-foreground">Control service progress and manage all bookings.</p>
+                  </div>
+                </div>
+              </button>
+            </div>
+          )}
 
           {/* Fleet Portal Link */}
           <div className="mb-8">
