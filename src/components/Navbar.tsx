@@ -56,7 +56,7 @@ const Navbar = () => {
               <User size={16} />
             </>
           ) : (
-            <span className="text-[10px] md:text-sm font-medium uppercase tracking-wider">Sign In</span>
+            <span className="text-xs md:text-sm font-medium uppercase tracking-wider">Sign In</span>
           )}
         </Link>
       </div>
