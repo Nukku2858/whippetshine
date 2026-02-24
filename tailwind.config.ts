@@ -89,12 +89,17 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "slide-down": {
+          from: { opacity: "0", maxHeight: "0" },
+          to: { opacity: "1", maxHeight: "200px" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.6s ease-out forwards",
         shimmer: "shimmer 2s infinite linear",
+        "slide-down": "slide-down 0.25s ease-out forwards",
       },
     },
   },
