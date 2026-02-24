@@ -1,12 +1,17 @@
 import { MapPin, Phone, Mail, Clock, Car, Droplets } from "lucide-react";
 import { Link } from "react-router-dom";
+import whippetLogo from "@/assets/whippet-logo.png";
 
 const FooterSection = () => {
   return (
-    <footer className="py-16 px-4 md:px-6 border-t border-border">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer className="relative py-16 px-4 md:px-6 border-t border-border overflow-hidden">
+      <img src={whippetLogo} alt="" className="absolute left-[-3%] top-1/2 -translate-y-1/2 w-48 md:w-72 opacity-[0.04] pointer-events-none select-none" />
+      <div className="relative max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-1">
-          <h3 className="text-3xl font-display text-primary mb-4">Whippet Shine</h3>
+          <div className="flex items-center gap-3 mb-4">
+            <img src={whippetLogo} alt="Whippet Shine" className="h-10 w-10 object-contain" />
+            <h3 className="text-3xl font-display text-primary">Whippet Shine</h3>
+          </div>
           <p className="text-muted-foreground text-sm leading-relaxed">
             Shelby, Ohio's trusted car detailing & house pressure washing professionals. We treat every vehicle and home like it's our own.
           </p>
@@ -65,7 +70,7 @@ const FooterSection = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-border text-center text-xs text-muted-foreground">
+      <div className="relative max-w-6xl mx-auto mt-12 pt-8 border-t border-border text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} Whippet Shine — Auto Detailing & House Pressure Washing — Shelby, Ohio
       </div>
     </footer>
