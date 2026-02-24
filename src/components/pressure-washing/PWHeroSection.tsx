@@ -1,7 +1,6 @@
 import heroImage from "@/assets/hero-pressure-wash.jpg";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const PWHeroSection = () => {
   const scrollToPackages = () => {
@@ -15,12 +14,6 @@ const PWHeroSection = () => {
         style={{ backgroundImage: `url(${heroImage})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
-
-      <div className="absolute top-6 left-6 z-20">
-        <Link to="/" className="text-muted-foreground hover:text-primary transition-colors text-sm tracking-widest uppercase">
-          ← Auto Detailing
-        </Link>
-      </div>
 
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <p className="text-foreground font-medium tracking-[0.3em] uppercase text-sm mb-4 opacity-0 animate-fade-up">

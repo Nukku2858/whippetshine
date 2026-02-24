@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import PackagesSection from "@/components/PackagesSection";
 import BookingSection from "@/components/BookingSection";
@@ -9,6 +10,7 @@ import { Droplets } from "lucide-react";
 const Index = () => {
   return (
     <main className="min-h-screen bg-background">
+      <Navbar />
       <HeroSection />
       <PackagesSection />
       <BookingSection />
