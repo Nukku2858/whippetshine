@@ -120,9 +120,29 @@ const Account = () => {
     setSaving(false);
   };
 
+  const sendNotification = async (booking: Booking, action: "cancelled" | "rescheduled", newDate?: string, newTime?: string) => {
+    try {
+      await supabase.functions.invoke("booking-notification", {
+        body: {
+          action,
+          serviceName: booking.service_name,
+          customerEmail: user?.email || "",
+          customerName: profile?.name || user?.email || "",
+          appointmentDate: booking.appointment_date,
+          appointmentTime: booking.appointment_time,
+          newDate,
+          newTime,
+        },
+      });
+    } catch (e) {
+      console.error("Notification failed:", e);
+    }
+  };
+
   const handleCancel = async () => {
     if (!cancelId) return;
     setActionLoading(true);
+    const bookingToCancel = bookings.find((b) => b.id === cancelId);
     const { error } = await supabase
       .from("bookings")
       .update({ status: "cancelled" })
@@ -131,6 +151,7 @@ const Account = () => {
       toast.error("Failed to cancel appointment");
     } else {
       toast.success("Appointment cancelled. Contact us for a refund if needed.");
+      if (bookingToCancel) sendNotification(bookingToCancel, "cancelled");
       fetchBookings();
     }
     setCancelId(null);
@@ -152,6 +173,7 @@ const Account = () => {
       toast.error("Failed to reschedule");
     } else {
       toast.success("Appointment rescheduled! We'll confirm the new time shortly.");
+      sendNotification(rescheduleBooking, "rescheduled", newDate, newTime);
       fetchBookings();
     }
     setRescheduleBooking(null);
