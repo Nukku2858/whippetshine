@@ -52,7 +52,7 @@ const PWHousePackagesSection = () => {
   };
 
   return (
-    <section id="pw-house-packages" className="py-24 px-6">
+    <section id="pw-house-packages" className="py-24 px-6 scroll-mt-20">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-primary tracking-[0.3em] uppercase text-sm mb-3">Residential</p>
