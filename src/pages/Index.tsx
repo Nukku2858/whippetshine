@@ -27,6 +27,21 @@ const Index = () => {
     <main className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
+
+      {/* Detailing showcase video – mobile only */}
+      <section className="md:hidden py-12 px-6">
+        <div className="max-w-sm mx-auto rounded-xl overflow-hidden border border-border shadow-lg">
+          <video
+            src={detailingVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-auto"
+          />
+        </div>
+      </section>
+
       <div id="detailing-packages">
         <PackagesSection />
       </div>
@@ -46,20 +61,6 @@ const Index = () => {
           <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-scarlet-glow text-lg px-10 py-6 font-semibold tracking-wide">
             <Link to="/pressure-washing">View Pressure Washing Packages</Link>
           </Button>
-        </div>
-      </section>
-
-      {/* Detailing showcase video – mobile only */}
-      <section className="md:hidden py-12 px-6">
-        <div className="max-w-sm mx-auto rounded-xl overflow-hidden border border-border shadow-lg">
-          <video
-            src={detailingVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-auto"
-          />
         </div>
       </section>
 
