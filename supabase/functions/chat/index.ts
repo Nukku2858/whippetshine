@@ -48,9 +48,19 @@ serve(async (req) => {
     }
 
     for (const msg of messages) {
-      if (!msg.role || !msg.content || typeof msg.content !== "string" || msg.content.length > 2000) {
+      if (!msg.role || !["user", "assistant"].includes(msg.role) || !msg.content || typeof msg.content !== "string" || msg.content.length > 2000) {
         return new Response(
           JSON.stringify({ error: "Invalid message format" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      // Sanitize: strip control characters (keep newlines/tabs)
+      msg.content = msg.content
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "")
+        .trim();
+      if (!msg.content) {
+        return new Response(
+          JSON.stringify({ error: "Empty message content" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
