@@ -106,11 +106,22 @@ serve(async (req) => {
     const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
     let event: Stripe.Event;
 
-    if (webhookSecret && sig) {
+    if (!webhookSecret || !sig) {
+      console.error("Missing webhook secret or signature");
+      return new Response(JSON.stringify({ error: "Webhook verification required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    try {
       event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-    } else {
-      // For development/testing without webhook secret
-      event = JSON.parse(body);
+    } catch (err) {
+      console.error("Webhook signature verification failed:", err.message);
+      return new Response(JSON.stringify({ error: "Invalid signature" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     if (event.type === "checkout.session.completed") {
