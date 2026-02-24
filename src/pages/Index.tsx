@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { Droplets } from "lucide-react";
 import detailingVideo from "@/assets/detailing-showcase.mp4";
 import ReviewsSection from "@/components/ReviewsSection";
+import LoyaltyPromoSection from "@/components/LoyaltyPromoSection";
 import ChatBot from "@/components/ChatBot";
 
 const Index = () => {
@@ -47,6 +48,7 @@ const Index = () => {
       </div>
       
       <ReviewsSection />
+      <LoyaltyPromoSection />
 
       {/* Pressure Washing CTA – desktop only */}
       <section className="hidden md:block py-20 px-6">
