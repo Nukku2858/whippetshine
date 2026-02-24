@@ -36,14 +36,14 @@ const FooterSection = () => {
             <MapPin size={16} className="text-primary shrink-0" />
             <span>66 Carleton Ave, Shelby, OH 44875</span>
           </div>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          <a href="tel:5673704021" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
             <Phone size={16} className="text-primary shrink-0" />
             <span>567-370-4021</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          </a>
+          <a href="mailto:whippetshine@gmail.com" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
             <Mail size={16} className="text-primary shrink-0" />
             <span>whippetshine@gmail.com</span>
-          </div>
+          </a>
         </div>
 
         <div className="space-y-4">
