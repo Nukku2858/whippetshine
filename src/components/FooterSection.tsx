@@ -34,7 +34,7 @@ const FooterSection = () => {
           <h4 className="font-display text-xl mb-4">Contact</h4>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <MapPin size={16} className="text-primary shrink-0" />
-            <span>66 Carleton, Shelby, OH 44875</span>
+            <span>66 Carleton Ave, Shelby, OH 44875</span>
           </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <Phone size={16} className="text-primary shrink-0" />
