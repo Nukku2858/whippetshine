@@ -122,9 +122,10 @@ const ChatBot = () => {
           {/* Messages */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[200px] max-h-[50vh]">
             {messages.length === 0 && (
-              <p className="text-muted-foreground text-sm text-center mt-8">
-                Ask us anything about our detailing or pressure washing services!
-              </p>
+              <div className="text-sm mt-4 space-y-2">
+                <p className="text-foreground">Hey there! 👋 Welcome to <span className="font-semibold">WhippetShine</span> — Shelby's go-to for professional auto detailing and pressure washing.</p>
+                <p className="text-muted-foreground">Ask me about our packages, pricing, or services. Need something custom? I can point you in the right direction!</p>
+              </div>
             )}
             {messages.map((m, i) => (
               <div
