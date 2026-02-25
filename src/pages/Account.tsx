@@ -466,6 +466,15 @@ const Account = () => {
           <Button variant="outline" onClick={handleSignOut} className="w-full border-border text-muted-foreground hover:text-foreground">
             Sign Out
           </Button>
+
+          <div className="mt-6 text-center">
+            <a
+              href="mailto:whippetshine@gmail.com?subject=Account%20Deletion%20Request&body=Hi%20WhippetShine%2C%0A%0AI%20would%20like%20to%20request%20the%20deletion%20of%20my%20account%20and%20all%20associated%20data.%0A%0AAccount%20email%3A%20%0A%0AThank%20you."
+              className="text-sm text-destructive hover:underline"
+            >
+              Request account & data deletion
+            </a>
+          </div>
         </div>
       </section>
       <FooterSection />

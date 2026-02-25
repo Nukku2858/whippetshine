@@ -53,7 +53,7 @@ const PrivacyPolicy = () => {
             <ul className="list-disc pl-6 mt-2 space-y-1">
               <li>Access, update, or delete your account information at any time through your Account page.</li>
               <li>Opt out of promotional communications via Notification Preferences.</li>
-              <li>Request deletion of your data by contacting us.</li>
+              <li>Request deletion of your account and all associated data by emailing <a href="mailto:whippetshine@gmail.com?subject=Account%20Deletion%20Request" className="text-primary hover:underline">whippetshine@gmail.com</a> or using the link on your Account page.</li>
             </ul>
           </section>
 
