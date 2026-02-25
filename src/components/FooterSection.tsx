@@ -74,8 +74,9 @@ const FooterSection = () => {
         </div>
       </div>
 
-      <div className="relative max-w-6xl mx-auto mt-12 pt-8 border-t border-border text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Whippet Shine — Auto Detailing & House Pressure Washing — Shelby, Ohio
+      <div className="relative max-w-6xl mx-auto mt-12 pt-8 border-t border-border text-center text-xs text-muted-foreground space-y-2">
+        <div>© {new Date().getFullYear()} Whippet Shine — Auto Detailing & House Pressure Washing — Shelby, Ohio</div>
+        <Link to="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
       </div>
     </footer>
   );
