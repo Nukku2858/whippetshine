@@ -36,18 +36,18 @@ export const useWashSound = () => {
       // Bandpass filter to shape the noise into a "spray" sound
       const bandpass = ctx.createBiquadFilter();
       bandpass.type = "bandpass";
-      bandpass.frequency.value = 2200;
-      bandpass.Q.value = 0.8;
+      bandpass.frequency.value = 3200;
+      bandpass.Q.value = 0.4;
 
       // Highpass to remove rumble
       const highpass = ctx.createBiquadFilter();
       highpass.type = "highpass";
-      highpass.frequency.value = 500;
+      highpass.frequency.value = 900;
 
       // Gain for volume control and fade-in
       const gain = ctx.createGain();
       gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 1.2);
+      gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.5);
 
       source.connect(bandpass);
       bandpass.connect(highpass);
@@ -67,7 +67,7 @@ export const useWashSound = () => {
     }
   }, []);
 
-  const stopWash = useCallback((fadeDuration = 1.5) => {
+  const stopWash = useCallback((fadeDuration = 0.8) => {
     try {
       const ctx = ctxRef.current;
       const gain = gainRef.current;
