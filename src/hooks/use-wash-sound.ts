@@ -47,7 +47,7 @@ export const useWashSound = () => {
       // Gain for volume control and fade-in
       const gain = ctx.createGain();
       gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.3);
+      gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 1.2);
 
       source.connect(bandpass);
       bandpass.connect(highpass);
@@ -67,7 +67,7 @@ export const useWashSound = () => {
     }
   }, []);
 
-  const stopWash = useCallback((fadeDuration = 0.5) => {
+  const stopWash = useCallback((fadeDuration = 1.5) => {
     try {
       const ctx = ctxRef.current;
       const gain = gainRef.current;
