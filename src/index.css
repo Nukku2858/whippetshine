@@ -67,3 +67,12 @@
     letter-spacing: 0.04em;
   }
 }
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px -2px hsl(0 72% 50% / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px -2px hsl(0 72% 50% / 0.5);
+  }
+}
