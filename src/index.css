@@ -75,6 +75,11 @@
   100% { background-position: -200% 0; }
 }
 
+@keyframes logo-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow: 0 0 8px -2px hsl(0 72% 50% / 0.2);
