@@ -24,6 +24,22 @@ interface ChatConversation {
   updated_at: string;
 }
 
+const playNotificationSound = () => {
+  try {
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(830, ctx.currentTime);
+    osc.frequency.setValueAtTime(1000, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.3);
+  } catch {}
+};
+
 const AdminChat = () => {
   const { conversationId } = useParams<{ conversationId: string }>();
   const navigate = useNavigate();
@@ -89,7 +105,11 @@ const AdminChat = () => {
         table: "chat_messages",
         filter: `conversation_id=eq.${conversationId}`,
       }, (payload) => {
-        setMessages((prev) => [...prev, payload.new as ChatMessage]);
+        const newMsg = payload.new as ChatMessage;
+        setMessages((prev) => [...prev, newMsg]);
+        if (newMsg.sender_type !== "admin") {
+          playNotificationSound();
+        }
       })
       .subscribe();
 
