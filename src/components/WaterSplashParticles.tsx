@@ -222,12 +222,23 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
 
           spawnWaterDroplets(sprayBarX);
 
+          // Remove splats when spray bar passes their rightmost visible pixel
           for (let i = splats.length - 1; i >= 0; i--) {
             const s = splats[i];
-            const maxDripX = Math.max(0, ...s.drips.map(d => d.dx + d.size));
-            if (s.x + maxDripX < sprayBarX) {
+            // Account for the splat ellipse radius AND all drip extents
+            const splatRight = s.x + s.size;
+            const maxDripRight = s.drips.length > 0
+              ? Math.max(...s.drips.map(d => s.x + d.dx + d.size))
+              : 0;
+            const rightEdge = Math.max(splatRight, maxDripRight);
+            if (rightEdge < sprayBarX) {
               splats.splice(i, 1);
             }
+          }
+
+          // Force-clear all remaining splats when wash is 90%+ done
+          if (phase > 0.9 && splats.length > 0) {
+            splats.length = 0;
           }
         }
         // 10-23s: 10-second clean pause, then loop restarts with mud
