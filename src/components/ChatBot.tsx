@@ -13,6 +13,7 @@ const ChatBot = () => {
   const { items } = useCart();
   const hasCartItems = items.length > 0;
   const [open, setOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,7 @@ const ChatBot = () => {
         const msg = payload.new as { sender_type: string; content: string };
         if (msg.sender_type === "admin") {
           setMessages((prev) => [...prev, { role: "assistant", content: msg.content }]);
+          setUnreadCount((prev) => prev + 1);
         }
       })
       .subscribe();
@@ -219,7 +221,7 @@ const ChatBot = () => {
     <>
       {/* Floating chat button */}
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => { setOpen(!open); if (!open) setUnreadCount(0); }}
         className={cn(
           "fixed right-5 z-50 transition-all hover:scale-105",
           hasCartItems ? "bottom-20" : "bottom-5",
@@ -234,9 +236,15 @@ const ChatBot = () => {
         ) : (
           <div className="relative w-16 h-16 drop-shadow-[0_3px_10px_rgba(0,0,0,0.5)]">
             <img src={whippetLogo} alt="" className="w-full h-full object-contain" />
-            <span className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-md border-2 border-background">
-              ?
-            </span>
+            {unreadCount > 0 ? (
+              <span className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center text-xs font-bold shadow-md border-2 border-background animate-bounce">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            ) : (
+              <span className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-md border-2 border-background">
+                ?
+              </span>
+            )}
           </div>
         )}
       </button>
