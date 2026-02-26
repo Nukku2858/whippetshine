@@ -1,0 +1,150 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import whippetLogo from "@/assets/whippet-logo.png";
+import { UserPlus, Crown } from "lucide-react";
+
+const Welcome = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [showGuestOptions, setShowGuestOptions] = useState(false);
+
+  // Auto-skip for logged-in users
+  useEffect(() => {
+    if (user) {
+      navigate("/home", { replace: true });
+    }
+  }, [user, navigate]);
+
+  // Don't render if user is logged in (will redirect)
+  if (user) return null;
+
+  return (
+    <main className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden px-6">
+      {/* Watermark logo */}
+      <img
+        src={whippetLogo}
+        alt=""
+        className="absolute right-[-10%] bottom-[5%] w-72 md:w-[28rem] opacity-[0.06] pointer-events-none select-none mix-blend-screen"
+      />
+      <img
+        src={whippetLogo}
+        alt=""
+        className="absolute left-[-10%] top-[5%] w-72 md:w-[28rem] opacity-[0.04] pointer-events-none select-none mix-blend-screen rotate-180"
+      />
+
+      {/* Logo & title */}
+      <div className="text-center mb-12 relative z-10">
+        <img
+          src={whippetLogo}
+          alt="Whippet Shine"
+          className="w-28 h-28 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(200,40,40,0.3)]"
+        />
+        <h1 className="text-5xl md:text-7xl font-display leading-none">
+          <span className="text-muted-foreground">Whippet</span>
+          <span className="text-primary"> Shine</span>
+        </h1>
+        <p className="text-muted-foreground text-sm tracking-[0.25em] uppercase mt-3">
+          Shelby, Ohio
+        </p>
+      </div>
+
+      {/* Bubbles */}
+      <div className="relative z-10 w-full max-w-sm space-y-4">
+        {!showGuestOptions ? (
+          <>
+            {/* Members Club */}
+            <button
+              onClick={() => navigate("/auth")}
+              className="w-full group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-6 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/25 transition-colors">
+                  <Crown size={26} className="text-primary" />
+                </div>
+                <div className="text-left">
+                  <p className="text-lg font-display tracking-wide text-foreground">
+                    Members Club
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Sign in to your account
+                  </p>
+                </div>
+              </div>
+            </button>
+
+            {/* New Customer / Guest */}
+            <button
+              onClick={() => setShowGuestOptions(true)}
+              className="w-full group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:border-muted-foreground/40 hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.1)] active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center shrink-0 group-hover:bg-muted transition-colors">
+                  <UserPlus size={26} className="text-muted-foreground" />
+                </div>
+                <div className="text-left">
+                  <p className="text-lg font-display tracking-wide text-foreground">
+                    New Customer / Guest
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Browse services or create an account
+                  </p>
+                </div>
+              </div>
+            </button>
+          </>
+        ) : (
+          /* Sub-options for Guest */
+          <>
+            <button
+              onClick={() => navigate("/auth?mode=signup")}
+              className="w-full group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-6 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/25 transition-colors">
+                  <UserPlus size={26} className="text-primary" />
+                </div>
+                <div className="text-left">
+                  <p className="text-lg font-display tracking-wide text-foreground">
+                    Create Account
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Join & earn loyalty rewards
+                  </p>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => navigate("/home")}
+              className="w-full group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:border-muted-foreground/40 hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.1)] active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center shrink-0 group-hover:bg-muted transition-colors">
+                  <Crown size={26} className="text-muted-foreground" />
+                </div>
+                <div className="text-left">
+                  <p className="text-lg font-display tracking-wide text-foreground">
+                    Browse as Guest
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    View packages & pricing
+                  </p>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setShowGuestOptions(false)}
+              className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors text-center pt-2"
+            >
+              ← Back
+            </button>
+          </>
+        )}
+      </div>
+    </main>
+  );
+};
+
+export default Welcome;

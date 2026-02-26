@@ -295,7 +295,7 @@ const Account = () => {
         <div className="max-w-2xl mx-auto">
           <Button
             variant="ghost"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="mb-8 gap-2 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft size={18} /> Back

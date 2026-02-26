@@ -27,7 +27,7 @@ const PaymentSuccess = () => {
         <p className="text-xs text-muted-foreground text-center">
           Your appointment is subject to availability and requires final confirmation from our team. If we are unable to accommodate your selected date or time, we will contact you to reschedule or issue a full refund.
         </p>
-        <Button onClick={() => navigate("/")} variant="outline" size="lg">
+        <Button onClick={() => navigate("/home")} variant="outline" size="lg">
           Back to Home
         </Button>
       </div>
