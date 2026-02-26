@@ -5,13 +5,14 @@ import whippetLogo from "@/assets/whippet-logo.png";
 import whippetShineLogo from "@/assets/whippet-shine-logo-transparent.png";
 import { UserPlus, Crown, Car, Droplets, Home } from "lucide-react";
 import WaterSplashParticles from "@/components/WaterSplashParticles";
+import { useWashSound } from "@/hooks/use-wash-sound";
 
 const Welcome = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const washContainerRef = useRef<HTMLDivElement>(null);
-
+  const { startWash, stopWash } = useWashSound();
   // Auto-skip for logged-in users
   useEffect(() => {
     if (user) {
@@ -50,7 +51,7 @@ const Welcome = () => {
           />
         </div>
         <div className="relative mt-2 mb-1" ref={washContainerRef}>
-          <WaterSplashParticles containerRef={washContainerRef} />
+          <WaterSplashParticles containerRef={washContainerRef} onWashStart={startWash} onWashEnd={stopWash} />
           {/* Muddy layer - fades out after initial wash */}
           <h1
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase text-center"
