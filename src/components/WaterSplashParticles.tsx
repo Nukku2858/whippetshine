@@ -192,7 +192,7 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
         if (loopElapsed < 3000) {
           splatTimer++;
           // Spawn in bursts — a few splatters total, not every frame
-          if (splatTimer % 8 === 0 && splats.length < 12) {
+          if (splatTimer % 6 === 0 && splats.length < 18) {
             spawnMudSplat();
           }
           sprayBarOpacity = 0;
