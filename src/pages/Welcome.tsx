@@ -67,14 +67,14 @@ const Welcome = () => {
           </h1>
           {/* Clean layer - reveals once then stays */}
           <h1
-            className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent animate-shimmer"
+            className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent"
             style={{
               fontFamily: "'Rubik Spray Paint', cursive",
               backgroundImage: 'linear-gradient(110deg, hsl(0 55% 22%) 0%, hsl(0 60% 32%) 15%, hsl(355 70% 42%) 25%, hsl(0 65% 55%) 30%, hsl(355 70% 42%) 35%, hsl(0 60% 32%) 45%, hsl(0 55% 22%) 55%, hsl(0 60% 32%) 65%, hsl(355 70% 42%) 75%, hsl(0 65% 55%) 80%, hsl(355 70% 42%) 85%, hsl(0 55% 22%) 100%)',
               backgroundSize: '300% 100%',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
-              animation: 'shimmer 6s ease-in-out infinite, pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
+              animation: 'shimmer 3s ease-in-out 1 forwards, pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
             }}
           >
             Whippet Shine
