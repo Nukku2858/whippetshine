@@ -63,15 +63,6 @@ const Welcome = () => {
           >
             Whippet Shine
           </h1>
-          {/* Water spray line */}
-          <div
-            className="absolute top-0 bottom-0 w-[2px] rounded-full opacity-0"
-            style={{
-              background: 'linear-gradient(180deg, transparent 0%, hsl(200 70% 65% / 0.7) 30%, hsl(200 80% 75%) 50%, hsl(200 70% 65% / 0.7) 70%, transparent 100%)',
-              boxShadow: '0 0 8px 2px hsl(200 70% 65% / 0.4), 0 0 20px 4px hsl(200 60% 55% / 0.2)',
-              animation: 'spray-line-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
-            }}
-          />
         </div>
         <p className="text-muted-foreground text-sm tracking-[0.25em] uppercase mt-1">
           Shelby, Ohio
