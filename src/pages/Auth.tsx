@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LogIn, UserPlus, Star, Mail, Eye, Clock, Car, Droplets, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, LogIn, UserPlus, Star, Mail, Eye } from "lucide-react";
+import TrackerMini from "@/components/TrackerMini";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -252,28 +253,7 @@ const Auth = () => {
               <p className="text-muted-foreground text-sm mb-3">
                 Track every service <span className="text-primary font-semibold">live, step-by-step</span> — know when we arrive, start, and finish.
               </p>
-              <div className="flex items-center justify-center gap-1">
-                {[
-                  { label: "Scheduled", icon: Clock },
-                  { label: "Arrived", icon: Car },
-                  { label: "In Progress", icon: Droplets },
-                  { label: "Finishing", icon: Sparkles },
-                  { label: "Complete", icon: CheckCircle2 },
-                ].map((step, i) => {
-                  const Icon = step.icon;
-                  return (
-                    <div key={step.label} className="flex items-center">
-                      <div className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium whitespace-nowrap ${
-                        i === 3 ? "bg-primary text-primary-foreground" : i < 3 ? "bg-primary/20 text-primary" : "bg-secondary/60 text-muted-foreground"
-                      }`}>
-                        <Icon size={9} />
-                        {step.label}
-                      </div>
-                      {i < 4 && <div className={`w-2 h-0.5 mx-0.5 ${i < 3 ? "bg-primary" : "bg-border"}`} />}
-                    </div>
-                  );
-                })}
-              </div>
+              <TrackerMini />
               <p className="text-[11px] text-primary/70 font-semibold uppercase tracking-wider mt-3">Members Only Perk</p>
             </div>
           </div>
