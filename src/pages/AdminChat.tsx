@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Send, MessageSquare } from "lucide-react";
+import { ArrowLeft, Send, MessageSquare, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -148,7 +148,7 @@ const AdminChat = () => {
           <ArrowLeft size={18} />
         </Button>
         <MessageSquare size={20} className="text-primary" />
-        <div>
+        <div className="flex-1">
           <h1 className="font-display text-lg tracking-wide">Live Chat</h1>
           {activeConvo && (
             <p className="text-xs text-muted-foreground">
@@ -156,6 +156,22 @@ const AdminChat = () => {
             </p>
           )}
         </div>
+        {activeConvo && activeConvo.status !== "resolved" && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={async () => {
+              await supabase.from("chat_conversations").update({ status: "resolved" }).eq("id", activeConvo.id);
+            }}
+          >
+            <CheckCircle size={14} />
+            Resolve
+          </Button>
+        )}
+        {activeConvo && activeConvo.status === "resolved" && (
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Resolved</span>
+        )}
       </header>
 
       <div className="flex flex-1 overflow-hidden">
@@ -185,7 +201,7 @@ const AdminChat = () => {
                 <div className="flex items-center justify-between mt-1">
                   <span className={cn(
                     "text-[10px] font-bold uppercase tracking-wider",
-                    c.status === "waiting" ? "text-yellow-400" : c.status === "active" ? "text-green-400" : "text-muted-foreground"
+                    c.status === "waiting" ? "text-yellow-400" : c.status === "active" ? "text-green-400" : c.status === "resolved" ? "text-muted-foreground" : "text-muted-foreground"
                   )}>
                     {c.status}
                   </span>
