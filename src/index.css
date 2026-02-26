@@ -137,14 +137,14 @@
     --shine-center: 0%;
     --shine-right: 0%;
   }
-  5% {
+  3% {
     --shine-left: 0%;
-    --shine-center: 3%;
-    --shine-right: 8%;
+    --shine-center: 2%;
+    --shine-right: 6%;
   }
-  95% {
-    --shine-left: 92%;
-    --shine-center: 97%;
+  97% {
+    --shine-left: 94%;
+    --shine-center: 98%;
     --shine-right: 100%;
   }
   100% {
