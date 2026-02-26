@@ -115,7 +115,7 @@ const LoyaltyPromoSection = () => {
         </div>
 
         {/* Whippet Tracker – featured card */}
-        <div className="bg-card border border-primary/30 rounded-lg p-8 mb-10 group hover:border-primary/50 transition-colors relative overflow-visible">
+        <div className="bg-card border border-primary/30 rounded-lg p-8 mb-10 group hover:border-primary/50 transition-colors relative overflow-visible animate-[pulse-glow_3s_ease-in-out_infinite]">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none rounded-lg" />
           <div className="relative flex flex-col sm:flex-row items-center gap-6">
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
