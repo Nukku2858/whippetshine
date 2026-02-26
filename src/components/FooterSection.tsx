@@ -24,7 +24,7 @@ const FooterSection = () => {
         <div className="space-y-4">
           <h4 className="font-display text-xl mb-4">Services</h4>
           <Link
-            to="/#detailing-packages"
+            to="/home#detailing-packages"
             className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
           >
             <Car size={16} className="text-primary shrink-0" />

@@ -35,7 +35,7 @@ const Auth = () => {
         toast.error(error.message);
       } else {
         toast.success("Welcome back!");
-        navigate("/");
+        navigate("/home");
       }
     } else {
       const { error } = await signUp(email, password);
@@ -62,7 +62,7 @@ const Auth = () => {
         <div className="relative max-w-md mx-auto">
           <Button
             variant="ghost"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="mb-8 gap-2 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft size={18} /> Back

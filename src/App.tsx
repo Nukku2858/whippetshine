@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Welcome from "./pages/Welcome";
 import PressureWashing from "./pages/PressureWashing";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import IntakeForm from "./pages/IntakeForm";
@@ -35,7 +36,8 @@ const App = () => (
             <ScrollToTop />
             <CartDrawer />
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<Welcome />} />
+              <Route path="/home" element={<Index />} />
               <Route path="/pressure-washing" element={<PressureWashing />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/intake" element={<IntakeForm />} />
