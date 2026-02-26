@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, MessageSquare, Plus, Minus, ShoppingCart } from "lucide-react";
+import { Check, MessageSquare, Plus, Minus, ShoppingCart, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
@@ -223,6 +223,30 @@ const PackagesSection = () => {
             <p className="text-muted-foreground text-sm mt-2">Bundle with a package to save, or book as a standalone service.</p>
           </div>
           <AddOnsList />
+
+          {/* Pick Up & Drop Off – Members Perk */}
+          <div className="mt-8 bg-card border border-primary/30 rounded-lg p-6 relative overflow-visible animate-[pulse-glow_3s_ease-in-out_infinite]">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none rounded-lg" />
+            <div className="relative flex flex-col sm:flex-row items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                <Car size={24} className="text-primary" />
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <div className="flex items-center justify-center sm:justify-start gap-2 mb-1 flex-wrap">
+                  <h4 className="text-lg font-display">Pick Up & Drop Off</h4>
+                  <span className="text-[10px] font-bold tracking-wider uppercase bg-primary/20 text-primary px-2 py-0.5 rounded-full">Members Only Perk</span>
+                </div>
+                <p className="text-muted-foreground text-sm">We'll pick up your vehicle before your appointment and drop it back off — so you don't have to lift a finger.</p>
+              </div>
+              <div className="flex flex-col items-center gap-1 shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground line-through">$20</span>
+                  <span className="text-lg font-display text-primary">FREE</span>
+                </div>
+                <span className="text-[10px] text-muted-foreground">$20 for non-members</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
