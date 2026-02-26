@@ -59,7 +59,7 @@ const Welcome = () => {
               fontFamily: "'Rubik Spray Paint', cursive",
               color: 'hsl(30 40% 25%)',
               textShadow: '2px 2px 6px hsl(30 50% 15% / 0.8), -1px -1px 4px hsl(30 30% 20% / 0.5)',
-              animation: 'muddy-fade 6s ease-in-out 1s forwards',
+              animation: 'muddy-fade 6s ease-in-out 0s forwards',
             }}
             aria-hidden="true"
           >
@@ -74,7 +74,7 @@ const Welcome = () => {
               backgroundSize: '100% 100%',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
-              animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
+              animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards',
             }}
           >
             Whippet Shine
@@ -88,7 +88,7 @@ const Welcome = () => {
               backgroundSize: '100% 100%',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
-              animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards, shine-sweep 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
+              animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards, shine-sweep 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards',
             }}
             aria-hidden="true"
           >
@@ -100,7 +100,7 @@ const Welcome = () => {
             style={{
               background: 'linear-gradient(180deg, transparent 0%, hsl(200 70% 65% / 0.7) 30%, hsl(200 80% 75%) 50%, hsl(200 70% 65% / 0.7) 70%, transparent 100%)',
               boxShadow: '0 0 8px 2px hsl(200 70% 65% / 0.4), 0 0 20px 4px hsl(200 60% 55% / 0.2)',
-              animation: 'spray-line-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
+              animation: 'spray-line-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards',
             }}
           />
         </div>
