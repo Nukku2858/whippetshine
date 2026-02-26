@@ -80,9 +80,9 @@ const Welcome = () => {
       </div>
 
       {/* Bubbles */}
-      <div className="relative z-10 w-full max-w-sm space-y-4">
+      <div className="relative z-10 w-full max-w-sm">
         {!showGuestOptions ? (
-          <>
+          <div key="initial" className="space-y-4 animate-fade-in">
             {/* Members Club */}
             <button
               onClick={() => navigate("/auth")}
@@ -94,12 +94,8 @@ const Welcome = () => {
                   <Crown size={26} className="text-primary" />
                 </div>
                 <div className="text-left">
-                  <p className="text-lg font-display tracking-wide text-foreground">
-                    Members Club
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Sign in to your account
-                  </p>
+                  <p className="text-lg font-display tracking-wide text-foreground">Members Club</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Sign in to your account</p>
                 </div>
               </div>
             </button>
@@ -115,65 +111,55 @@ const Welcome = () => {
                   <UserPlus size={26} className="text-muted-foreground" />
                 </div>
                 <div className="text-left">
-                  <p className="text-lg font-display tracking-wide text-foreground">
-                    New Customer / Guest
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Browse services or create an account
-                  </p>
+                  <p className="text-lg font-display tracking-wide text-foreground">New Customer / Guest</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Browse services or create an account</p>
                 </div>
               </div>
             </button>
-          </>
+          </div>
         ) : (
-          /* Sub-options for Guest */
-          <>
-            <button
-              onClick={() => navigate("/auth?mode=signup")}
-              className="w-full group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-6 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98] animate-fade-in"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/25 transition-colors">
-                  <UserPlus size={26} className="text-primary" />
+          <div key="guest" className="animate-[scale-fade-in_0.4s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+            <div className="grid grid-cols-2 gap-3">
+              {/* Create Account */}
+              <button
+                onClick={() => navigate("/auth?mode=signup")}
+                className="group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-5 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98]"
+              >
+                <div className="flex flex-col items-center text-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/25 transition-colors">
+                    <UserPlus size={22} className="text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-display tracking-wide text-foreground">Create Account</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">Join & earn rewards</p>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <p className="text-lg font-display tracking-wide text-foreground">
-                    Create Account
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Join & earn loyalty rewards
-                  </p>
-                </div>
-              </div>
-            </button>
+              </button>
 
-            <button
-              onClick={() => navigate("/home")}
-              className="w-full group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:border-muted-foreground/40 hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.1)] active:scale-[0.98] animate-fade-in"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center shrink-0 group-hover:bg-muted transition-colors">
-                  <Crown size={26} className="text-muted-foreground" />
+              {/* Browse as Guest */}
+              <button
+                onClick={() => navigate("/home")}
+                className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-muted-foreground/40 hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.1)] active:scale-[0.98]"
+              >
+                <div className="flex flex-col items-center text-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center shrink-0 group-hover:bg-muted transition-colors">
+                    <Crown size={22} className="text-muted-foreground" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-display tracking-wide text-foreground">Browse as Guest</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">View packages & pricing</p>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <p className="text-lg font-display tracking-wide text-foreground">
-                    Browse as Guest
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    View packages & pricing
-                  </p>
-                </div>
-              </div>
-            </button>
+              </button>
+            </div>
 
             <button
               onClick={() => setShowGuestOptions(false)}
-              className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors text-center pt-2"
+              className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors text-center pt-4"
             >
               ← Back
             </button>
-          </>
+          </div>
         )}
       </div>
     </main>
