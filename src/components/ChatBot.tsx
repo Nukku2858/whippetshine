@@ -3,12 +3,15 @@ import { X, Send, UserRound } from "lucide-react";
 import whippetLogo from "@/assets/whippet-logo.png";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { useCart } from "@/contexts/CartContext";
 
 type Msg = { role: "user" | "assistant" | "system"; content: string };
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
 const ChatBot = () => {
+  const { items } = useCart();
+  const hasCartItems = items.length > 0;
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -218,7 +221,8 @@ const ChatBot = () => {
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          "fixed bottom-5 right-5 z-50 transition-all hover:scale-105",
+          "fixed right-5 z-50 transition-all hover:scale-105",
+          hasCartItems ? "bottom-20" : "bottom-5",
           open
             ? "rounded-full p-3.5 bg-primary text-primary-foreground shadow-lg"
             : "p-0 bg-transparent"
@@ -239,7 +243,10 @@ const ChatBot = () => {
 
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-20 right-5 z-50 w-[340px] sm:w-[380px] max-h-[70vh] flex flex-col rounded-xl border border-border bg-card shadow-2xl overflow-hidden">
+        <div className={cn(
+          "fixed right-5 z-50 w-[340px] sm:w-[380px] max-h-[70vh] flex flex-col rounded-xl border border-border bg-card shadow-2xl overflow-hidden",
+          hasCartItems ? "bottom-36" : "bottom-20"
+        )}>
           {/* Header */}
           <div className="px-4 py-3 border-b border-border bg-secondary/50 flex items-center justify-between">
             <p className="font-display text-lg tracking-wide">
