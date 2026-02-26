@@ -19,7 +19,7 @@ const standardFeatures = [
   "Door panel & jamb detailing",
   "Upholstery wipe-down & refresh",
   "Streak-free glass inside & out",
-  "Premium hand wash & chamois dry",
+  "Premium exterior hand wash & chamois dry",
   "Wheel & tire clean",
 ];
 
