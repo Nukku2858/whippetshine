@@ -84,7 +84,7 @@ const Welcome = () => {
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent pointer-events-none"
             style={{
               fontFamily: "'Rubik Spray Paint', cursive",
-              backgroundImage: 'linear-gradient(90deg, transparent 0%, transparent var(--shine-left), hsl(0 80% 85%) var(--shine-center), transparent var(--shine-right), transparent 100%)',
+              backgroundImage: 'linear-gradient(90deg, transparent 0%, transparent var(--shine-left), hsl(0 0% 100%) var(--shine-center), transparent var(--shine-right), transparent 100%)',
               backgroundSize: '100% 100%',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
