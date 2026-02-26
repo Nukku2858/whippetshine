@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Star, Gift, TrendingUp, Eye, Clock, Car, Droplets, Sparkles, CheckCircle2, Smartphone } from "lucide-react";
+import { Star, Gift, TrendingUp, Eye, Clock, Car, Droplets, Sparkles, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import whippetLogo from "@/assets/whippet-logo.png";
+import googlePlayBadge from "@/assets/google-play-badge.png";
 
 const TRACKER_STEPS = [
   { label: "Scheduled", icon: Clock },
@@ -145,10 +146,9 @@ const LoyaltyPromoSection = () => {
                 href="https://play.google.com/store/apps/details?id=app.lovable.whippetshine"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 mt-2 text-xs text-primary hover:text-primary/80 transition-colors font-medium"
+                className="inline-block mt-2"
               >
-                <Smartphone size={14} />
-                Get it on Google Play →
+                <img src={googlePlayBadge} alt="Get it on Google Play" className="h-10" />
               </a>
             </div>
             <div className="w-full sm:w-auto">
