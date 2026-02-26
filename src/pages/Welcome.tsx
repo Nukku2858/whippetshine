@@ -44,20 +44,47 @@ const Welcome = () => {
             src={whippetShineLogo}
             alt="Whippet Shine"
             className="w-full h-[140%] object-cover drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] mix-blend-lighten"
-            style={{ objectPosition: '50% 35%', animation: 'logo-breathe 8s ease-in-out infinite' }}
+            style={{ objectPosition: '50% 35%' }}
           />
         </div>
-        <h1
-          className="text-5xl md:text-7xl tracking-[0.06em] uppercase mt-2 mb-1 bg-clip-text text-transparent animate-shimmer drop-shadow-none"
-          style={{
-            backgroundImage: 'linear-gradient(110deg, hsl(0 60% 35%) 0%, hsl(0 70% 50%) 15%, hsl(355 85% 65%) 25%, hsl(0 90% 80%) 30%, hsl(355 85% 65%) 35%, hsl(0 70% 50%) 45%, hsl(0 60% 35%) 55%, hsl(0 70% 50%) 65%, hsl(355 85% 65%) 75%, hsl(0 90% 80%) 80%, hsl(355 85% 65%) 85%, hsl(0 60% 35%) 100%)',
-            backgroundSize: '300% 100%',
-            filter: 'drop-shadow(0 0 12px hsl(0 72% 50% / 0.5)) drop-shadow(0 0 30px hsl(0 72% 50% / 0.25))',
-            fontFamily: "'Rubik Spray Paint', cursive",
-          }}
-        >
-          Whippet Shine
-        </h1>
+        <div className="relative mt-2 mb-1">
+          {/* Muddy layer */}
+          <h1
+            className="text-5xl md:text-7xl tracking-[0.06em] uppercase text-center"
+            style={{
+              fontFamily: "'Rubik Spray Paint', cursive",
+              color: 'hsl(30 40% 25%)',
+              textShadow: '2px 2px 6px hsl(30 50% 15% / 0.8), -1px -1px 4px hsl(30 30% 20% / 0.5)',
+            }}
+            aria-hidden="true"
+          >
+            Whippet Shine
+          </h1>
+          {/* Clean layer with pressure wash reveal */}
+          <h1
+            className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent animate-shimmer"
+            style={{
+              fontFamily: "'Rubik Spray Paint', cursive",
+              backgroundImage: 'linear-gradient(110deg, hsl(0 60% 35%) 0%, hsl(0 70% 50%) 15%, hsl(355 85% 65%) 25%, hsl(0 90% 80%) 30%, hsl(355 85% 65%) 35%, hsl(0 70% 50%) 45%, hsl(0 60% 35%) 55%, hsl(0 70% 50%) 65%, hsl(355 85% 65%) 75%, hsl(0 90% 80%) 80%, hsl(355 85% 65%) 85%, hsl(0 60% 35%) 100%)',
+              backgroundSize: '300% 100%',
+              filter: 'drop-shadow(0 0 12px hsl(0 72% 50% / 0.5)) drop-shadow(0 0 30px hsl(0 72% 50% / 0.25))',
+              WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
+              maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
+              animation: 'shimmer 6s ease-in-out infinite, pressure-wash 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
+            }}
+          >
+            Whippet Shine
+          </h1>
+          {/* Water spray line */}
+          <div
+            className="absolute top-0 bottom-0 w-1 rounded-full opacity-0"
+            style={{
+              background: 'linear-gradient(180deg, transparent 0%, hsl(200 90% 80% / 0.9) 30%, hsl(200 95% 95%) 50%, hsl(200 90% 80% / 0.9) 70%, transparent 100%)',
+              boxShadow: '0 0 12px 4px hsl(200 90% 80% / 0.6), 0 0 30px 8px hsl(200 80% 70% / 0.3)',
+              animation: 'spray-line 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
+            }}
+          />
+        </div>
         <p className="text-muted-foreground text-sm tracking-[0.25em] uppercase mt-1">
           Shelby, Ohio
         </p>

@@ -75,9 +75,22 @@
   100% { background-position: -200% 0; }
 }
 
-@keyframes logo-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
+@keyframes pressure-wash {
+  0% { --wash-progress: 0%; }
+  100% { --wash-progress: 103%; }
+}
+
+@keyframes spray-line {
+  0% { left: 0%; opacity: 0; }
+  5% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+@property --wash-progress {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
 }
 
 @keyframes pulse-glow {
