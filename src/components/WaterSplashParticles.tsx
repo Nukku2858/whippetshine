@@ -41,18 +41,18 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
     ];
 
     const spawnParticles = (x: number) => {
-      const count = Math.floor(Math.random() * 4) + 2;
+      const count = Math.floor(Math.random() * 10) + 6;
       for (let i = 0; i < count; i++) {
-        const isMud = Math.random() < 0.35;
+        const isMud = Math.random() < 0.4;
         particles.push({
           x,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.3) * 4 + 1.5, // mostly rightward
-          vy: (Math.random() - 0.5) * 6,
-          size: Math.random() * 3 + 1,
-          opacity: Math.random() * 0.6 + 0.4,
+          vx: (Math.random() - 0.2) * 8 + 2,
+          vy: (Math.random() - 0.5) * 12,
+          size: Math.random() * 5 + 1.5,
+          opacity: Math.random() * 0.5 + 0.5,
           life: 0,
-          maxLife: Math.random() * 40 + 20,
+          maxLife: Math.random() * 50 + 30,
           color: isMud ? colors[4 + Math.floor(Math.random() * 2)] : colors[Math.floor(Math.random() * 4)],
         });
       }
