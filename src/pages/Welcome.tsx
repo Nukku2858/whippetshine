@@ -50,7 +50,7 @@ const Welcome = () => {
         <h1
           className="text-5xl md:text-7xl font-display tracking-[0.12em] uppercase mt-2 mb-1 bg-clip-text text-transparent animate-shimmer"
           style={{
-            backgroundImage: 'linear-gradient(110deg, hsl(43 50% 45%) 0%, hsl(43 70% 60%) 15%, hsl(48 90% 78%) 25%, hsl(43 100% 90%) 30%, hsl(48 90% 78%) 35%, hsl(43 70% 60%) 45%, hsl(43 50% 45%) 55%, hsl(43 70% 60%) 65%, hsl(48 90% 78%) 75%, hsl(43 100% 90%) 80%, hsl(48 90% 78%) 85%, hsl(43 50% 45%) 100%)',
+            backgroundImage: 'linear-gradient(110deg, hsl(0 60% 35%) 0%, hsl(0 70% 50%) 15%, hsl(355 85% 65%) 25%, hsl(0 90% 80%) 30%, hsl(355 85% 65%) 35%, hsl(0 70% 50%) 45%, hsl(0 60% 35%) 55%, hsl(0 70% 50%) 65%, hsl(355 85% 65%) 75%, hsl(0 90% 80%) 80%, hsl(355 85% 65%) 85%, hsl(0 60% 35%) 100%)',
             backgroundSize: '300% 100%',
           }}
         >
