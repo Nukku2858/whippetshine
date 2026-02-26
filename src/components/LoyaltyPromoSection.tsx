@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Star, Gift, TrendingUp, Eye, Clock, Car, Droplets, Sparkles, CheckCircle2 } from "lucide-react";
+import { Star, Gift, TrendingUp, Eye, Clock, Car, Droplets, Sparkles, CheckCircle2, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import whippetLogo from "@/assets/whippet-logo.png";
@@ -125,9 +125,14 @@ const LoyaltyPromoSection = () => {
               <div className="flex items-center gap-2 justify-center sm:justify-start mb-1">
                 <h3 className="font-display text-2xl">The Whippet Tracker™</h3>
                 {!user && (
-                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-primary/20 text-primary px-2 py-0.5 rounded-full">
-                    Members Only
-                  </span>
+                  <>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                      Members Only
+                    </span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider bg-secondary text-foreground px-2 py-0.5 rounded-full">
+                      App Ready
+                    </span>
+                  </>
                 )}
               </div>
               <p className="text-muted-foreground text-sm">
@@ -136,6 +141,15 @@ const LoyaltyPromoSection = () => {
                   : <>Sign up to unlock <span className="text-primary font-semibold">live status updates on every service</span> — from the moment we arrive to the final wipe-down. Know exactly when your service is complete.</>
                 }
               </p>
+              <a
+                href="https://play.google.com/store/apps/details?id=app.lovable.whippetshine"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 mt-2 text-xs text-primary hover:text-primary/80 transition-colors font-medium"
+              >
+                <Smartphone size={14} />
+                Get it on Google Play →
+              </a>
             </div>
             <div className="w-full sm:w-auto">
               <TrackerMini />
