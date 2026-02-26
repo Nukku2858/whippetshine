@@ -69,22 +69,22 @@ const Welcome = () => {
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent animate-shimmer"
             style={{
               fontFamily: "'Rubik Spray Paint', cursive",
-              backgroundImage: 'linear-gradient(110deg, hsl(0 60% 35%) 0%, hsl(0 70% 50%) 15%, hsl(355 85% 65%) 25%, hsl(0 90% 80%) 30%, hsl(355 85% 65%) 35%, hsl(0 70% 50%) 45%, hsl(0 60% 35%) 55%, hsl(0 70% 50%) 65%, hsl(355 85% 65%) 75%, hsl(0 90% 80%) 80%, hsl(355 85% 65%) 85%, hsl(0 60% 35%) 100%)',
+              backgroundImage: 'linear-gradient(110deg, hsl(0 55% 22%) 0%, hsl(0 60% 32%) 15%, hsl(355 70% 42%) 25%, hsl(0 65% 55%) 30%, hsl(355 70% 42%) 35%, hsl(0 60% 32%) 45%, hsl(0 55% 22%) 55%, hsl(0 60% 32%) 65%, hsl(355 70% 42%) 75%, hsl(0 65% 55%) 80%, hsl(355 70% 42%) 85%, hsl(0 55% 22%) 100%)',
               backgroundSize: '300% 100%',
-              WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
-              maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
-              animation: 'shimmer 6s ease-in-out infinite, pressure-wash-once 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
+              WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
+              maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
+              animation: 'shimmer 6s ease-in-out infinite, pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
             }}
           >
             Whippet Shine
           </h1>
           {/* Water spray line - initial wash only */}
           <div
-            className="absolute top-0 bottom-0 w-1 rounded-full opacity-0"
+            className="absolute top-0 bottom-0 w-[2px] rounded-full opacity-0"
             style={{
-              background: 'linear-gradient(180deg, transparent 0%, hsl(200 90% 80% / 0.9) 30%, hsl(200 95% 95%) 50%, hsl(200 90% 80% / 0.9) 70%, transparent 100%)',
-              boxShadow: '0 0 12px 4px hsl(200 90% 80% / 0.6), 0 0 30px 8px hsl(200 80% 70% / 0.3)',
-              animation: 'spray-line-once 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
+              background: 'linear-gradient(180deg, transparent 0%, hsl(200 70% 65% / 0.7) 30%, hsl(200 80% 75%) 50%, hsl(200 70% 65% / 0.7) 70%, transparent 100%)',
+              boxShadow: '0 0 8px 2px hsl(200 70% 65% / 0.4), 0 0 20px 4px hsl(200 60% 55% / 0.2)',
+              animation: 'spray-line-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
             }}
           />
         </div>
