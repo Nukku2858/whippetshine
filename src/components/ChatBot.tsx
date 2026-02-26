@@ -225,6 +225,7 @@ const ChatBot = () => {
         className={cn(
           "fixed right-5 z-50 transition-all hover:scale-105",
           hasCartItems ? "bottom-20" : "bottom-5",
+          "mb-[env(safe-area-inset-bottom)]",
           open
             ? "rounded-full p-3.5 bg-primary text-primary-foreground shadow-lg"
             : "p-0 bg-transparent"
@@ -253,7 +254,8 @@ const ChatBot = () => {
       {open && (
         <div className={cn(
           "fixed right-5 z-50 w-[340px] sm:w-[380px] max-h-[70vh] flex flex-col rounded-xl border border-border bg-card shadow-2xl overflow-hidden",
-          hasCartItems ? "bottom-36" : "bottom-20"
+          hasCartItems ? "bottom-36" : "bottom-20",
+          "mb-[env(safe-area-inset-bottom)]"
         )}>
           {/* Header */}
           <div className="px-4 py-3 border-b border-border bg-secondary/50 flex items-center justify-between">
