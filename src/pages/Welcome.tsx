@@ -76,7 +76,7 @@ const Welcome = () => {
           <span className="text-border">|</span>
           <span className="flex items-center justify-center gap-1 flex-1"><Home size={13} className="text-primary" /> Houses</span>
         </div>
-        <p className="text-muted-foreground/60 text-[10px] mt-2">Detailing services starting at $150 · Book & pay online</p>
+        <p className="text-muted-foreground/60 text-[10px] mt-2">Detailing services starting at $85 · Book & pay online</p>
       </div>
 
       {/* Bubbles */}
