@@ -122,9 +122,19 @@ const LoyaltyPromoSection = () => {
               <Eye size={28} className="text-primary" />
             </div>
             <div className="text-center sm:text-left flex-1">
-              <h3 className="font-display text-2xl mb-1">The Whippet Tracker™</h3>
+              <div className="flex items-center gap-2 justify-center sm:justify-start mb-1">
+                <h3 className="font-display text-2xl">The Whippet Tracker™</h3>
+                {!user && (
+                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                    Members Only
+                  </span>
+                )}
+              </div>
               <p className="text-muted-foreground text-sm">
-                Watch your service <span className="text-primary font-semibold">live, step-by-step</span> — from arrival to final shine.
+                {user
+                  ? <>Track your service <span className="text-primary font-semibold">live, step-by-step</span> — from arrival to final shine.</>
+                  : <>Sign up to unlock <span className="text-primary font-semibold">real-time tracking</span> on every service — know exactly when we arrive, start, and finish.</>
+                }
               </p>
             </div>
             <div className="w-full sm:w-auto">
