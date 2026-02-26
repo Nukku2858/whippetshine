@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import whippetLogo from "@/assets/whippet-logo.png";
-import whippetShineLogo from "@/assets/whippet-shine-logo.jpg";
+import whippetShineLogo from "@/assets/whippet-shine-logo-transparent.png";
 import { UserPlus, Crown, Car, Droplets, Home } from "lucide-react";
 
 const Welcome = () => {
@@ -39,7 +39,7 @@ const Welcome = () => {
         <img
           src={whippetShineLogo}
           alt="Whippet Shine"
-          className="w-36 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] rounded-2xl mix-blend-lighten object-contain"
+          className="w-40 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] object-contain"
         />
         <h1 className="text-5xl md:text-7xl font-display leading-none">
           <span className="text-muted-foreground">Whippet</span>
