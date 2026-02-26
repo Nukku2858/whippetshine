@@ -245,6 +245,7 @@ const PackagesSection = () => {
                 </div>
                 <span className="text-[10px] text-muted-foreground">$20 for non-members</span>
               </div>
+            <p className="text-[10px] text-muted-foreground/70 mt-3 text-center sm:text-left italic">* A fuel surcharge may apply for locations beyond our standard service area and will be reflected in your invoice.</p>
             </div>
           </div>
         </div>
