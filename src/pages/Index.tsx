@@ -11,7 +11,6 @@ import { Droplets } from "lucide-react";
 import detailingVideo from "@/assets/detailing-showcase.mp4";
 import ReviewsSection from "@/components/ReviewsSection";
 import LoyaltyPromoSection from "@/components/LoyaltyPromoSection";
-import WowheadSearch from "@/components/WowheadSearch";
 
 
 const Index = () => {
@@ -29,11 +28,6 @@ const Index = () => {
     <main className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
-
-      {/* Wowhead Easter egg search */}
-      <section className="py-6 px-6">
-        <WowheadSearch />
-      </section>
 
       {/* Detailing showcase video – mobile only */}
       <section className="py-12 px-6">
