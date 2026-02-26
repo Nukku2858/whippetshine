@@ -83,5 +83,52 @@ export const useWashSound = () => {
     } catch {}
   }, []);
 
-  return { startWash, stopWash };
+  const playSplat = useCallback(() => {
+    try {
+      if (!ctxRef.current || ctxRef.current.state === "closed") {
+        ctxRef.current = new AudioContext();
+      }
+      const ctx = ctxRef.current;
+      if (ctx.state === "suspended") ctx.resume();
+
+      // Short burst of brown noise for a "splat" sound
+      const duration = 0.15;
+      const bufferSize = Math.floor(ctx.sampleRate * duration);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+
+      // Brown noise with fast decay envelope
+      let lastOut = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        lastOut = (lastOut + 0.02 * white) / 1.02;
+        const envelope = 1 - i / bufferSize;
+        data[i] = lastOut * 3.5 * envelope * envelope;
+      }
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+
+      // Lowpass for a muffled thud
+      const lowpass = ctx.createBiquadFilter();
+      lowpass.type = "lowpass";
+      lowpass.frequency.value = 400;
+      lowpass.Q.value = 1.2;
+
+      const gain = ctx.createGain();
+      gain.gain.value = 0.06 + Math.random() * 0.03;
+
+      source.connect(lowpass);
+      lowpass.connect(gain);
+      gain.connect(ctx.destination);
+      source.start();
+
+      // Haptic tap
+      if (navigator.vibrate) {
+        navigator.vibrate(15);
+      }
+    } catch {}
+  }, []);
+
+  return { startWash, stopWash, playSplat };
 };

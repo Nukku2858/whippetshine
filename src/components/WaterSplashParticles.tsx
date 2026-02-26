@@ -26,9 +26,10 @@ interface WaterSplashProps {
   onDirtyChange?: (dirty: boolean) => void;
   onWashStart?: () => void;
   onWashEnd?: () => void;
+  onMudSplat?: () => void;
 }
 
-const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWashEnd }: WaterSplashProps) => {
+const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWashEnd, onMudSplat }: WaterSplashProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -205,6 +206,7 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
           splatTimer++;
           if (splatTimer % 6 === 0 && splats.length < 18) {
             spawnMudSplat();
+            onMudSplat?.();
           }
           sprayBarOpacity = 0;
           if (!lastDirty) { lastDirty = true; onDirtyChange?.(true); }
