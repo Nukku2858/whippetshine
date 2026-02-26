@@ -1,6 +1,7 @@
 import { MapPin, Phone, Mail, Clock, Car, Droplets } from "lucide-react";
 import { Link } from "react-router-dom";
 import whippetLogo from "@/assets/whippet-logo.png";
+import googlePlayBadge from "@/assets/google-play-badge.png";
 
 const FooterSection = () => {
   return (
@@ -16,9 +17,16 @@ const FooterSection = () => {
             <img src={whippetLogo} alt="Whippet Shine" className="h-10 w-10 object-contain mix-blend-screen" />
             <h3 className="text-3xl font-display text-primary">Whippet Shine</h3>
           </div>
-          <p className="text-muted-foreground text-sm leading-relaxed">
+          <p className="text-muted-foreground text-sm leading-relaxed mb-4">
             Shelby, Ohio's trusted car detailing & house pressure washing professionals. We treat every vehicle and home like it's our own.
           </p>
+          <a
+            href="https://play.google.com/apps/testing/app.lovable.whippetshine"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={googlePlayBadge} alt="Get it on Google Play" className="h-10" />
+          </a>
         </div>
 
         <div className="space-y-4">
