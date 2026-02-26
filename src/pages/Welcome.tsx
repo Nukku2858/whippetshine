@@ -20,7 +20,7 @@ const Welcome = () => {
   if (user) return null;
 
   return (
-    <main className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden px-6">
+    <main className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden px-6 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       {/* Watermark logo */}
       <img
         src={whippetLogo}
