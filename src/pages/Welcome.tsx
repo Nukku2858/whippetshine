@@ -47,6 +47,15 @@ const Welcome = () => {
             style={{ objectPosition: '50% 44%' }}
           />
         </div>
+        <h1
+          className="text-5xl md:text-7xl font-display tracking-[0.12em] uppercase mt-2 mb-1 bg-clip-text text-transparent animate-shimmer"
+          style={{
+            backgroundImage: 'linear-gradient(110deg, hsl(0 0% 65%) 0%, hsl(0 0% 90%) 20%, hsl(0 0% 100%) 30%, hsl(0 0% 90%) 40%, hsl(0 0% 65%) 60%, hsl(0 0% 90%) 80%, hsl(0 0% 100%) 90%, hsl(0 0% 65%) 100%)',
+            backgroundSize: '300% 100%',
+          }}
+        >
+          Whippet Shine
+        </h1>
         <p className="text-muted-foreground text-sm tracking-[0.25em] uppercase mt-1">
           Shelby, Ohio
         </p>
