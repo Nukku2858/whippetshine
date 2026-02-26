@@ -21,7 +21,14 @@ interface Droplet {
   color: string;
 }
 
-const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: React.RefObject<HTMLDivElement>; onDirtyChange?: (dirty: boolean) => void }) => {
+interface WaterSplashProps {
+  containerRef: React.RefObject<HTMLDivElement>;
+  onDirtyChange?: (dirty: boolean) => void;
+  onWashStart?: () => void;
+  onWashEnd?: () => void;
+}
+
+const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWashEnd }: WaterSplashProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -168,6 +175,7 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
 
     let splatTimer = 0;
     let lastDirty = false;
+    let wasWashing = false;
     let animFrame: number;
 
     const animate = (now: number) => {
@@ -186,6 +194,7 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
         spawnWaterDroplets(eased * canvas.width);
         sprayBarX = -10;
         sprayBarOpacity = 0;
+        if (!wasWashing) { wasWashing = true; onWashStart?.(); }
       }
       // After initial wash, enter the loop
       else {
@@ -199,6 +208,7 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
           }
           sprayBarOpacity = 0;
           if (!lastDirty) { lastDirty = true; onDirtyChange?.(true); }
+          if (wasWashing) { wasWashing = false; onWashEnd?.(); }
         }
         // 3-4s: dirty pause
         else if (loopElapsed < 4000) {
@@ -214,6 +224,7 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
 
           // Turn shimmer back on as soon as wash starts
           if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
+          if (!wasWashing) { wasWashing = true; onWashStart?.(); }
 
           spawnWaterDroplets(sprayBarX);
 
@@ -231,6 +242,7 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
           sprayBarOpacity = 0;
           sprayBarX = -10;
           if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
+          if (wasWashing) { wasWashing = false; onWashEnd?.(); }
           // Clear any remaining splats instantly
           splats.length = 0;
         }
@@ -268,7 +280,7 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
     };
 
     animFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animFrame);
+    return () => { cancelAnimationFrame(animFrame); onWashEnd?.(); };
   }, [containerRef]);
 
   return (
