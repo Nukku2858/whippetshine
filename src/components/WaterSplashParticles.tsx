@@ -206,7 +206,6 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
           splatTimer++;
           if (splatTimer % 6 === 0 && splats.length < 18) {
             spawnMudSplat();
-            onMudSplat?.();
           }
           sprayBarOpacity = 0;
           if (!lastDirty) { lastDirty = true; onDirtyChange?.(true); }

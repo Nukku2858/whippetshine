@@ -12,7 +12,7 @@ const Welcome = () => {
   const navigate = useNavigate();
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const washContainerRef = useRef<HTMLDivElement>(null);
-  const { startWash, stopWash, playSplat } = useWashSound();
+  const { startWash, stopWash } = useWashSound();
   // Auto-skip for logged-in users
   useEffect(() => {
     if (user) {
@@ -51,7 +51,7 @@ const Welcome = () => {
           />
         </div>
         <div className="relative mt-2 mb-1" ref={washContainerRef}>
-          <WaterSplashParticles containerRef={washContainerRef} onWashStart={startWash} onWashEnd={stopWash} onMudSplat={playSplat} />
+          <WaterSplashParticles containerRef={washContainerRef} onWashStart={startWash} onWashEnd={stopWash} />
           {/* Muddy layer - fades out after initial wash */}
           <h1
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase text-center"
