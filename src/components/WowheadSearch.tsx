@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
-
-const WOWHEAD_LOGO = "https://wow.zamimg.com/images/logos/wowhead-logo.png";
+import thottbotLogo from "@/assets/thottbot-logo.webp";
 
 const WowheadSearch = () => {
   const [query, setQuery] = useState("");
@@ -16,8 +15,8 @@ const WowheadSearch = () => {
 
   return (
     <div className="w-full max-w-sm mx-auto">
-      <div className="flex items-center justify-center gap-2 mb-2">
-        <img src={WOWHEAD_LOGO} alt="Wowhead" className="h-5 object-contain" />
+      <div className="flex items-center justify-center mb-2">
+        <img src={thottbotLogo} alt="Thottbot" className="h-12 object-contain" />
       </div>
       <form onSubmit={handleSearch} className="relative group">
         <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-600 via-amber-500 to-yellow-600 rounded-lg opacity-50 group-hover:opacity-100 blur-sm transition-opacity" />
