@@ -132,8 +132,8 @@ const LoyaltyPromoSection = () => {
               </div>
               <p className="text-muted-foreground text-sm">
                 {user
-                  ? <>Track <span className="text-primary font-semibold">every service live</span> — detailing, pressure washing, all of it. Know exactly when we arrive, when we're finishing up, and when your car is ready for pickup.</>
-                  : <>Sign up to unlock <span className="text-primary font-semibold">real-time tracking on every service</span> — detailing, pressure washing, you name it. See when we arrive, follow along, and know the moment your car is ready for pickup.</>
+                  ? <>Follow <span className="text-primary font-semibold">every job in real time</span> — detailing, driveways, house washes. Know when we pull up, when the work starts, and the second we're done.</>
+                  : <>Sign up to unlock <span className="text-primary font-semibold">live status updates on every service</span> — from the moment we arrive to the final wipe-down. No guessing, just watching the magic happen.</>
                 }
               </p>
             </div>
