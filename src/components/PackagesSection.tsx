@@ -11,6 +11,7 @@ interface Package {
   description: string;
   popular?: boolean;
   stripePriceId: string;
+  features?: string[];
 }
 
 const standardFeatures = [
@@ -34,8 +35,16 @@ const addOns = [
   { id: "odor-elimination", name: "Odor elimination treatment", addonPrice: 55, standalonePrice: 95, stripePriceId: "price_1T4FmCQ47JXIZZAQMu0OnCZe", description: "Targets odor at the source with an ozone or enzyme-based treatment that neutralizes smoke, food, pet, and mildew smells — not just masks them." },
 ];
 
+const expressFeatures = [
+  "Quick interior vacuum",
+  "Dashboard & console wipe-down",
+  "Exterior rinse & hand dry",
+  "Window spot-clean",
+  "Air freshener finish",
+];
+
 const packages: Package[] = [
-  { name: "Express Clean", price: 75, description: "Quick interior wipe-down & vacuum.", stripePriceId: "" },
+  { name: "Express Clean", price: 75, description: "Quick interior wipe-down & vacuum.", stripePriceId: "", features: expressFeatures },
   { name: "Sedan", price: 150, description: "Cars, coupes & compact vehicles.", stripePriceId: "price_1T48mAQ47JXIZZAQ0t9hBp7k" },
   { name: "Midsize", price: 250, description: "SUVs, crossovers & minivans.", popular: true, stripePriceId: "price_1T498fQ47JXIZZAQ0YeWMBKk" },
   { name: "Full Size", price: 325, description: "Trucks, large SUVs & vans.", stripePriceId: "price_1T498rQ47JXIZZAQMymxfuc8" },
@@ -158,7 +167,7 @@ const PackagesSection = () => {
                   <span className="text-3xl font-display text-primary">${pkg.price}</span>
                 </div>
                 <ul className="space-y-2 mb-6 flex-1">
-                  {standardFeatures.map((feature) => (
+                  {(pkg.features || standardFeatures).map((feature) => (
                     <li key={feature} className="flex items-start gap-2 text-sm">
                       <Check size={14} className="text-primary mt-0.5 shrink-0" />
                       <span className="text-secondary-foreground">{feature}</span>
