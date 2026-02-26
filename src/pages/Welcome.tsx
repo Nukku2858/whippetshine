@@ -36,11 +36,17 @@ const Welcome = () => {
 
       {/* Logo & title */}
       <div className="text-center mb-12 relative z-10 opacity-0 animate-fade-up" style={{ animationFillMode: "forwards" }}>
-        <img
-          src={whippetShineLogo}
-          alt="Whippet Shine"
-          className="w-40 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] object-contain"
-        />
+        <div className="w-80 h-72 mx-auto mb-4 overflow-hidden relative" style={{
+          WebkitMaskImage: 'radial-gradient(ellipse 75% 65% at 50% 55%, black 35%, transparent 100%)',
+          maskImage: 'radial-gradient(ellipse 75% 65% at 50% 55%, black 35%, transparent 100%)'
+        }}>
+          <img
+            src={whippetShineLogo}
+            alt="Whippet Shine"
+            className="w-full h-[180%] object-cover drop-shadow-[0_0_30px_rgba(200,40,40,0.3)]"
+            style={{ objectPosition: '50% 42%' }}
+          />
+        </div>
         <h1 className="text-5xl md:text-7xl font-display leading-none">
           <span className="text-muted-foreground">Whippet</span>
           <span className="text-primary"> Shine</span>
