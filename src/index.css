@@ -77,13 +77,25 @@
 
 @keyframes pressure-wash {
   0% { --wash-progress: 0%; }
+  30% { --wash-progress: 103%; }
+  35% { --wash-progress: 103%; }
+  65% { --wash-progress: 0%; }
+  70% { --wash-progress: 0%; }
   100% { --wash-progress: 103%; }
 }
 
 @keyframes spray-line {
   0% { left: 0%; opacity: 0; }
-  5% { opacity: 1; }
-  90% { opacity: 1; }
+  2% { opacity: 1; }
+  28% { left: 100%; opacity: 1; }
+  30% { left: 100%; opacity: 0; }
+  35% { left: 100%; opacity: 0; }
+  37% { left: 100%; opacity: 1; }
+  63% { left: 0%; opacity: 1; }
+  65% { left: 0%; opacity: 0; }
+  70% { left: 0%; opacity: 0; }
+  72% { opacity: 1; }
+  98% { left: 100%; opacity: 1; }
   100% { left: 100%; opacity: 0; }
 }
 
