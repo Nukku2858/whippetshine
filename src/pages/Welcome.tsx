@@ -57,7 +57,7 @@ const Welcome = () => {
             <button
               onClick={() => navigate("/auth")}
               className="w-full group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-6 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98] opacity-0 animate-fade-up"
-              style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}
+              style={{ animationDelay: "0.2s", animationFillMode: "forwards", animation: "fade-up 0.5s ease-out 0.2s forwards, pulse-glow 3s ease-in-out 0.7s infinite" }}
             >
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/25 transition-colors">
