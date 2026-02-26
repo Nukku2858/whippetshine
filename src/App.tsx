@@ -25,6 +25,7 @@ import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import CartDrawer from "./components/CartDrawer";
 import ChatBot from "./components/ChatBot";
+import ScrollNav from "./components/ScrollNav";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ const App = () => {
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <ScrollNav />
             <ChatBot />
           </BrowserRouter>
         </CartProvider>
