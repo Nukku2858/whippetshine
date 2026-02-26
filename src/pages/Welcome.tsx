@@ -51,40 +51,40 @@ const Welcome = () => {
         </div>
         <div className="relative mt-2 mb-1" ref={washContainerRef}>
           <WaterSplashParticles containerRef={washContainerRef} />
-          {/* Muddy layer */}
+          {/* Muddy layer - fades out after initial wash */}
           <h1
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase text-center"
             style={{
               fontFamily: "'Rubik Spray Paint', cursive",
               color: 'hsl(30 40% 25%)',
               textShadow: '2px 2px 6px hsl(30 50% 15% / 0.8), -1px -1px 4px hsl(30 30% 20% / 0.5)',
+              animation: 'muddy-fade 4s ease-in-out 1s forwards',
             }}
             aria-hidden="true"
           >
             Whippet Shine
           </h1>
-          {/* Clean layer with pressure wash reveal */}
+          {/* Clean layer - reveals once then stays */}
           <h1
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent animate-shimmer"
             style={{
               fontFamily: "'Rubik Spray Paint', cursive",
               backgroundImage: 'linear-gradient(110deg, hsl(0 60% 35%) 0%, hsl(0 70% 50%) 15%, hsl(355 85% 65%) 25%, hsl(0 90% 80%) 30%, hsl(355 85% 65%) 35%, hsl(0 70% 50%) 45%, hsl(0 60% 35%) 55%, hsl(0 70% 50%) 65%, hsl(355 85% 65%) 75%, hsl(0 90% 80%) 80%, hsl(355 85% 65%) 85%, hsl(0 60% 35%) 100%)',
               backgroundSize: '300% 100%',
-              filter: 'none',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
-              animation: 'shimmer 6s ease-in-out infinite, pressure-wash 10s ease-in-out 1s infinite',
+              animation: 'shimmer 6s ease-in-out infinite, pressure-wash-once 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
             }}
           >
             Whippet Shine
           </h1>
-          {/* Water spray line */}
+          {/* Water spray line - initial wash only */}
           <div
             className="absolute top-0 bottom-0 w-1 rounded-full opacity-0"
             style={{
               background: 'linear-gradient(180deg, transparent 0%, hsl(200 90% 80% / 0.9) 30%, hsl(200 95% 95%) 50%, hsl(200 90% 80% / 0.9) 70%, transparent 100%)',
               boxShadow: '0 0 12px 4px hsl(200 90% 80% / 0.6), 0 0 30px 8px hsl(200 80% 70% / 0.3)',
-              animation: 'spray-line 10s ease-in-out 1s infinite',
+              animation: 'spray-line-once 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
             }}
           />
         </div>

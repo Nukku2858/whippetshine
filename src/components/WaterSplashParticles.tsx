@@ -38,8 +38,21 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
 
     const splats: Splat[] = [];
     const droplets: Droplet[] = [];
-    // Matches CSS: 10s cycle, 1s delay
-    const CYCLE = 10000;
+
+    // Timeline: 
+    // 0-4s: initial CSS wash (we just spawn water particles)
+    // 4-6s: clean pause
+    // 6-9s: mud splatters once
+    // 9-10s: dirty pause
+    // 10-13s: canvas spray bar cleans mud
+    // 13-15s: clean pause, then loop from mud phase
+
+    const INITIAL_WASH_END = 5000; // after CSS wash finishes
+    const MUD_START = 6000;
+    const MUD_END = 9000;
+    const WASH_START = 10000;
+    const WASH_END = 13000;
+    const LOOP_CYCLE = 9000; // mud phase loop: 6s-15s = 9s cycle
     const DELAY = 1000;
     const startTime = performance.now() + DELAY;
 
@@ -57,16 +70,20 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
       "hsl(0, 0%, 100%)",
     ];
 
+    let sprayBarX = -10; // off-screen
+    let sprayBarOpacity = 0;
+    let mudSpawned = false;
+
     const spawnMudSplat = () => {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
-      const size = Math.random() * 18 + 8;
+      const size = Math.random() * 22 + 10;
       const drips: Splat["drips"] = [];
-      const dripCount = Math.floor(Math.random() * 5) + 2;
+      const dripCount = Math.floor(Math.random() * 7) + 3;
       for (let i = 0; i < dripCount; i++) {
         drips.push({
-          dx: (Math.random() - 0.5) * size * 2.5,
-          dy: (Math.random() - 0.3) * size * 2,
+          dx: (Math.random() - 0.5) * size * 3,
+          dy: (Math.random() - 0.3) * size * 2.5,
           size: Math.random() * size * 0.5 + 2,
         });
       }
@@ -77,17 +94,17 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
         drips,
       });
 
-      // Flying mud impact particles
-      const flyCount = Math.floor(Math.random() * 6) + 3;
+      // Impact particles
+      const flyCount = Math.floor(Math.random() * 8) + 4;
       for (let i = 0; i < flyCount; i++) {
         droplets.push({
           x, y,
-          vx: (Math.random() - 0.5) * 6,
-          vy: (Math.random() - 0.7) * 8,
-          size: Math.random() * 4 + 1,
-          opacity: 0.7,
+          vx: (Math.random() - 0.5) * 8,
+          vy: (Math.random() - 0.7) * 10,
+          size: Math.random() * 5 + 1,
+          opacity: 0.8,
           life: 0,
-          maxLife: Math.random() * 20 + 10,
+          maxLife: Math.random() * 25 + 12,
           color: mudColors[Math.floor(Math.random() * mudColors.length)],
         });
       }
@@ -127,6 +144,26 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
       ctx.globalAlpha = 1;
     };
 
+    const drawSprayBar = () => {
+      if (sprayBarOpacity <= 0) return;
+      ctx.globalAlpha = sprayBarOpacity;
+      const grad = ctx.createLinearGradient(sprayBarX, 0, sprayBarX, canvas.height);
+      grad.addColorStop(0, "transparent");
+      grad.addColorStop(0.25, "hsl(200, 90%, 80%)");
+      grad.addColorStop(0.5, "hsl(200, 95%, 95%)");
+      grad.addColorStop(0.75, "hsl(200, 90%, 80%)");
+      grad.addColorStop(1, "transparent");
+      ctx.fillStyle = grad;
+      ctx.fillRect(sprayBarX - 2, 0, 4, canvas.height);
+
+      // Glow
+      ctx.shadowColor = "hsl(200, 90%, 80%)";
+      ctx.shadowBlur = 20;
+      ctx.fillRect(sprayBarX - 1, 0, 2, canvas.height);
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+    };
+
     let splatTimer = 0;
     let animFrame: number;
 
@@ -134,48 +171,62 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const elapsed = now - startTime;
-      if (elapsed > 0) {
-        const cyclePos = elapsed % CYCLE;
-        const t = cyclePos / CYCLE;
+      if (elapsed < 0) {
+        animFrame = requestAnimationFrame(animate);
+        return;
+      }
 
-        // Timeline synced with CSS:
-        // 0-25%: initial clean sweep L→R (spray bar + water particles + clear splats)
-        // 25-35%: clean pause
-        // 35-65%: mud splatters land randomly
-        // 65-70%: dirty pause
-        // 70-95%: second clean sweep L→R (spray bar + water particles + clear splats)
-        // 95-100%: clean pause before loop
+      // Initial CSS wash phase (0-4s) — just spawn water particles to match CSS bar
+      if (elapsed < 4000) {
+        const phase = elapsed / 4000;
+        const eased = 1 - Math.pow(1 - phase, 3);
+        spawnWaterDroplets(eased * canvas.width);
+        sprayBarX = -10;
+        sprayBarOpacity = 0;
+      }
+      // After initial wash, enter the loop
+      else {
+        const loopElapsed = (elapsed - INITIAL_WASH_END) % LOOP_CYCLE;
 
-        if (t < 0.25) {
-          // Clean sweep - water particles at spray position
-          const phase = t / 0.25;
-          const eased = 1 - Math.pow(1 - phase, 3);
-          const washX = eased * canvas.width;
-          spawnWaterDroplets(washX);
-          // Remove splats behind the wash line
-          for (let i = splats.length - 1; i >= 0; i--) {
-            if (splats[i].x < washX) {
-              splats[i].opacity -= 0.1;
-              if (splats[i].opacity <= 0) splats.splice(i, 1);
-            }
-          }
-        } else if (t >= 0.35 && t < 0.65) {
-          // Mud splatters land randomly
+        // 0-3s of loop: mud splatters land (one burst, not continuous filling)
+        if (loopElapsed < 3000) {
           splatTimer++;
-          if (splatTimer % 4 === 0) {
+          // Spawn in bursts — a few splatters total, not every frame
+          if (splatTimer % 8 === 0 && splats.length < 12) {
             spawnMudSplat();
           }
-        } else if (t >= 0.70 && t < 0.95) {
-          // Second clean sweep
-          const phase = (t - 0.70) / 0.25;
+          sprayBarOpacity = 0;
+        }
+        // 3-4s: dirty pause
+        else if (loopElapsed < 4000) {
+          sprayBarOpacity = 0;
+          splatTimer = 0;
+        }
+        // 4-7s: canvas spray bar cleans
+        else if (loopElapsed < 7000) {
+          const phase = (loopElapsed - 4000) / 3000;
           const eased = 1 - Math.pow(1 - phase, 3);
-          const washX = eased * canvas.width;
-          spawnWaterDroplets(washX);
+          sprayBarX = eased * canvas.width;
+          sprayBarOpacity = phase < 0.95 ? 1 : 1 - (phase - 0.95) / 0.05;
+
+          spawnWaterDroplets(sprayBarX);
+
+          // Remove splats behind the bar
           for (let i = splats.length - 1; i >= 0; i--) {
-            if (splats[i].x < washX) {
-              splats[i].opacity -= 0.1;
+            if (splats[i].x < sprayBarX) {
+              splats[i].opacity -= 0.12;
               if (splats[i].opacity <= 0) splats.splice(i, 1);
             }
+          }
+        }
+        // 7-9s: clean pause before loop
+        else {
+          sprayBarOpacity = 0;
+          sprayBarX = -10;
+          // Clear any remaining splats
+          for (let i = splats.length - 1; i >= 0; i--) {
+            splats[i].opacity -= 0.05;
+            if (splats[i].opacity <= 0) splats.splice(i, 1);
           }
         }
       }
@@ -185,7 +236,10 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
         drawSplat(s);
       }
 
-      // Draw flying droplets (water + mud impact)
+      // Draw spray bar
+      drawSprayBar();
+
+      // Draw flying droplets
       for (let i = droplets.length - 1; i >= 0; i--) {
         const p = droplets[i];
         p.life++;
