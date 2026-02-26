@@ -110,3 +110,18 @@
     box-shadow: 0 0 16px -2px hsl(0 72% 50% / 0.35);
   }
 }
+
+@keyframes letter-shine {
+  0% {
+    filter: brightness(1);
+    text-shadow: none;
+  }
+  30% {
+    filter: brightness(2.2);
+    text-shadow: 0 0 12px hsl(0 80% 65% / 0.8), 0 0 24px hsl(0 70% 55% / 0.4);
+  }
+  100% {
+    filter: brightness(1);
+    text-shadow: none;
+  }
+}

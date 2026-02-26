@@ -65,7 +65,7 @@ const Welcome = () => {
           >
             Whippet Shine
           </h1>
-          {/* Clean layer - reveals once then stays */}
+          {/* Clean layer - reveals with per-letter shine */}
           <h1
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent"
             style={{
@@ -74,10 +74,27 @@ const Welcome = () => {
               backgroundSize: '300% 100%',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
-              animation: 'shimmer 3s ease-in-out 1 forwards, pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
+              animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
             }}
+            aria-label="Whippet Shine"
           >
-            Whippet Shine
+            {/* Each letter shines briefly as the wash passes it */}
+            {"WHIPPET SHINE".split("").map((char, i) => {
+              const totalChars = 13; // "WHIPPET SHINE"
+              // Wash takes 6s starting at 1s delay. Stagger each letter across the wash duration.
+              const delay = 1 + (i / totalChars) * 6;
+              return (
+                <span
+                  key={i}
+                  style={{
+                    animation: `letter-shine 0.6s ease-out ${delay}s forwards`,
+                    display: char === " " ? "inline" : "inline-block",
+                  }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              );
+            })}
           </h1>
           {/* Water spray line - initial wash only */}
           <div
