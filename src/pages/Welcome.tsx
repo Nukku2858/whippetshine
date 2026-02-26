@@ -46,8 +46,8 @@ const Welcome = () => {
           <img
             src={whippetShineLogo}
             alt="Whippet Shine"
-            className="w-full h-[140%] object-cover drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] mix-blend-lighten"
-            style={{ objectPosition: '50% 35%' }}
+            className="w-full h-[150%] object-cover drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] mix-blend-lighten"
+            style={{ objectPosition: '50% 25%' }}
           />
         </div>
         <div className="relative mt-2 mb-1" ref={washContainerRef}>
