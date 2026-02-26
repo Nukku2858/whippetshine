@@ -85,33 +85,33 @@ const WeatherForecast = () => {
               </div>
             )}
 
-            <div className="grid grid-cols-7 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2">
               {forecast.map((day) => {
                 const cfg = ratingConfig[day.rating];
                 const isToday = day.date === new Date().toISOString().split("T")[0];
                 return (
                   <div
                     key={day.date}
-                    className={`rounded-lg p-3 text-center border transition-all ${cfg.bg} ${cfg.border} ${
+                    className={`rounded-lg p-3 border transition-all ${cfg.bg} ${cfg.border} ${
                       isToday ? "ring-2 ring-primary/50" : ""
-                    }`}
+                    } flex flex-col items-center`}
                   >
-                    <p className="text-xs font-bold text-foreground mb-1">
+                    <p className="text-xs font-bold text-foreground mb-1 text-center font-sans">
                       {isToday ? "Today" : day.dayName}
                     </p>
-                    <WeatherIcon code={day.weatherCode} className={`mx-auto mb-1 ${cfg.color}`} size={22} />
-                    <p className="text-[11px] text-muted-foreground leading-tight mb-1.5 h-7 flex items-center justify-center">
+                    <WeatherIcon code={day.weatherCode} className={`mb-1 ${cfg.color}`} size={22} />
+                    <p className="text-[11px] text-muted-foreground leading-tight mb-1.5 min-h-[1.75rem] flex items-center text-center font-sans">
                       {day.weatherLabel}
                     </p>
-                    <p className="text-sm font-bold text-foreground">{day.tempHigh}°</p>
-                    <p className="text-[10px] text-muted-foreground">{day.tempLow}°</p>
+                    <p className="text-sm font-bold text-foreground font-sans">{day.tempHigh}°</p>
+                    <p className="text-[10px] text-muted-foreground font-sans">{day.tempLow}°</p>
                     {day.precipProbability > 0 && (
                       <div className="flex items-center justify-center gap-0.5 mt-1.5">
                         <CloudRain size={10} className="text-blue-400" />
-                        <span className="text-[10px] text-blue-400">{day.precipProbability}%</span>
+                        <span className="text-[10px] text-blue-400 font-sans">{day.precipProbability}%</span>
                       </div>
                     )}
-                    <div className={`mt-2 text-[10px] font-bold uppercase tracking-wider ${cfg.color}`}>
+                    <div className={`mt-2 text-[10px] font-bold uppercase tracking-wider font-sans ${cfg.color}`}>
                       {cfg.label}
                     </div>
                   </div>
