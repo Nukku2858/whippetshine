@@ -55,14 +55,9 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
     // 10-13s: canvas spray bar cleans mud
     // 13-15s: clean pause, then loop from mud phase
 
-    const INITIAL_WASH_END = 7000; // match 6s wash + 1s delay
-    const MUD_START = 8000;
-    const MUD_END = 11000;
-    const WASH_START = 12000;
-    const WASH_END = 18000; // 6s wash duration
-    const LOOP_CYCLE = 13000; // adjusted loop
-    const DELAY = 1000;
-    const startTime = performance.now() + DELAY;
+    const INITIAL_WASH_END = 6000; // match 6s wash, no delay
+    const LOOP_CYCLE = 23000; // 3s mud + 4s dirty pause (was 1s) + 6s wash + 10s clean pause
+    const startTime = performance.now(); // no delay — mud visible immediately
 
     const mudColors = [
       "hsl(25, 45%, 22%)",
@@ -200,7 +195,7 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
       else {
         const loopElapsed = (elapsed - INITIAL_WASH_END) % LOOP_CYCLE;
 
-        // 0-3s of loop: mud splatters land (one burst, not continuous filling)
+        // 0-3s: mud splatters land
         if (loopElapsed < 3000) {
           splatTimer++;
           if (splatTimer % 6 === 0 && splats.length < 18) {
@@ -215,20 +210,18 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
           sprayBarOpacity = 0;
           splatTimer = 0;
         }
-        // 4-7s: canvas spray bar cleans
+        // 4-10s: canvas spray bar cleans (6s wash)
         else if (loopElapsed < 10000) {
           const phase = (loopElapsed - 4000) / 6000;
           const eased = 1 - Math.pow(1 - phase, 3);
           sprayBarX = eased * canvas.width;
           sprayBarOpacity = phase < 0.95 ? 1 : 1 - (phase - 0.95) / 0.05;
 
-          // Turn shimmer back on as soon as wash starts
           if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
           if (!wasWashing) { wasWashing = true; onWashStart?.(); }
 
           spawnWaterDroplets(sprayBarX);
 
-          // Remove splats immediately when the bar passes their rightmost edge
           for (let i = splats.length - 1; i >= 0; i--) {
             const s = splats[i];
             const maxDripX = Math.max(0, ...s.drips.map(d => d.dx + d.size));
@@ -237,13 +230,12 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
             }
           }
         }
-        // 7-9s: clean pause before loop
+        // 10-23s: 10-second clean pause, then loop restarts with mud
         else {
           sprayBarOpacity = 0;
           sprayBarX = -10;
           if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
           if (wasWashing) { wasWashing = false; onWashEnd?.(); }
-          // Clear any remaining splats instantly
           splats.length = 0;
         }
       }
