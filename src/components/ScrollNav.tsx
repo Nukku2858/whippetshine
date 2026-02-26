@@ -78,7 +78,7 @@ const ScrollNav = () => {
   });
 
   return (
-    <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2">
+    <div className="hidden md:flex fixed right-3 top-1/2 -translate-y-1/2 z-50 flex-col gap-2">
       <button
         {...handlers("up")}
         className="w-9 h-9 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-all duration-300"
