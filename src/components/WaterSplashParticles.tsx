@@ -53,11 +53,10 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
     // 7-17s: 10s clean pause
     // Then loop: 3s mud spawn + 1s dirty pause + 6s wash + 10s clean = 20s cycle
 
-    const INITIAL_WASH_DELAY = 1000; // 1s pause before first wash
     const WASH_DURATION = 6000;
-    const INITIAL_PHASE_END = INITIAL_WASH_DELAY + WASH_DURATION; // 7s
     const LOOP_CYCLE = 20000; // 3s mud + 1s pause + 6s wash + 10s clean
-    const startTime = performance.now();
+    // Start 3s into the loop so mud is already spawned and we're at the dirty-pause point
+    const startTime = performance.now() - 3000;
 
     const mudColors = [
       "hsl(25, 45%, 22%)",
@@ -189,94 +188,60 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
         for (let i = 0; i < 18; i++) {
           spawnMudSplat();
         }
-        // Clear impact droplets so it looks like mud was already there
         droplets.length = 0;
         onDirtyChange?.(true);
         lastDirty = true;
       }
 
-      // Initial phase: 0-1s dirty pause, 1-7s wash
-      if (elapsed < INITIAL_PHASE_END) {
-        if (elapsed < INITIAL_WASH_DELAY) {
-          // Dirty pause — just show mud
-          sprayBarOpacity = 0;
-        } else {
-          // Washing
-          const washElapsed = elapsed - INITIAL_WASH_DELAY;
-          const phase = washElapsed / WASH_DURATION;
-          const eased = 1 - Math.pow(1 - phase, 3);
-          sprayBarX = eased * canvas.width;
-          sprayBarOpacity = phase < 0.95 ? 1 : 1 - (phase - 0.95) / 0.05;
+      // Single unified loop (startTime is offset so we begin at dirty-pause)
+      const loopElapsed = elapsed % LOOP_CYCLE;
 
-          if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
-          if (!wasWashing) { wasWashing = true; onWashStart?.(); }
-
-          spawnWaterDroplets(sprayBarX);
-
-          for (let i = splats.length - 1; i >= 0; i--) {
-            const s = splats[i];
-            const splatRight = s.x + s.size;
-            const maxDripRight = s.drips.length > 0
-              ? Math.max(...s.drips.map(d => s.x + d.dx + d.size))
-              : 0;
-            if (Math.max(splatRight, maxDripRight) < sprayBarX) {
-              splats.splice(i, 1);
-            }
-          }
-          if (phase > 0.9) splats.length = 0;
+      // 0-3s: mud splatters land
+      if (loopElapsed < 3000) {
+        splatTimer++;
+        if (splatTimer % 6 === 0 && splats.length < 18) {
+          spawnMudSplat();
         }
+        sprayBarOpacity = 0;
+        if (!lastDirty) { lastDirty = true; onDirtyChange?.(true); }
+        if (wasWashing) { wasWashing = false; onWashEnd?.(); }
       }
-      // Loop phase
+      // 3-4s: dirty pause
+      else if (loopElapsed < 4000) {
+        sprayBarOpacity = 0;
+        splatTimer = 0;
+      }
+      // 4-10s: spray bar wash (6s)
+      else if (loopElapsed < 10000) {
+        const phase = (loopElapsed - 4000) / WASH_DURATION;
+        const eased = 1 - Math.pow(1 - phase, 3);
+        sprayBarX = eased * canvas.width;
+        sprayBarOpacity = phase < 0.95 ? 1 : 1 - (phase - 0.95) / 0.05;
+
+        if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
+        if (!wasWashing) { wasWashing = true; onWashStart?.(); }
+
+        spawnWaterDroplets(sprayBarX);
+
+        for (let i = splats.length - 1; i >= 0; i--) {
+          const s = splats[i];
+          const splatRight = s.x + s.size;
+          const maxDripRight = s.drips.length > 0
+            ? Math.max(...s.drips.map(d => s.x + d.dx + d.size))
+            : 0;
+          if (Math.max(splatRight, maxDripRight) < sprayBarX) {
+            splats.splice(i, 1);
+          }
+        }
+        if (phase > 0.9) splats.length = 0;
+      }
+      // 10-20s: 10s clean pause
       else {
-        const loopElapsed = (elapsed - INITIAL_PHASE_END) % LOOP_CYCLE;
-
-        // 0-3s: mud splatters land
-        if (loopElapsed < 3000) {
-          splatTimer++;
-          if (splatTimer % 6 === 0 && splats.length < 18) {
-            spawnMudSplat();
-          }
-          sprayBarOpacity = 0;
-          if (!lastDirty) { lastDirty = true; onDirtyChange?.(true); }
-          if (wasWashing) { wasWashing = false; onWashEnd?.(); }
-        }
-        // 3-4s: dirty pause
-        else if (loopElapsed < 4000) {
-          sprayBarOpacity = 0;
-          splatTimer = 0;
-        }
-        // 4-10s: spray bar wash (6s)
-        else if (loopElapsed < 10000) {
-          const phase = (loopElapsed - 4000) / WASH_DURATION;
-          const eased = 1 - Math.pow(1 - phase, 3);
-          sprayBarX = eased * canvas.width;
-          sprayBarOpacity = phase < 0.95 ? 1 : 1 - (phase - 0.95) / 0.05;
-
-          if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
-          if (!wasWashing) { wasWashing = true; onWashStart?.(); }
-
-          spawnWaterDroplets(sprayBarX);
-
-          for (let i = splats.length - 1; i >= 0; i--) {
-            const s = splats[i];
-            const splatRight = s.x + s.size;
-            const maxDripRight = s.drips.length > 0
-              ? Math.max(...s.drips.map(d => s.x + d.dx + d.size))
-              : 0;
-            if (Math.max(splatRight, maxDripRight) < sprayBarX) {
-              splats.splice(i, 1);
-            }
-          }
-          if (phase > 0.9) splats.length = 0;
-        }
-        // 10-20s: 10s clean pause
-        else {
-          sprayBarOpacity = 0;
-          sprayBarX = -10;
-          if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
-          if (wasWashing) { wasWashing = false; onWashEnd?.(); }
-          splats.length = 0;
-        }
+        sprayBarOpacity = 0;
+        sprayBarX = -10;
+        if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
+        if (wasWashing) { wasWashing = false; onWashEnd?.(); }
+        splats.length = 0;
       }
 
       // Draw persistent mud splats
