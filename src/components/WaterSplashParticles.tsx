@@ -47,12 +47,12 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
     // 10-13s: canvas spray bar cleans mud
     // 13-15s: clean pause, then loop from mud phase
 
-    const INITIAL_WASH_END = 5000; // after CSS wash finishes
-    const MUD_START = 6000;
-    const MUD_END = 9000;
-    const WASH_START = 10000;
-    const WASH_END = 13000;
-    const LOOP_CYCLE = 9000; // mud phase loop: 6s-15s = 9s cycle
+    const INITIAL_WASH_END = 7000; // match 6s wash + 1s delay
+    const MUD_START = 8000;
+    const MUD_END = 11000;
+    const WASH_START = 12000;
+    const WASH_END = 18000; // 6s wash duration
+    const LOOP_CYCLE = 13000; // adjusted loop
     const DELAY = 1000;
     const startTime = performance.now() + DELAY;
 
@@ -111,19 +111,19 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
     };
 
     const spawnWaterDroplets = (x: number) => {
-      const count = Math.floor(Math.random() * 22) + 14;
+      const count = Math.floor(Math.random() * 12) + 6;
       for (let i = 0; i < count; i++) {
         const isMud = Math.random() < 0.25;
-        const isBigBubble = Math.random() < 0.15;
+        const isBigBubble = Math.random() < 0.1;
         droplets.push({
-          x: x + (Math.random() - 0.5) * 20,
+          x: x + (Math.random() - 0.5) * 6,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.2) * 14 + 3,
-          vy: (Math.random() - 0.5) * 18,
-          size: isBigBubble ? Math.random() * 12 + 6 : Math.random() * 6 + 2,
-          opacity: Math.random() * 0.4 + 0.6,
+          vx: (Math.random() - 0.2) * 8 + 2,
+          vy: (Math.random() - 0.5) * 10,
+          size: isBigBubble ? Math.random() * 8 + 4 : Math.random() * 4 + 1.5,
+          opacity: Math.random() * 0.4 + 0.5,
           life: 0,
-          maxLife: Math.random() * 60 + 40,
+          maxLife: Math.random() * 40 + 25,
           color: isMud
             ? mudColors[Math.floor(Math.random() * mudColors.length)]
             : waterColors[Math.floor(Math.random() * waterColors.length)],
@@ -148,19 +148,20 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
     const drawSprayBar = () => {
       if (sprayBarOpacity <= 0) return;
       ctx.globalAlpha = sprayBarOpacity;
+      // Narrow precision line
       const grad = ctx.createLinearGradient(sprayBarX, 0, sprayBarX, canvas.height);
       grad.addColorStop(0, "transparent");
-      grad.addColorStop(0.25, "hsl(200, 90%, 80%)");
-      grad.addColorStop(0.5, "hsl(200, 95%, 95%)");
-      grad.addColorStop(0.75, "hsl(200, 90%, 80%)");
+      grad.addColorStop(0.2, "hsl(200, 70%, 65%)");
+      grad.addColorStop(0.5, "hsl(200, 80%, 75%)");
+      grad.addColorStop(0.8, "hsl(200, 70%, 65%)");
       grad.addColorStop(1, "transparent");
       ctx.fillStyle = grad;
-      ctx.fillRect(sprayBarX - 2, 0, 4, canvas.height);
-
-      // Glow
-      ctx.shadowColor = "hsl(200, 90%, 80%)";
-      ctx.shadowBlur = 20;
       ctx.fillRect(sprayBarX - 1, 0, 2, canvas.height);
+
+      // Subtle glow
+      ctx.shadowColor = "hsl(200, 70%, 65%)";
+      ctx.shadowBlur = 8;
+      ctx.fillRect(sprayBarX, 0, 1, canvas.height);
       ctx.shadowBlur = 0;
       ctx.globalAlpha = 1;
     };
@@ -179,8 +180,8 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
       }
 
       // Initial CSS wash phase (0-4s) — just spawn water particles to match CSS bar
-      if (elapsed < 4000) {
-        const phase = elapsed / 4000;
+      if (elapsed < 6000) {
+        const phase = elapsed / 6000;
         const eased = 1 - Math.pow(1 - phase, 3);
         spawnWaterDroplets(eased * canvas.width);
         sprayBarX = -10;
@@ -205,8 +206,8 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
           splatTimer = 0;
         }
         // 4-7s: canvas spray bar cleans
-        else if (loopElapsed < 7000) {
-          const phase = (loopElapsed - 4000) / 3000;
+        else if (loopElapsed < 10000) {
+          const phase = (loopElapsed - 4000) / 6000;
           const eased = 1 - Math.pow(1 - phase, 3);
           sprayBarX = eased * canvas.width;
           sprayBarOpacity = phase < 0.95 ? 1 : 1 - (phase - 0.95) / 0.05;
