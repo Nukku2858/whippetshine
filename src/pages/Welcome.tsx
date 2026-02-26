@@ -53,7 +53,7 @@ const Welcome = () => {
             backgroundImage: 'linear-gradient(110deg, hsl(0 60% 35%) 0%, hsl(0 70% 50%) 15%, hsl(355 85% 65%) 25%, hsl(0 90% 80%) 30%, hsl(355 85% 65%) 35%, hsl(0 70% 50%) 45%, hsl(0 60% 35%) 55%, hsl(0 70% 50%) 65%, hsl(355 85% 65%) 75%, hsl(0 90% 80%) 80%, hsl(355 85% 65%) 85%, hsl(0 60% 35%) 100%)',
             backgroundSize: '300% 100%',
             filter: 'drop-shadow(0 0 12px hsl(0 72% 50% / 0.5)) drop-shadow(0 0 30px hsl(0 72% 50% / 0.25))',
-            fontFamily: "'Bungee Shade', cursive",
+            fontFamily: "'Rubik Spray Paint', cursive",
           }}
         >
           Whippet Shine
