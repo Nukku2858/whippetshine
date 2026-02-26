@@ -210,6 +210,9 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
           sprayBarX = eased * canvas.width;
           sprayBarOpacity = phase < 0.95 ? 1 : 1 - (phase - 0.95) / 0.05;
 
+          // Turn shimmer back on as soon as wash starts
+          if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
+
           spawnWaterDroplets(sprayBarX);
 
           // Remove splats behind the bar
