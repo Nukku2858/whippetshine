@@ -81,18 +81,14 @@ const ScrollNav = () => {
     <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2">
       <button
         {...handlers("up")}
-        className={`w-9 h-9 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-all duration-300 ${
-          showUp ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
-        }`}
+        className="w-9 h-9 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-all duration-300"
         aria-label="Scroll up"
       >
         <ChevronUp size={18} />
       </button>
       <button
         {...handlers("down")}
-        className={`w-9 h-9 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-all duration-300 ${
-          showDown ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
-        }`}
+        className="w-9 h-9 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-all duration-300"
         aria-label="Scroll down"
       >
         <ChevronDown size={18} />
