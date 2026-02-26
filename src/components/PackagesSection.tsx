@@ -245,10 +245,8 @@ const PackagesSection = () => {
                 </div>
                 <span className="text-[10px] text-muted-foreground">$20 for non-members</span>
               </div>
-            <div className="flex items-center justify-between mt-3">
-              <a href="/auth" className="text-xs font-semibold text-primary hover:text-scarlet-glow transition-colors tracking-wide">Join the Pack →</a>
-              <span className="text-[10px] text-muted-foreground/60 italic">* Fuel surcharge may apply</span>
-            </div>
+            <a href="/auth" className="block text-center text-sm font-semibold text-primary hover:text-scarlet-glow transition-colors tracking-wide mt-3">Join the Pack →</a>
+            <span className="block text-[10px] text-muted-foreground/60 text-center sm:text-right mt-1 italic">* Fuel surcharge may apply</span>
             </div>
           </div>
         </div>
