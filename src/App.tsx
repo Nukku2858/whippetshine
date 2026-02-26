@@ -13,6 +13,7 @@ import Account from "./pages/Account";
 import ResetPassword from "./pages/ResetPassword";
 import Fleet from "./pages/Fleet";
 import Admin from "./pages/Admin";
+import AdminChat from "./pages/AdminChat";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import { ScrollToTop } from "./components/ScrollToTop";
@@ -44,6 +45,8 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/fleet" element={<Fleet />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/chat" element={<AdminChat />} />
+              <Route path="/admin/chat/:conversationId" element={<AdminChat />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
