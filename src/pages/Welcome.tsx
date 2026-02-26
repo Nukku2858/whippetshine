@@ -36,21 +36,21 @@ const Welcome = () => {
 
       {/* Logo & title */}
       <div className="text-center mb-12 relative z-10 opacity-0 animate-fade-up" style={{ animationFillMode: "forwards" }}>
-        <div className="w-80 md:w-[28rem] h-[24rem] md:h-[28rem] mx-auto mb-0 overflow-hidden relative bg-background" style={{
-          WebkitMaskImage: 'radial-gradient(ellipse 90% 85% at 50% 50%, black 48%, transparent 95%)',
-          maskImage: 'radial-gradient(ellipse 90% 85% at 50% 50%, black 48%, transparent 95%)'
+        <div className="w-72 md:w-96 h-[18rem] md:h-[22rem] mx-auto mb-0 overflow-hidden relative bg-background" style={{
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 90% at 50% 45%, black 50%, transparent 90%)',
+          maskImage: 'radial-gradient(ellipse 90% 90% at 50% 45%, black 50%, transparent 90%)'
         }}>
           <img
             src={whippetShineLogo}
             alt="Whippet Shine"
-            className="w-full h-[120%] object-cover drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] mix-blend-lighten"
-            style={{ objectPosition: '50% 44%' }}
+            className="w-full h-[180%] object-cover drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] mix-blend-lighten"
+            style={{ objectPosition: '50% 30%' }}
           />
         </div>
         <h1
           className="text-5xl md:text-7xl font-display tracking-[0.12em] uppercase mt-2 mb-1 bg-clip-text text-transparent animate-shimmer"
           style={{
-            backgroundImage: 'linear-gradient(110deg, hsl(0 0% 65%) 0%, hsl(0 0% 90%) 20%, hsl(0 0% 100%) 30%, hsl(0 0% 90%) 40%, hsl(0 0% 65%) 60%, hsl(0 0% 90%) 80%, hsl(0 0% 100%) 90%, hsl(0 0% 65%) 100%)',
+            backgroundImage: 'linear-gradient(110deg, hsl(43 50% 45%) 0%, hsl(43 70% 60%) 15%, hsl(48 90% 78%) 25%, hsl(43 100% 90%) 30%, hsl(48 90% 78%) 35%, hsl(43 70% 60%) 45%, hsl(43 50% 45%) 55%, hsl(43 70% 60%) 65%, hsl(48 90% 78%) 75%, hsl(43 100% 90%) 80%, hsl(48 90% 78%) 85%, hsl(43 50% 45%) 100%)',
             backgroundSize: '300% 100%',
           }}
         >
