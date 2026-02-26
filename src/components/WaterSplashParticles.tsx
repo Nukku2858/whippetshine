@@ -21,7 +21,7 @@ interface Droplet {
   color: string;
 }
 
-const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<HTMLDivElement> }) => {
+const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: React.RefObject<HTMLDivElement>; onDirtyChange?: (dirty: boolean) => void }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -165,6 +165,7 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
     };
 
     let splatTimer = 0;
+    let lastDirty = false;
     let animFrame: number;
 
     const animate = (now: number) => {
@@ -191,11 +192,11 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
         // 0-3s of loop: mud splatters land (one burst, not continuous filling)
         if (loopElapsed < 3000) {
           splatTimer++;
-          // Spawn in bursts — a few splatters total, not every frame
           if (splatTimer % 6 === 0 && splats.length < 18) {
             spawnMudSplat();
           }
           sprayBarOpacity = 0;
+          if (!lastDirty) { lastDirty = true; onDirtyChange?.(true); }
         }
         // 3-4s: dirty pause
         else if (loopElapsed < 4000) {
@@ -223,7 +224,7 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
         else {
           sprayBarOpacity = 0;
           sprayBarX = -10;
-          // Clear any remaining splats
+          if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
           for (let i = splats.length - 1; i >= 0; i--) {
             splats[i].opacity -= 0.05;
             if (splats[i].opacity <= 0) splats.splice(i, 1);
