@@ -111,18 +111,19 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
     };
 
     const spawnWaterDroplets = (x: number) => {
-      const count = Math.floor(Math.random() * 10) + 6;
+      const count = Math.floor(Math.random() * 22) + 14;
       for (let i = 0; i < count; i++) {
-        const isMud = Math.random() < 0.3;
+        const isMud = Math.random() < 0.25;
+        const isBigBubble = Math.random() < 0.15;
         droplets.push({
-          x,
+          x: x + (Math.random() - 0.5) * 20,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.2) * 8 + 2,
-          vy: (Math.random() - 0.5) * 12,
-          size: Math.random() * 5 + 1.5,
-          opacity: Math.random() * 0.5 + 0.5,
+          vx: (Math.random() - 0.2) * 14 + 3,
+          vy: (Math.random() - 0.5) * 18,
+          size: isBigBubble ? Math.random() * 12 + 6 : Math.random() * 6 + 2,
+          opacity: Math.random() * 0.4 + 0.6,
           life: 0,
-          maxLife: Math.random() * 50 + 30,
+          maxLife: Math.random() * 60 + 40,
           color: isMud
             ? mudColors[Math.floor(Math.random() * mudColors.length)]
             : waterColors[Math.floor(Math.random() * waterColors.length)],
