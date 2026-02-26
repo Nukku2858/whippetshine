@@ -44,7 +44,7 @@ const Welcome = () => {
             src={whippetShineLogo}
             alt="Whippet Shine"
             className="w-full h-[140%] object-cover drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] mix-blend-lighten"
-            style={{ objectPosition: '50% 35%' }}
+            style={{ objectPosition: '50% 35%', animation: 'logo-breathe 8s ease-in-out infinite' }}
           />
         </div>
         <h1
