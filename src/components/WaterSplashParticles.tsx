@@ -217,11 +217,12 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
 
           spawnWaterDroplets(sprayBarX);
 
-          // Remove splats behind the bar
+          // Remove splats immediately when the bar passes their rightmost edge
           for (let i = splats.length - 1; i >= 0; i--) {
-            if (splats[i].x < sprayBarX) {
-              splats[i].opacity -= 0.12;
-              if (splats[i].opacity <= 0) splats.splice(i, 1);
+            const s = splats[i];
+            const maxDripX = Math.max(0, ...s.drips.map(d => d.dx + d.size));
+            if (s.x + maxDripX < sprayBarX) {
+              splats.splice(i, 1);
             }
           }
         }
@@ -230,10 +231,8 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange }: { containerRef: R
           sprayBarOpacity = 0;
           sprayBarX = -10;
           if (lastDirty) { lastDirty = false; onDirtyChange?.(false); }
-          for (let i = splats.length - 1; i >= 0; i--) {
-            splats[i].opacity -= 0.05;
-            if (splats[i].opacity <= 0) splats.splice(i, 1);
-          }
+          // Clear any remaining splats instantly
+          splats.length = 0;
         }
       }
 
