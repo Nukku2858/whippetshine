@@ -9,7 +9,7 @@ export const useWashSound = () => {
   const noiseRef = useRef<AudioBufferSourceNode | null>(null);
   const gainRef = useRef<GainNode | null>(null);
 
-  const startWash = useCallback((volume = 0.12) => {
+  const startWash = useCallback((volume = 0.04) => {
     try {
       // Create or reuse AudioContext
       if (!ctxRef.current || ctxRef.current.state === "closed") {
@@ -36,13 +36,13 @@ export const useWashSound = () => {
       // Bandpass filter to shape the noise into a "spray" sound
       const bandpass = ctx.createBiquadFilter();
       bandpass.type = "bandpass";
-      bandpass.frequency.value = 3500;
-      bandpass.Q.value = 0.5;
+      bandpass.frequency.value = 2200;
+      bandpass.Q.value = 0.8;
 
       // Highpass to remove rumble
       const highpass = ctx.createBiquadFilter();
       highpass.type = "highpass";
-      highpass.frequency.value = 800;
+      highpass.frequency.value = 500;
 
       // Gain for volume control and fade-in
       const gain = ctx.createGain();
