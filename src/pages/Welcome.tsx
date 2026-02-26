@@ -69,12 +69,12 @@ const Welcome = () => {
         </p>
 
         {/* Service summary */}
-        <div className="flex items-center justify-center gap-6 mt-5 text-muted-foreground text-[11px] tracking-wide uppercase">
-          <span className="flex items-center gap-1.5"><Car size={14} className="text-primary" /> Auto Detailing</span>
+        <div className="flex items-center justify-center gap-4 sm:gap-6 mt-5 text-muted-foreground text-[10px] sm:text-[11px] tracking-wide uppercase whitespace-nowrap">
+          <span className="flex items-center gap-1"><Car size={13} className="text-primary" /> Detailing</span>
           <span className="text-border">|</span>
-          <span className="flex items-center gap-1.5"><Droplets size={14} className="text-primary" /> Driveways</span>
+          <span className="flex items-center gap-1"><Droplets size={13} className="text-primary" /> Driveways</span>
           <span className="text-border">|</span>
-          <span className="flex items-center gap-1.5"><Home size={14} className="text-primary" /> Houses</span>
+          <span className="flex items-center gap-1"><Home size={13} className="text-primary" /> Houses</span>
         </div>
         <p className="text-muted-foreground/60 text-[10px] mt-2">Starting at $150 · Book & pay online</p>
       </div>
