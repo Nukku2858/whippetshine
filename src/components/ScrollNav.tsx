@@ -1,9 +1,13 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
+
+const SCROLL_SPEED = 2; // px per frame for hold-scroll
 
 const ScrollNav = () => {
   const [showUp, setShowUp] = useState(false);
   const [showDown, setShowDown] = useState(true);
+  const rafRef = useRef<number | null>(null);
+  const directionRef = useRef<"up" | "down" | null>(null);
 
   const updateVisibility = useCallback(() => {
     const scrollTop = window.scrollY;
@@ -24,6 +28,27 @@ const ScrollNav = () => {
     };
   }, [updateVisibility]);
 
+  const startHoldScroll = useCallback((direction: "up" | "down") => {
+    directionRef.current = direction;
+    const tick = () => {
+      if (!directionRef.current) return;
+      window.scrollBy(0, directionRef.current === "down" ? SCROLL_SPEED : -SCROLL_SPEED);
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+  }, []);
+
+  const stopHoldScroll = useCallback(() => {
+    directionRef.current = null;
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => () => stopHoldScroll(), [stopHoldScroll]);
+
   const scrollStep = (direction: "up" | "down") => {
     window.scrollBy({
       top: direction === "down" ? window.innerHeight * 0.75 : -window.innerHeight * 0.75,
@@ -31,10 +56,19 @@ const ScrollNav = () => {
     });
   };
 
+  const handlers = (direction: "up" | "down") => ({
+    onClick: () => scrollStep(direction),
+    onMouseDown: () => startHoldScroll(direction),
+    onMouseUp: stopHoldScroll,
+    onMouseLeave: stopHoldScroll,
+    onTouchStart: () => startHoldScroll(direction),
+    onTouchEnd: stopHoldScroll,
+  });
+
   return (
     <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2">
       <button
-        onClick={() => scrollStep("up")}
+        {...handlers("up")}
         className={`w-9 h-9 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-all duration-300 ${
           showUp ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
         }`}
@@ -43,7 +77,7 @@ const ScrollNav = () => {
         <ChevronUp size={18} />
       </button>
       <button
-        onClick={() => scrollStep("down")}
+        {...handlers("down")}
         className={`w-9 h-9 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-all duration-300 ${
           showDown ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
         }`}
