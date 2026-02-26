@@ -73,7 +73,7 @@ const Welcome = () => {
               filter: 'none',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
-              animation: 'shimmer 6s ease-in-out infinite, pressure-wash 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
+              animation: 'shimmer 6s ease-in-out infinite, pressure-wash 10s ease-in-out 1s infinite',
             }}
           >
             Whippet Shine
@@ -84,7 +84,7 @@ const Welcome = () => {
             style={{
               background: 'linear-gradient(180deg, transparent 0%, hsl(200 90% 80% / 0.9) 30%, hsl(200 95% 95%) 50%, hsl(200 90% 80% / 0.9) 70%, transparent 100%)',
               boxShadow: '0 0 12px 4px hsl(200 90% 80% / 0.6), 0 0 30px 8px hsl(200 80% 70% / 0.3)',
-              animation: 'spray-line 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
+              animation: 'spray-line 10s ease-in-out 1s infinite',
             }}
           />
         </div>
