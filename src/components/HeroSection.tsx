@@ -2,7 +2,6 @@ import heroImage from "@/assets/hero-car.jpg";
 import whippetLogo from "@/assets/whippet-logo.png";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import WowheadSearch from "@/components/WowheadSearch";
 
 const HeroSection = () => {
   const scrollToPackages = () => {
@@ -19,9 +18,6 @@ const HeroSection = () => {
       <img src={whippetLogo} alt="" className="absolute right-[-5%] bottom-[10%] w-64 md:w-96 opacity-[0.08] pointer-events-none select-none mix-blend-screen" />
 
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        <div className="mb-6 opacity-0 animate-fade-up">
-          <WowheadSearch />
-        </div>
         <p className="text-white font-medium tracking-[0.3em] uppercase text-sm mb-4 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
           Shelby, Ohio's Premier Detail Shop
         </p>
