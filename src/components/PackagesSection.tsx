@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, MessageSquare, Plus, Minus, ShoppingCart, Car } from "lucide-react";
+import { Check, MessageSquare, Plus, Minus, ShoppingCart, Car, Zap, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
@@ -34,12 +34,18 @@ const addOns = [
   { id: "odor-elimination", name: "Odor elimination treatment", addonPrice: 55, standalonePrice: 95, stripePriceId: "price_1T4FmCQ47JXIZZAQMu0OnCZe", description: "Targets odor at the source with an ozone or enzyme-based treatment that neutralizes smoke, food, pet, and mildew smells — not just masks them." },
 ];
 
-const packages: Package[] = [
-  { name: "Express Clean", price: 75, description: "Quick interior wipe-down & vacuum.", stripePriceId: "" },
+const vehiclePackages: Package[] = [
   { name: "Sedan", price: 150, description: "Cars, coupes & compact vehicles.", stripePriceId: "price_1T48mAQ47JXIZZAQ0t9hBp7k" },
   { name: "Midsize", price: 250, description: "SUVs, crossovers & minivans.", popular: true, stripePriceId: "price_1T498fQ47JXIZZAQ0YeWMBKk" },
   { name: "Full Size", price: 325, description: "Trucks, large SUVs & vans.", stripePriceId: "price_1T498rQ47JXIZZAQMymxfuc8" },
 ];
+
+const expressPackage: Package = {
+  name: "Express Clean",
+  price: 75,
+  description: "Quick interior wipe-down & vacuum.",
+  stripePriceId: "",
+};
 
 const AddOnsList = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -125,50 +131,90 @@ const PackagesSection = () => {
     toast.success(`${pkg.name} Detail added to cart`);
   };
 
+  const isInCart = (pkg: Package) =>
+    items.some((item) => item.id === `pkg-detailing-${pkg.name.toLowerCase().replace(/\s/g, "-")}`);
+
+  const expressInCart = isInCart(expressPackage);
+
   return (
     <section id="packages" className="py-16 px-6 scroll-mt-16">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10">
+      <div className="max-w-5xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-12">
           <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Our Auto Services</p>
           <h2 className="text-4xl md:text-5xl font-display">
             Detailing <span className="text-primary">Packages</span>
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-5 gap-5 items-stretch">
-          {packages.map((pkg) => {
-            const inCart = items.some((item) => item.id === `pkg-detailing-${pkg.name.toLowerCase().replace(/\s/g, "-")}`);
+        {/* Express Clean – Compact Banner */}
+        <div className="mb-8 bg-card border border-border rounded-lg p-5 flex flex-col sm:flex-row items-center gap-4 hover:border-primary transition-colors">
+          <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            <Zap size={20} className="text-primary" />
+          </div>
+          <div className="flex-1 text-center sm:text-left">
+            <h3 className="text-lg font-display">{expressPackage.name}</h3>
+            <p className="text-muted-foreground text-sm">{expressPackage.description}</p>
+          </div>
+          <div className="flex items-center gap-4 shrink-0">
+            <span className="text-3xl font-display text-primary">${expressPackage.price}</span>
+            <Button
+              onClick={() => handleAddPackage(expressPackage)}
+              disabled={expressInCart}
+              size="sm"
+              className={`font-semibold tracking-wide ${
+                expressInCart
+                  ? "bg-primary/20 text-primary"
+                  : "bg-primary text-primary-foreground hover:bg-scarlet-glow"
+              }`}
+            >
+              {expressInCart ? "✓ In Cart" : "Add to Cart"}
+            </Button>
+          </div>
+        </div>
+
+        {/* Included in Every Detail */}
+        <div className="mb-10 bg-card/50 border border-border rounded-lg p-6">
+          <h4 className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-4 text-center">
+            Included in Every Full Detail
+          </h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-2">
+            {standardFeatures.map((feature) => (
+              <div key={feature} className="flex items-start gap-2 text-sm">
+                <Check size={14} className="text-primary mt-0.5 shrink-0" />
+                <span className="text-secondary-foreground">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Vehicle Size Packages – 3 columns */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {vehiclePackages.map((pkg) => {
+            const inCart = isInCart(pkg);
             return (
               <div
                 key={pkg.name}
-                className={`relative rounded-lg p-6 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
+                className={`relative rounded-xl p-7 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
                   pkg.popular
                     ? "bg-card border-2 border-primary shadow-[var(--shadow-scarlet)]"
                     : "bg-card border border-border"
                 }`}
               >
                 {pkg.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold tracking-wider uppercase px-4 py-1 rounded-full">
-                    Most Popular
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold tracking-wider uppercase px-4 py-1 rounded-full flex items-center gap-1">
+                    <Star size={12} fill="currentColor" /> Most Popular
                   </span>
                 )}
-                <h3 className="text-xl font-display mb-1">{pkg.name}</h3>
-                <p className="text-muted-foreground text-sm mb-4">{pkg.description}</p>
-                <div className="mb-5 h-10 flex items-baseline">
-                  <span className="text-3xl font-display text-primary">${pkg.price}</span>
+                <h3 className="text-2xl font-display mb-1">{pkg.name}</h3>
+                <p className="text-muted-foreground text-sm mb-5">{pkg.description}</p>
+                <div className="mb-6">
+                  <span className="text-4xl font-display text-primary">${pkg.price}</span>
                 </div>
-                <ul className="space-y-2 mb-6 flex-1">
-                  {standardFeatures.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm">
-                      <Check size={14} className="text-primary mt-0.5 shrink-0" />
-                      <span className="text-secondary-foreground">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
                 <Button
                   onClick={() => handleAddPackage(pkg)}
                   disabled={inCart}
-                  className={`w-full font-semibold tracking-wide ${
+                  className={`w-full font-semibold tracking-wide mt-auto ${
                     inCart
                       ? "bg-primary/20 text-primary"
                       : pkg.popular
@@ -181,41 +227,28 @@ const PackagesSection = () => {
               </div>
             );
           })}
+        </div>
 
-          {/* Custom Request card */}
-          <div className="relative rounded-lg p-6 flex flex-col transition-all duration-300 hover:-translate-y-1 bg-card border border-dashed border-border hover:border-primary">
-            <h3 className="text-xl mb-1 italic font-black" style={{ fontFamily: "'Permanent Marker', cursive" }}>Custom</h3>
-            <p className="text-muted-foreground text-sm mb-4">
-              Need something unique? Request a custom quote.
+        {/* Custom Request */}
+        <div className="rounded-lg border border-dashed border-border hover:border-primary p-6 flex flex-col sm:flex-row items-center gap-4 transition-colors bg-card mb-12">
+          <div className="flex-1 text-center sm:text-left">
+            <h3 className="text-xl font-display mb-1">Need Something Custom?</h3>
+            <p className="text-muted-foreground text-sm">
+              Fleet discounts, specialty coatings, multi-vehicle deals — reach out for a personalized quote.
             </p>
-            <div className="mb-5 h-10 flex items-baseline">
-              <span className="text-3xl font-display text-primary">Quote</span>
-            </div>
-            <ul className="space-y-2 mb-6 flex-1">
-              {[
-                "Personalized service plan",
-                "Add-on services available",
-                "Fleet & multi-vehicle discounts",
-                "Specialty coatings & treatments",
-                "Reach us by text or email",
-              ].map((feature) => (
-                <li key={feature} className="flex items-start gap-2 text-sm">
-                  <MessageSquare size={14} className="text-primary mt-0.5 shrink-0" />
-                  <span className="text-secondary-foreground">{feature}</span>
-                </li>
-              ))}
-            </ul>
-            <Button
-              onClick={() => navigate("/custom-request")}
-              className="w-full font-semibold tracking-wide bg-secondary text-secondary-foreground hover:bg-muted"
-            >
-              Request Quote
-            </Button>
           </div>
+          <Button
+            onClick={() => navigate("/custom-request")}
+            variant="outline"
+            className="shrink-0 font-semibold tracking-wide border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+          >
+            <MessageSquare size={16} className="mr-2" />
+            Request Quote
+          </Button>
         </div>
 
         {/* Add-Ons Section */}
-        <div className="mt-12 max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <div className="text-center mb-6">
             <p className="text-primary tracking-[0.3em] uppercase text-sm mb-2">Add-On or Standalone</p>
             <h3 className="text-2xl md:text-3xl font-display">
@@ -247,7 +280,7 @@ const PackagesSection = () => {
                 <span className="text-[10px] text-muted-foreground">$20 for non-members</span>
                 <span className="text-[10px] text-muted-foreground/60 italic">* Fuel surcharge may apply</span>
               </div>
-            <a href="/auth" className="block text-center text-sm font-semibold text-primary hover:text-scarlet-glow transition-colors tracking-wide mt-3">Join the Pack →</a>
+              <a href="/auth" className="block text-center text-sm font-semibold text-primary hover:text-scarlet-glow transition-colors tracking-wide mt-3">Join the Pack →</a>
             </div>
           </div>
         </div>
