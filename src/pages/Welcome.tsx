@@ -52,55 +52,24 @@ const Welcome = () => {
         </div>
         <div className="relative mt-2 mb-1" ref={washContainerRef}>
           <WaterSplashParticles containerRef={washContainerRef} onWashStart={startWash} onWashEnd={stopWash} />
-          {/* Muddy layer - fades out after initial wash */}
+          {/* Clean red text - always visible, mud splats overlay via canvas */}
           <h1
-            className="text-5xl md:text-7xl tracking-[0.06em] uppercase text-center"
-            style={{
-              fontFamily: "'Rubik Spray Paint', cursive",
-              color: 'hsl(30 40% 25%)',
-              textShadow: '2px 2px 6px hsl(30 50% 15% / 0.8), -1px -1px 4px hsl(30 30% 20% / 0.5)',
-              animation: 'muddy-fade 6s ease-in-out 0s forwards',
-            }}
-            aria-hidden="true"
-          >
-            Whippet Shine
-          </h1>
-          {/* Clean layer - reveals with wash */}
-          <h1
-            className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent"
+            className="text-5xl md:text-7xl tracking-[0.06em] uppercase text-center bg-clip-text text-transparent"
             style={{
               fontFamily: "'Rubik Spray Paint', cursive",
               backgroundImage: 'linear-gradient(110deg, hsl(0 55% 22%) 0%, hsl(0 60% 32%) 15%, hsl(355 70% 42%) 25%, hsl(0 65% 55%) 30%, hsl(355 70% 42%) 35%, hsl(0 60% 32%) 45%, hsl(0 55% 22%) 100%)',
               backgroundSize: '100% 100%',
-              WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
-              maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
-              animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards',
             }}
           >
             Whippet Shine
           </h1>
-          {/* Shine highlight that sweeps with the wash */}
-          <h1
-            className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent pointer-events-none"
-            style={{
-              fontFamily: "'Rubik Spray Paint', cursive",
-              backgroundImage: 'linear-gradient(90deg, transparent 0%, transparent var(--shine-left), hsl(0 0% 100%) var(--shine-center), transparent var(--shine-right), transparent 100%)',
-              backgroundSize: '100% 100%',
-              WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
-              maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
-              animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards, shine-sweep 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards',
-            }}
-            aria-hidden="true"
-          >
-            Whippet Shine
-          </h1>
-          {/* Water spray line - initial wash only */}
+          {/* Water spray line */}
           <div
             className="absolute top-0 bottom-0 w-[2px] rounded-full opacity-0"
             style={{
               background: 'linear-gradient(180deg, transparent 0%, hsl(200 70% 65% / 0.7) 30%, hsl(200 80% 75%) 50%, hsl(200 70% 65% / 0.7) 70%, transparent 100%)',
               boxShadow: '0 0 8px 2px hsl(200 70% 65% / 0.4), 0 0 20px 4px hsl(200 60% 55% / 0.2)',
-              animation: 'spray-line-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards',
+              animation: 'spray-line-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
             }}
           />
         </div>
