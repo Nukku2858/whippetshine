@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import whippetLogo from "@/assets/whippet-logo.png";
+import whippetShineLogo from "@/assets/whippet-shine-logo.jpg";
 import { UserPlus, Crown } from "lucide-react";
 
 const Welcome = () => {
@@ -36,9 +37,9 @@ const Welcome = () => {
       {/* Logo & title */}
       <div className="text-center mb-12 relative z-10 opacity-0 animate-fade-up" style={{ animationFillMode: "forwards" }}>
         <img
-          src={whippetLogo}
+          src={whippetShineLogo}
           alt="Whippet Shine"
-          className="w-28 h-28 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(200,40,40,0.3)]"
+          className="w-44 h-44 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] rounded-2xl mix-blend-lighten"
         />
         <h1 className="text-5xl md:text-7xl font-display leading-none">
           <span className="text-muted-foreground">Whippet</span>
