@@ -34,7 +34,7 @@ const Welcome = () => {
       />
 
       {/* Logo & title */}
-      <div className="text-center mb-12 relative z-10">
+      <div className="text-center mb-12 relative z-10 opacity-0 animate-fade-up" style={{ animationFillMode: "forwards" }}>
         <img
           src={whippetLogo}
           alt="Whippet Shine"
@@ -56,7 +56,8 @@ const Welcome = () => {
             {/* Members Club */}
             <button
               onClick={() => navigate("/auth")}
-              className="w-full group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-6 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98]"
+              className="w-full group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-6 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98] opacity-0 animate-fade-up"
+              style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}
             >
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/25 transition-colors">
@@ -76,7 +77,8 @@ const Welcome = () => {
             {/* New Customer / Guest */}
             <button
               onClick={() => setShowGuestOptions(true)}
-              className="w-full group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:border-muted-foreground/40 hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.1)] active:scale-[0.98]"
+              className="w-full group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:border-muted-foreground/40 hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.1)] active:scale-[0.98] opacity-0 animate-fade-up"
+              style={{ animationDelay: "0.35s", animationFillMode: "forwards" }}
             >
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center shrink-0 group-hover:bg-muted transition-colors">
@@ -98,7 +100,7 @@ const Welcome = () => {
           <>
             <button
               onClick={() => navigate("/auth?mode=signup")}
-              className="w-full group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-6 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98]"
+              className="w-full group relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-6 transition-all hover:border-primary/60 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)] active:scale-[0.98] animate-fade-in"
             >
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/25 transition-colors">
@@ -117,7 +119,8 @@ const Welcome = () => {
 
             <button
               onClick={() => navigate("/home")}
-              className="w-full group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:border-muted-foreground/40 hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.1)] active:scale-[0.98]"
+              className="w-full group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:border-muted-foreground/40 hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.1)] active:scale-[0.98] animate-fade-in"
+              style={{ animationDelay: "0.1s" }}
             >
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center shrink-0 group-hover:bg-muted transition-colors">
