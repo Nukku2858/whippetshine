@@ -38,6 +38,7 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
 
     const splats: Splat[] = [];
     const droplets: Droplet[] = [];
+    // Matches CSS: 10s cycle, 1s delay
     const CYCLE = 10000;
     const DELAY = 1000;
     const startTime = performance.now() + DELAY;
@@ -47,7 +48,6 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
       "hsl(30, 50%, 18%)",
       "hsl(20, 40%, 25%)",
       "hsl(28, 55%, 20%)",
-      "hsl(22, 35%, 15%)",
     ];
 
     const waterColors = [
@@ -77,7 +77,7 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
         drips,
       });
 
-      // Flying mud droplet particles
+      // Flying mud impact particles
       const flyCount = Math.floor(Math.random() * 6) + 3;
       for (let i = 0; i < flyCount; i++) {
         droplets.push({
@@ -96,6 +96,7 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
     const spawnWaterDroplets = (x: number) => {
       const count = Math.floor(Math.random() * 10) + 6;
       for (let i = 0; i < count; i++) {
+        const isMud = Math.random() < 0.3;
         droplets.push({
           x,
           y: Math.random() * canvas.height,
@@ -105,7 +106,9 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
           opacity: Math.random() * 0.5 + 0.5,
           life: 0,
           maxLife: Math.random() * 50 + 30,
-          color: waterColors[Math.floor(Math.random() * waterColors.length)],
+          color: isMud
+            ? mudColors[Math.floor(Math.random() * mudColors.length)]
+            : waterColors[Math.floor(Math.random() * waterColors.length)],
         });
       }
     };
@@ -113,11 +116,9 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
     const drawSplat = (s: Splat) => {
       ctx.globalAlpha = s.opacity;
       ctx.fillStyle = s.color;
-      // Main blob
       ctx.beginPath();
-      ctx.ellipse(s.x, s.y, s.size, s.size * 0.7, Math.random() * 0.3, 0, Math.PI * 2);
+      ctx.ellipse(s.x, s.y, s.size, s.size * 0.7, 0, 0, Math.PI * 2);
       ctx.fill();
-      // Drip blobs
       for (const d of s.drips) {
         ctx.beginPath();
         ctx.arc(s.x + d.dx, s.y + d.dy, d.size, 0, Math.PI * 2);
@@ -126,7 +127,7 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
       ctx.globalAlpha = 1;
     };
 
-    let splatSpawnTimer = 0;
+    let splatTimer = 0;
     let animFrame: number;
 
     const animate = (now: number) => {
@@ -137,47 +138,54 @@ const WaterSplashParticles = ({ containerRef }: { containerRef: React.RefObject<
         const cyclePos = elapsed % CYCLE;
         const t = cyclePos / CYCLE;
 
-        // Phase 1: initial clean sweep (0-30%)
-        if (t < 0.30) {
-          const phase = t / 0.30;
+        // Timeline synced with CSS:
+        // 0-25%: initial clean sweep L→R (spray bar + water particles + clear splats)
+        // 25-35%: clean pause
+        // 35-65%: mud splatters land randomly
+        // 65-70%: dirty pause
+        // 70-95%: second clean sweep L→R (spray bar + water particles + clear splats)
+        // 95-100%: clean pause before loop
+
+        if (t < 0.25) {
+          // Clean sweep - water particles at spray position
+          const phase = t / 0.25;
           const eased = 1 - Math.pow(1 - phase, 3);
-          spawnWaterDroplets(eased * canvas.width);
-          // Fade out any remaining splats from left
+          const washX = eased * canvas.width;
+          spawnWaterDroplets(washX);
+          // Remove splats behind the wash line
           for (let i = splats.length - 1; i >= 0; i--) {
-            if (splats[i].x < eased * canvas.width) {
-              splats[i].opacity -= 0.08;
+            if (splats[i].x < washX) {
+              splats[i].opacity -= 0.1;
               if (splats[i].opacity <= 0) splats.splice(i, 1);
             }
           }
-        }
-        // Phase 2: mud splatters land randomly (35-60%)
-        else if (t >= 0.35 && t < 0.60) {
-          splatSpawnTimer++;
-          if (splatSpawnTimer % 3 === 0) { // every ~3 frames
+        } else if (t >= 0.35 && t < 0.65) {
+          // Mud splatters land randomly
+          splatTimer++;
+          if (splatTimer % 4 === 0) {
             spawnMudSplat();
           }
-        }
-        // Phase 3: pause with mud (60-70%)
-        // Phase 4: wash clean again (70-100%)
-        else if (t >= 0.70) {
-          const phase = (t - 0.70) / 0.30;
+        } else if (t >= 0.70 && t < 0.95) {
+          // Second clean sweep
+          const phase = (t - 0.70) / 0.25;
           const eased = 1 - Math.pow(1 - phase, 3);
-          spawnWaterDroplets(eased * canvas.width);
+          const washX = eased * canvas.width;
+          spawnWaterDroplets(washX);
           for (let i = splats.length - 1; i >= 0; i--) {
-            if (splats[i].x < eased * canvas.width) {
-              splats[i].opacity -= 0.08;
+            if (splats[i].x < washX) {
+              splats[i].opacity -= 0.1;
               if (splats[i].opacity <= 0) splats.splice(i, 1);
             }
           }
         }
       }
 
-      // Draw persistent splats
+      // Draw persistent mud splats
       for (const s of splats) {
         drawSplat(s);
       }
 
-      // Draw flying droplets
+      // Draw flying droplets (water + mud impact)
       for (let i = droplets.length - 1; i >= 0; i--) {
         const p = droplets[i];
         p.life++;
