@@ -35,6 +35,7 @@ const addOns = [
 ];
 
 const packages: Package[] = [
+  { name: "Express Clean", price: 75, description: "Quick interior wipe-down & vacuum.", stripePriceId: "" },
   { name: "Sedan", price: 150, description: "Cars, coupes & compact vehicles.", stripePriceId: "price_1T48mAQ47JXIZZAQ0t9hBp7k" },
   { name: "Midsize", price: 250, description: "SUVs, crossovers & minivans.", popular: true, stripePriceId: "price_1T498fQ47JXIZZAQ0YeWMBKk" },
   { name: "Full Size", price: 325, description: "Trucks, large SUVs & vans.", stripePriceId: "price_1T498rQ47JXIZZAQMymxfuc8" },
@@ -134,7 +135,7 @@ const PackagesSection = () => {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-5 items-stretch">
+        <div className="grid md:grid-cols-5 gap-5 items-stretch">
           {packages.map((pkg) => {
             const inCart = items.some((item) => item.id === `pkg-detailing-${pkg.name.toLowerCase().replace(/\s/g, "-")}`);
             return (
