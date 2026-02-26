@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Star, Gift, TrendingUp } from "lucide-react";
+import { Star, Gift, TrendingUp, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import whippetLogo from "@/assets/whippet-logo.png";
@@ -33,7 +33,7 @@ const LoyaltyPromoSection = () => {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-6 mb-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <div className="bg-card border border-border rounded-lg p-6 text-center group hover:border-primary/50 transition-colors">
             <div className="w-14 h-14 mx-auto rounded-full bg-secondary flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
               <Star size={24} className="text-primary" />
@@ -62,6 +62,19 @@ const LoyaltyPromoSection = () => {
             <p className="text-muted-foreground text-sm">
               <span className="text-primary font-semibold">100 points = $5 off</span> your next booking. Apply at checkout.
             </p>
+          </div>
+
+          <div className="bg-card border border-primary/30 rounded-lg p-6 text-center group hover:border-primary/50 transition-colors relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
+            <div className="relative">
+              <div className="w-14 h-14 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <Eye size={24} className="text-primary" />
+              </div>
+              <h3 className="font-display text-xl mb-2">The Whippet Tracker™</h3>
+              <p className="text-muted-foreground text-sm">
+                Watch your service <span className="text-primary font-semibold">live, step-by-step</span> — from arrival to final shine. Like a pizza tracker, but shinier.
+              </p>
+            </div>
           </div>
         </div>
 
