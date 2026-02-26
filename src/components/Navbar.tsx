@@ -13,7 +13,7 @@ const Navbar = () => {
   const { user, profile } = useAuth();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 pt-[env(safe-area-inset-top)]">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-3 py-2.5 md:px-6 md:py-4">
         <Link to="/" className="flex items-center shrink-0">
           <span className="text-base md:text-2xl font-display tracking-wide">
