@@ -39,7 +39,7 @@ const Welcome = () => {
         <img
           src={whippetShineLogo}
           alt="Whippet Shine"
-          className="w-44 h-44 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] rounded-2xl mix-blend-lighten"
+          className="w-36 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(200,40,40,0.3)] rounded-2xl mix-blend-lighten object-contain"
         />
         <h1 className="text-5xl md:text-7xl font-display leading-none">
           <span className="text-muted-foreground">Whippet</span>
