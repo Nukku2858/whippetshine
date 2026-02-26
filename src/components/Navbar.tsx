@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Star, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { Capacitor } from "@capacitor/core";
 
 const navLinks = [
   { label: "Auto Detailing", path: "/home" },
@@ -11,9 +12,13 @@ const navLinks = [
 const Navbar = () => {
   const { pathname } = useLocation();
   const { user, profile } = useAuth();
+  const isNative = Capacitor.isNativePlatform();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 pt-[env(safe-area-inset-top)]">
+    <nav className={cn(
+      "fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50",
+      isNative ? "pt-10" : "pt-[env(safe-area-inset-top)]"
+    )}>
       <div className="max-w-6xl mx-auto flex items-center justify-between px-3 py-2.5 md:px-6 md:py-4">
         <Link to="/home" className="flex items-center shrink-0">
           <span className="text-base md:text-2xl font-display tracking-wide">
