@@ -193,9 +193,8 @@ const WaterSplashParticles = ({ containerRef, onDirtyChange, onWashStart, onWash
         const phase = elapsed / 6000;
         const eased = 1 - Math.pow(1 - phase, 3);
         spawnWaterDroplets(eased * canvas.width);
-        sprayBarX = -10;
         sprayBarOpacity = 0;
-        if (!wasWashing) { wasWashing = true; onWashStart?.(); }
+        // No spray bar sound during initial CSS wash — sound only when spray bar is visible
       }
       // After initial wash, enter the loop
       else {
