@@ -143,7 +143,7 @@ const LoyaltyPromoSection = () => {
                 }
               </p>
               <a
-                href="https://play.google.com/store/apps/details?id=app.lovable.whippetshine"
+                href="https://play.google.com/apps/testing/app.lovable.whippetshine"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-2"
