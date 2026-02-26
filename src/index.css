@@ -70,14 +70,19 @@
 
 @keyframes shimmer {
   0% { background-position: 200% 0; }
+  40% { background-position: -50% 0; }
+  60% { background-position: -50% 0; }
   100% { background-position: -200% 0; }
 }
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 8px -2px hsl(0 72% 50% / 0.3);
+    box-shadow: 0 0 8px -2px hsl(0 72% 50% / 0.2);
   }
-  50% {
-    box-shadow: 0 0 24px -2px hsl(0 72% 50% / 0.5);
+  30% {
+    box-shadow: 0 0 28px -2px hsl(0 72% 50% / 0.55);
+  }
+  60% {
+    box-shadow: 0 0 16px -2px hsl(0 72% 50% / 0.35);
   }
 }
