@@ -77,18 +77,20 @@
 
 @keyframes pressure-wash {
   0% { --wash-progress: 0%; }
-  30% { --wash-progress: 103%; }
+  25% { --wash-progress: 103%; }
   100% { --wash-progress: 103%; }
 }
 
 @keyframes spray-line {
   0% { left: 0%; opacity: 0; }
-  2% { opacity: 1; }
-  28% { left: 100%; opacity: 1; }
-  30% { left: 100%; opacity: 0; }
-  70% { left: 0%; opacity: 0; }
-  72% { opacity: 1; }
-  98% { left: 100%; opacity: 1; }
+  1% { opacity: 1; }
+  24% { left: 100%; opacity: 1; }
+  25% { left: 100%; opacity: 0; }
+  /* Second wash at 70-95% */
+  69% { left: 0%; opacity: 0; }
+  70% { left: 0%; opacity: 1; }
+  94% { left: 100%; opacity: 1; }
+  95% { left: 100%; opacity: 0; }
   100% { left: 100%; opacity: 0; }
 }
 
