@@ -8,6 +8,8 @@ const ScrollNav = () => {
   const [showDown, setShowDown] = useState(true);
   const rafRef = useRef<number | null>(null);
   const directionRef = useRef<"up" | "down" | null>(null);
+  const wasHoldingRef = useRef(false);
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updateVisibility = useCallback(() => {
     const scrollTop = window.scrollY;
@@ -29,16 +31,24 @@ const ScrollNav = () => {
   }, [updateVisibility]);
 
   const startHoldScroll = useCallback((direction: "up" | "down") => {
-    directionRef.current = direction;
-    const tick = () => {
-      if (!directionRef.current) return;
-      window.scrollBy(0, directionRef.current === "down" ? SCROLL_SPEED : -SCROLL_SPEED);
+    wasHoldingRef.current = false;
+    holdTimerRef.current = setTimeout(() => {
+      wasHoldingRef.current = true;
+      directionRef.current = direction;
+      const tick = () => {
+        if (!directionRef.current) return;
+        window.scrollBy(0, directionRef.current === "down" ? SCROLL_SPEED : -SCROLL_SPEED);
+        rafRef.current = requestAnimationFrame(tick);
+      };
       rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
+    }, 150);
   }, []);
 
   const stopHoldScroll = useCallback(() => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
     directionRef.current = null;
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current);
@@ -57,7 +67,9 @@ const ScrollNav = () => {
   };
 
   const handlers = (direction: "up" | "down") => ({
-    onClick: () => scrollStep(direction),
+    onClick: () => {
+      if (!wasHoldingRef.current) scrollStep(direction);
+    },
     onMouseDown: () => startHoldScroll(direction),
     onMouseUp: stopHoldScroll,
     onMouseLeave: stopHoldScroll,
