@@ -10,6 +10,7 @@ const Welcome = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [showGuestOptions, setShowGuestOptions] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
   const washContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto-skip for logged-in users
@@ -50,7 +51,7 @@ const Welcome = () => {
           />
         </div>
         <div className="relative mt-2 mb-1" ref={washContainerRef}>
-          <WaterSplashParticles containerRef={washContainerRef} />
+          <WaterSplashParticles containerRef={washContainerRef} onDirtyChange={setIsDirty} />
           {/* Muddy layer - fades out after initial wash */}
           <h1
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase text-center"
@@ -66,14 +67,17 @@ const Welcome = () => {
           </h1>
           {/* Clean layer - reveals once then stays */}
           <h1
-            className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent animate-shimmer"
+            className={`text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent ${isDirty ? '' : 'animate-shimmer'}`}
             style={{
               fontFamily: "'Rubik Spray Paint', cursive",
-              backgroundImage: 'linear-gradient(110deg, hsl(0 60% 35%) 0%, hsl(0 70% 50%) 15%, hsl(355 85% 65%) 25%, hsl(0 90% 80%) 30%, hsl(355 85% 65%) 35%, hsl(0 70% 50%) 45%, hsl(0 60% 35%) 55%, hsl(0 70% 50%) 65%, hsl(355 85% 65%) 75%, hsl(0 90% 80%) 80%, hsl(355 85% 65%) 85%, hsl(0 60% 35%) 100%)',
-              backgroundSize: '300% 100%',
+              backgroundImage: isDirty
+                ? 'linear-gradient(110deg, hsl(0 40% 30%) 0%, hsl(0 35% 35%) 50%, hsl(0 40% 30%) 100%)'
+                : 'linear-gradient(110deg, hsl(0 60% 35%) 0%, hsl(0 70% 50%) 15%, hsl(355 85% 65%) 25%, hsl(0 90% 80%) 30%, hsl(355 85% 65%) 35%, hsl(0 70% 50%) 45%, hsl(0 60% 35%) 55%, hsl(0 70% 50%) 65%, hsl(355 85% 65%) 75%, hsl(0 90% 80%) 80%, hsl(355 85% 65%) 85%, hsl(0 60% 35%) 100%)',
+              backgroundSize: isDirty ? '100% 100%' : '300% 100%',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 3%))',
-              animation: 'shimmer 6s ease-in-out infinite, pressure-wash-once 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards',
+              animation: `${isDirty ? '' : 'shimmer 6s ease-in-out infinite, '}pressure-wash-once 4s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards`,
+              transition: 'background-image 0.8s ease',
             }}
           >
             Whippet Shine
