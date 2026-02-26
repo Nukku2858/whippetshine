@@ -59,42 +59,40 @@ const Welcome = () => {
               fontFamily: "'Rubik Spray Paint', cursive",
               color: 'hsl(30 40% 25%)',
               textShadow: '2px 2px 6px hsl(30 50% 15% / 0.8), -1px -1px 4px hsl(30 30% 20% / 0.5)',
-              animation: 'muddy-fade 4s ease-in-out 1s forwards',
+              animation: 'muddy-fade 6s ease-in-out 1s forwards',
             }}
             aria-hidden="true"
           >
             Whippet Shine
           </h1>
-          {/* Clean layer - reveals with per-letter shine */}
+          {/* Clean layer - reveals with wash */}
           <h1
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent"
             style={{
               fontFamily: "'Rubik Spray Paint', cursive",
-              backgroundImage: 'linear-gradient(110deg, hsl(0 55% 22%) 0%, hsl(0 60% 32%) 15%, hsl(355 70% 42%) 25%, hsl(0 65% 55%) 30%, hsl(355 70% 42%) 35%, hsl(0 60% 32%) 45%, hsl(0 55% 22%) 55%, hsl(0 60% 32%) 65%, hsl(355 70% 42%) 75%, hsl(0 65% 55%) 80%, hsl(355 70% 42%) 85%, hsl(0 55% 22%) 100%)',
-              backgroundSize: '300% 100%',
+              backgroundImage: 'linear-gradient(110deg, hsl(0 55% 22%) 0%, hsl(0 60% 32%) 15%, hsl(355 70% 42%) 25%, hsl(0 65% 55%) 30%, hsl(355 70% 42%) 35%, hsl(0 60% 32%) 45%, hsl(0 55% 22%) 100%)',
+              backgroundSize: '100% 100%',
               WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
               maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
               animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
             }}
-            aria-label="Whippet Shine"
           >
-            {/* Each letter shines briefly as the wash passes it */}
-            {"WHIPPET SHINE".split("").map((char, i) => {
-              const totalChars = 13; // "WHIPPET SHINE"
-              // Wash takes 6s starting at 1s delay. Stagger each letter across the wash duration.
-              const delay = 1 + (i / totalChars) * 6;
-              return (
-                <span
-                  key={i}
-                  style={{
-                    animation: `letter-shine 0.6s ease-out ${delay}s forwards`,
-                    display: char === " " ? "inline" : "inline-block",
-                  }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </span>
-              );
-            })}
+            Whippet Shine
+          </h1>
+          {/* Shine highlight that sweeps with the wash */}
+          <h1
+            className="text-5xl md:text-7xl tracking-[0.06em] uppercase absolute inset-0 text-center bg-clip-text text-transparent pointer-events-none"
+            style={{
+              fontFamily: "'Rubik Spray Paint', cursive",
+              backgroundImage: 'linear-gradient(90deg, transparent 0%, transparent var(--shine-left), hsl(0 80% 85%) var(--shine-center), transparent var(--shine-right), transparent 100%)',
+              backgroundSize: '100% 100%',
+              WebkitMaskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
+              maskImage: 'linear-gradient(90deg, black var(--wash-progress), transparent calc(var(--wash-progress) + 1%))',
+              animation: 'pressure-wash-once 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards, shine-sweep 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards',
+            }}
+            aria-hidden="true"
+          >
+            Whippet Shine
           </h1>
           {/* Water spray line - initial wash only */}
           <div
