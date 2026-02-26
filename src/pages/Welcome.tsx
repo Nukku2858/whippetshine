@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import whippetLogo from "@/assets/whippet-logo.png";
 import whippetShineLogo from "@/assets/whippet-shine-logo-transparent.png";
 import { UserPlus, Crown, Car, Droplets, Home } from "lucide-react";
+import WaterSplashParticles from "@/components/WaterSplashParticles";
 
 const Welcome = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [showGuestOptions, setShowGuestOptions] = useState(false);
+  const washContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto-skip for logged-in users
   useEffect(() => {
@@ -47,7 +49,8 @@ const Welcome = () => {
             style={{ objectPosition: '50% 35%' }}
           />
         </div>
-        <div className="relative mt-2 mb-1">
+        <div className="relative mt-2 mb-1" ref={washContainerRef}>
+          <WaterSplashParticles containerRef={washContainerRef} />
           {/* Muddy layer */}
           <h1
             className="text-5xl md:text-7xl tracking-[0.06em] uppercase text-center"
